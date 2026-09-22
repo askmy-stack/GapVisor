@@ -9,7 +9,7 @@ router = APIRouter(tags=["health"])
 def healthz() -> dict:
     return {
         "status": "ok",
-        "service": "visibilityos-api",
+        "service": "gapvisor-api",
         "env": settings.APP_ENV,
         "scan_commitment_mode": settings.SCAN_COMMITMENT_MODE,
     }

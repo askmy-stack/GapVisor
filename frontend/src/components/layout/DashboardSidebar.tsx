@@ -24,7 +24,7 @@ export default function DashboardSidebar() {
         </div>
         {!collapsed && (
           <span className="font-semibold tracking-tight text-sidebar-accent-foreground text-[15px] truncate">
-            Visibility<span className="text-sidebar-primary">OS</span>
+            Gap<span className="text-sidebar-primary">Visor</span>
           </span>
         )}
       </div>

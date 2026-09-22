@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "visibilityos-backend"
+name = "gapvisor-backend"
 version = "0.1.0"
-description = "VisibilityOS FastAPI + Celery backend (002-backend-platform)"
+description = "GapVisor FastAPI + Celery backend (002-backend-platform)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

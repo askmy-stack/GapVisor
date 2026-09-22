@@ -1,4 +1,4 @@
-# VisibilityOS frontend — AWS deployment
+# GapVisor frontend — AWS deployment
 
 Terraform for serving the Vite/React SPA from a private S3 bucket through
 CloudFront, on a custom domain with a managed TLS certificate.

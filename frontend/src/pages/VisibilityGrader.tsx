@@ -50,7 +50,7 @@ export default function VisibilityGrader() {
       <div className="w-full max-w-lg space-y-6">
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-            Free diagnostic
+            GapVisor · Free diagnostic
           </p>
           <h1 className="text-3xl font-bold tracking-tight">AI Visibility Grader</h1>
           <p className="text-muted-foreground text-sm">

@@ -4,7 +4,7 @@ from services.scan_commitment import plan_models_for_day
 def test_health_import():
     from main import app
 
-    assert app.title == "VisibilityOS API"
+    assert app.title == "GapVisor API"
 
 
 def test_rotating_weekly_subset():
