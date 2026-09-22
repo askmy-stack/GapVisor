@@ -2,11 +2,11 @@
 
 from fastapi import APIRouter
 from pydantic import BaseModel
+from sqlalchemy import func, select
 
 from core.config import settings
 from core.deps import DbSession, WorkspaceId
 from models import Answer, Prompt
-from sqlalchemy import func, select
 
 router = APIRouter(prefix="/billing", tags=["billing"])
 

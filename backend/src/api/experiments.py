@@ -1,6 +1,6 @@
 """Experiments & impact (M6 observational slice)."""
 
-from datetime import date
+from datetime import UTC, date, datetime
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
@@ -52,7 +52,7 @@ def create_experiment(
         name=body.name,
         hypothesis=body.hypothesis,
         recommendation_id=body.recommendation_id,
-        start_date=body.start_date or date.today(),
+        start_date=body.start_date or datetime.now(UTC).date(),
         status="running" if body.start_date else "planned",
     )
     db.add(row)
