@@ -16,6 +16,9 @@ See how ChatGPT, Claude, Gemini, Perplexity, and connected AI APIs mention and r
 
 ## Product screens
 
+> UI captures refreshed for **GapVisor** branding (sign-in, sidebar, grader, and all product routes).
+
+
 | Sign-in | Workspace setup |
 |:---:|:---:|
 | ![Sign-in](docs/snapshots/01-signin.png) | ![Workspace setup](docs/snapshots/10-workspace-setup.png) |
