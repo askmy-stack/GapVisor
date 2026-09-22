@@ -1,4 +1,4 @@
-# VisibilityOS product decisions
+# GapVisor product decisions
 
 ## FR-012 — Growth tier scan commitment (provisional)
 

@@ -1,4 +1,4 @@
-"""VisibilityOS FastAPI application."""
+"""GapVisor FastAPI application."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ from api import (
 from core.config import settings
 
 app = FastAPI(
-    title="VisibilityOS API",
+    title="GapVisor API",
     version="0.2.0",
     description="Backend for AI recommendation visibility monitoring (002-backend-platform)",
 )

@@ -137,7 +137,7 @@ def seed() -> None:
             db.flush()
             user = User(
                 email=demo_email,
-                password_hash=hash_password("VisibilityOS-Demo-2026!"),
+                password_hash=hash_password("GapVisor-Demo-2026!"),
                 name="Morgan Reyes",
             )
             db.add(user)
@@ -151,7 +151,7 @@ def seed() -> None:
                     accepted_at=datetime.now(UTC),
                 )
             )
-            print(f"Seeded demo user {demo_email} / VisibilityOS-Demo-2026!")
+            print(f"Seeded demo user {demo_email} / GapVisor-Demo-2026!")
             print(f"Workspace id: {workspace.id}")
         else:
             membership = db.scalar(select(Membership).where(Membership.user_id == user.id))

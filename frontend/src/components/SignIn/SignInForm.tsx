@@ -64,7 +64,7 @@ export function SignInForm() {
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
             <div className="w-4 h-4 bg-primary-foreground rounded-sm rotate-45" />
           </div>
-          <span className="text-xl font-bold tracking-tight">VisibilityOS</span>
+          <span className="text-xl font-bold tracking-tight">GapVisor</span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground">
@@ -205,7 +205,7 @@ export function SignInForm() {
         </div>
         <p className="mt-4 text-center text-[10px] text-muted-foreground/60 leading-relaxed">
           By signing in, you agree to our Terms of Service and Privacy Policy.
-          VisibilityOS is a registered trademark of Visibility Labs Inc.
+          GapVisor is a trademark of GapVisor Inc.
           v1 runs in US regions only — we do not claim EU data residency yet.
         </p>
       </div>

@@ -1,4 +1,4 @@
-# VisibilityOS backend
+# GapVisor backend
 
 Python 3.12 FastAPI API + Celery worker/beat. See `../002-backend-platform/` for
 the approved spec, plan, data model, and tasks.

@@ -65,7 +65,7 @@ Colleague-ready walkthrough (4 pages, all screens above): **[GapVisor-Overview.p
 
 ```
 demo@northstar.dev
-VisibilityOS-Demo-2026!
+GapVisor-Demo-2026!
 ```
 
 ---

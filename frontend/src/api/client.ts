@@ -1,5 +1,5 @@
 /**
- * Typed fetch wrapper for VisibilityOS `/api/v1`.
+ * Typed fetch wrapper for GapVisor `/api/v1`.
  * Same-origin in production (CloudFront /api/*); Vite proxies in local dev.
  */
 

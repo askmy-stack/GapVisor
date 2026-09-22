@@ -23,7 +23,7 @@ export default function MobileNav() {
             <Radio className="h-4.5 w-4.5 text-sidebar-primary-foreground" strokeWidth={2.5} />
           </div>
           <span className="font-semibold tracking-tight text-sidebar-accent-foreground text-[15px]">
-            Visibility<span className="text-sidebar-primary">OS</span>
+            Gap<span className="text-sidebar-primary">Visor</span>
           </span>
         </div>
         <nav className="p-2.5 space-y-1">
