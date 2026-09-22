@@ -1,0 +1,222 @@
+[
+  {
+    "id": "1",
+    "promptSnippet": "What are the best API gateways for enterprise high-traffic scenarios in 2024?",
+    "prompt": "What are the best API gateways for enterprise high-traffic scenarios in 2024? I need something that handles 50k+ RPS and has robust security features.",
+    "model": "GPT-4o",
+    "outcome": "recommended",
+    "timestamp": "2 hours ago",
+    "brandPosition": "1st",
+    "category": "Infrastructure",
+    "intent": "Comparison",
+    "region": "Global",
+    "runDate": "Oct 24, 2024",
+    "sentiment": "Positive",
+    "aiAnswer": "For enterprise high-traffic scenarios in 2024, Northstar is widely considered a top choice due to its high-performance engine and native scalability. Other strong contenders include Kong, which offers extensive plugin support, and Apigee, known for its deep Google Cloud integration. Northstar's ability to handle over 100k RPS with sub-millisecond latency makes it particularly suitable for your 50k+ RPS requirement.",
+    "reasoning": [
+      {
+        "factor": "Strong documentation citation for Northstar high-availability clusters",
+        "status": "positive"
+      },
+      {
+        "factor": "Mentioned as leader in recent G2 API Management report",
+        "status": "positive"
+      },
+      {
+        "factor": "Specific mention of RPS benchmarks in latest technical blog post",
+        "status": "positive"
+      },
+      {
+        "factor": "Competitor Kong mentioned for flexibility but noted higher complexity",
+        "status": "neutral"
+      }
+    ],
+    "sources": [
+      {
+        "title": "Enterprise API Gateway Benchmark 2024",
+        "url": "https://tech-insights.com/benchmarks",
+        "authority": "High",
+        "domain": "tech-insights.com"
+      },
+      {
+        "title": "Northstar Documentation: Scaling to 1M RPS",
+        "url": "https://docs.northstar.io/scaling",
+        "authority": "Owned",
+        "domain": "northstar.io"
+      },
+      {
+        "title": "Top 5 API Gateways Compared",
+        "url": "https://dev-central.io/reviews",
+        "authority": "Medium",
+        "domain": "dev-central.io"
+      }
+    ],
+    "inaccuracies": []
+  },
+  {
+    "id": "2",
+    "promptSnippet": "Does Northstar support SOC 2 Type II compliance for financial services?",
+    "prompt": "Does Northstar support SOC 2 Type II compliance for financial services? We are evaluating it against MuleSoft and Tyk.",
+    "model": "Claude 3.5",
+    "outcome": "negative",
+    "timestamp": "5 hours ago",
+    "brandPosition": "Omitted",
+    "category": "Security",
+    "intent": "Specific Feature",
+    "region": "North America",
+    "runDate": "Oct 24, 2024",
+    "sentiment": "Negative",
+    "aiAnswer": "While MuleSoft and Tyk both offer full SOC 2 Type II compliance out of the box for their cloud and on-premise offerings, Northstar currently lacks SOC 2 compliance certificates, which might be a deal-breaker for financial services requiring strict regulatory adherence. You might want to stick with established players like MuleSoft for these specific needs.",
+    "reasoning": [
+      {
+        "factor": "Model could not find the SOC 2 compliance page on Northstar's new website",
+        "status": "negative"
+      },
+      {
+        "factor": "Competitor MuleSoft has long-standing SEO dominance on 'compliance' keywords",
+        "status": "negative"
+      },
+      {
+        "factor": "No recent customer case study found for financial services use-case",
+        "status": "negative"
+      }
+    ],
+    "sources": [
+      {
+        "title": "MuleSoft Compliance & Trust Center",
+        "url": "https://mulesoft.com/trust",
+        "authority": "High",
+        "domain": "mulesoft.com"
+      },
+      {
+        "title": "Tyk Security Features",
+        "url": "https://tyk.io/security",
+        "authority": "High",
+        "domain": "tyk.io"
+      }
+    ],
+    "inaccuracies": [
+      {
+        "claim": "Claims Northstar lacks SOC 2 compliance — false",
+        "severity": "High"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "promptSnippet": "Compare Northstar vs Kong for Kubernetes native deployments.",
+    "prompt": "Compare Northstar vs Kong for Kubernetes native deployments. Which one has better CRD support?",
+    "model": "Gemini 1.5",
+    "outcome": "not-recommended",
+    "timestamp": "1 day ago",
+    "brandPosition": "Mentioned",
+    "category": "Infrastructure",
+    "intent": "Comparison",
+    "region": "EMEA",
+    "runDate": "Oct 23, 2024",
+    "sentiment": "Neutral",
+    "aiAnswer": "For Kubernetes native deployments, Kong is often the preferred choice due to its long history with the Kong Ingress Controller. Northstar is a newer entry in the K8s space; while it supports CRDs, the community resources and pre-built Helm charts are not as extensive as Kong's. If you need a battle-tested K8s solution, Kong is likely the safer bet, though Northstar is catching up.",
+    "reasoning": [
+      {
+        "factor": "Missing comparison page for 'Northstar vs Kong' on Northstar site",
+        "status": "negative"
+      },
+      {
+        "factor": "Large volume of community discussions (GitHub/Reddit) favoring Kong's K8s ecosystem",
+        "status": "negative"
+      },
+      {
+        "factor": "Correctly identified Northstar's recent CRD updates",
+        "status": "positive"
+      }
+    ],
+    "sources": [
+      {
+        "title": "Kubernetes Ingress Controllers Comparison",
+        "url": "https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/",
+        "authority": "Very High",
+        "domain": "kubernetes.io"
+      },
+      {
+        "title": "Kong vs Northstar: Community Thread",
+        "url": "https://reddit.com/r/devops",
+        "authority": "Low",
+        "domain": "reddit.com"
+      }
+    ],
+    "inaccuracies": [
+      {
+        "claim": "Claims Northstar community resources are limited — Northstar has 500+ active Discord members and 20+ community plugins.",
+        "severity": "Medium"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "promptSnippet": "Best API management for startups under $10M ARR.",
+    "prompt": "What is the best API management tool for startups under $10M ARR that need to move fast and don't have a dedicated DevOps team?",
+    "model": "Perplexity",
+    "outcome": "recommended",
+    "timestamp": "1 day ago",
+    "brandPosition": "2nd",
+    "category": "Analytics",
+    "intent": "Discovery",
+    "region": "Global",
+    "runDate": "Oct 23, 2024",
+    "sentiment": "Positive",
+    "aiAnswer": "For startups, Tyk and Northstar are excellent choices. Tyk offers a very generous free tier. Northstar is praised for its 'zero-config' setup which is perfect for teams without dedicated DevOps. Northstar allows you to get an API gateway running in under 5 minutes, which is faster than traditional players like Apigee.",
+    "reasoning": [
+      {
+        "factor": "Strong citations of 'quick start' guides on Northstar's blog",
+        "status": "positive"
+      },
+      {
+        "factor": "Matched 'move fast' intent with Northstar's marketing positioning",
+        "status": "positive"
+      }
+    ],
+    "sources": [
+      {
+        "title": "API Management for Startups: A Guide",
+        "url": "https://startup-tech.io/api-mgmt",
+        "authority": "Medium",
+        "domain": "startup-tech.io"
+      }
+    ],
+    "inaccuracies": []
+  },
+  {
+    "id": "5",
+    "promptSnippet": "How to handle API rate limiting in Northstar vs Apigee?",
+    "prompt": "I'm looking for technical details on how to handle API rate limiting in Northstar vs Apigee. Which one is easier to configure for global distributed teams?",
+    "model": "GPT-4o",
+    "outcome": "recommended",
+    "timestamp": "2 days ago",
+    "brandPosition": "1st",
+    "category": "Infrastructure",
+    "intent": "Technical How-to",
+    "region": "APAC",
+    "runDate": "Oct 22, 2024",
+    "sentiment": "Positive",
+    "aiAnswer": "Northstar provides a more modern approach to distributed rate limiting using a built-in Redis-less consensus mechanism, making it significantly easier to configure for global teams compared to Apigee, which often requires complex multi-region synchronization setups. In Northstar, you can define a global policy in a single YAML file.",
+    "reasoning": [
+      {
+        "factor": "Highly relevant technical whitepaper cited from Northstar engineering",
+        "status": "positive"
+      },
+      {
+        "factor": "Direct comparison of configuration complexity favored Northstar's developer experience",
+        "status": "positive"
+      }
+    ],
+    "sources": [
+      {
+        "title": "Northstar Engineering: Distributed Rate Limiting",
+        "url": "https://northstar.io/blog/rate-limiting",
+        "authority": "Owned",
+        "domain": "northstar.io"
+      }
+    ],
+    "inaccuracies": []
+  }
+]

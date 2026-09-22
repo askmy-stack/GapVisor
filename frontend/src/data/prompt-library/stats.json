@@ -1,0 +1,26 @@
+[
+  {
+    "id": "total-prompts",
+    "label": "Total Prompts",
+    "value": "142",
+    "trend": "+12% from last month"
+  },
+  {
+    "id": "active-schedules",
+    "label": "Active Schedules",
+    "value": "28",
+    "trend": "Running daily"
+  },
+  {
+    "id": "categories",
+    "label": "Categories",
+    "value": "14",
+    "trend": "Across 4 industries"
+  },
+  {
+    "id": "avg-runs",
+    "label": "Avg. Runs/Week",
+    "value": "184",
+    "trend": "Consistent volume"
+  }
+]

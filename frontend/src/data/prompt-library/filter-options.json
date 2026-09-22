@@ -1,0 +1,34 @@
+{
+  "categories": [
+    { "value": "all-categories", "label": "All Categories" },
+    { "value": "fintech", "label": "Fintech" },
+    { "value": "dev-tools", "label": "Dev Tools" },
+    { "value": "marketing", "label": "Marketing" }
+  ],
+  "useCases": [
+    { "value": "all-use-cases", "label": "All Use-Cases" },
+    { "value": "procurement", "label": "Procurement" },
+    { "value": "technical", "label": "Technical" },
+    { "value": "strategic", "label": "Strategic" }
+  ],
+  "intents": [
+    { "value": "all-intents", "label": "All Intents" },
+    { "value": "awareness", "label": "Awareness" },
+    { "value": "comparison", "label": "Comparison" },
+    { "value": "evaluation", "label": "Evaluation" },
+    { "value": "decision", "label": "Decision" }
+  ],
+  "regions": [
+    { "value": "all-regions", "label": "Global" },
+    { "value": "na", "label": "North America" },
+    { "value": "eu", "label": "Europe" },
+    { "value": "apac", "label": "APAC" }
+  ],
+  "models": [
+    { "value": "all-models", "label": "All Models" },
+    { "value": "chatgpt", "label": "ChatGPT" },
+    { "value": "claude", "label": "Claude" },
+    { "value": "gemini", "label": "Gemini" },
+    { "value": "perplexity", "label": "Perplexity" }
+  ]
+}

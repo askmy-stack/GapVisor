@@ -1,0 +1,38 @@
+[
+  {
+    "id": "open-recommendations",
+    "title": "Open Recommendations",
+    "value": 24,
+    "description": "Active tasks in queue",
+    "trend": {
+      "value": "+3 new",
+      "isPositive": false
+    }
+  },
+  {
+    "id": "visibility-lift",
+    "title": "Est. Visibility Lift",
+    "value": "+18.4%",
+    "description": "Projected total gain",
+    "trend": {
+      "value": "+2.1% WoW",
+      "isPositive": true
+    }
+  },
+  {
+    "id": "in-progress",
+    "title": "In Progress",
+    "value": 8,
+    "description": "Currently being worked on"
+  },
+  {
+    "id": "completed-quarter",
+    "title": "Completed This Q",
+    "value": 15,
+    "description": "Content pieces published",
+    "trend": {
+      "value": "On target",
+      "isPositive": true
+    }
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "monthly-summary",
+    "title": "Monthly Visibility Summary",
+    "description": "High-level overview of AI engine share of voice and trends."
+  },
+  {
+    "id": "competitor-benchmark",
+    "title": "Competitor Benchmark Report",
+    "description": "Detailed comparison against tracked competitors across models."
+  },
+  {
+    "id": "board-deck",
+    "title": "Board-Ready PDF Deck",
+    "description": "Executive-level slides with key insights and recommendations."
+  }
+]

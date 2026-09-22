@@ -1,0 +1,44 @@
+[
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "longName": "ChatGPT 4o",
+    "badge": "C",
+    "measurementMethod": "api"
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "longName": "Claude 3.5 Sonnet",
+    "badge": "Cl",
+    "measurementMethod": "api"
+  },
+  {
+    "id": "gemini",
+    "name": "Gemini",
+    "longName": "Gemini 1.5 Pro",
+    "badge": "G",
+    "measurementMethod": "api"
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "longName": "Perplexity",
+    "badge": "P",
+    "measurementMethod": "api"
+  },
+  {
+    "id": "ai-api-key",
+    "name": "AI API Key",
+    "longName": "Customer-connected AI API",
+    "badge": "AK",
+    "measurementMethod": "customer_key"
+  },
+  {
+    "id": "buyer-agents",
+    "name": "Buyer AI Agents",
+    "longName": "Buyer AI Agents",
+    "badge": "BA",
+    "measurementMethod": "derived"
+  }
+]

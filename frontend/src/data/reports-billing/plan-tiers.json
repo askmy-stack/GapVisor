@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Starter",
+    "price": "$2,000",
+    "description": "Perfect for small teams and early-stage tracking.",
+    "features": [
+      "500 Prompts Monitored",
+      "3 Competitors Tracked",
+      "5 Countries Covered",
+      "Weekly Model Scans",
+      "3 Team Seats"
+    ],
+    "cta": "Downgrade",
+    "current": false
+  },
+  {
+    "name": "Growth",
+    "price": "$6,000",
+    "description": "Scale your visibility with advanced intelligence.",
+    "features": [
+      "3,000 Prompts Monitored",
+      "10 Competitors Tracked",
+      "20 Countries Covered",
+      "Daily Model Scans",
+      "15 Team Seats"
+    ],
+    "cta": "Current Plan",
+    "current": true
+  },
+  {
+    "name": "Enterprise",
+    "price": "$15,000",
+    "description": "Dedicated support and unlimited strategic depth.",
+    "features": [
+      "Unlimited Prompts",
+      "Unlimited Competitors",
+      "Global Coverage",
+      "Real-time Scans",
+      "Unlimited Team Seats"
+    ],
+    "cta": "Upgrade to Enterprise",
+    "current": false
+  }
+]

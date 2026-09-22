@@ -1,0 +1,17 @@
+[
+  {
+    "title": "No public SOC 2 / security whitepaper",
+    "severity": "Critical",
+    "impact": "High Impact on Trust"
+  },
+  {
+    "title": "Missing migration guide from Kong",
+    "severity": "High",
+    "impact": "Friction in Onboarding"
+  },
+  {
+    "title": "Incomplete GraphQL rate limiting docs",
+    "severity": "Medium",
+    "impact": "Search Visibility Gap"
+  }
+]

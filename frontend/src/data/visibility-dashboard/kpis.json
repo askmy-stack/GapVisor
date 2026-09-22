@@ -1,0 +1,7 @@
+[
+  { "title": "AI Recommendation Share", "value": "42.8%", "change": 5.2, "trend": "up", "sparklineBase": 40, "sparklineVariance": 10 },
+  { "title": "Brand Inclusion Rate", "value": "78.4%", "change": 2.1, "trend": "up", "sparklineBase": 75, "sparklineVariance": 5 },
+  { "title": "Avg. Position", "value": "1.4", "change": -0.2, "trend": "up", "sparklineBase": 1.2, "sparklineVariance": 0.5 },
+  { "title": "Citation Coverage", "value": "64.2%", "change": -3.4, "trend": "down", "sparklineBase": 65, "sparklineVariance": 8 },
+  { "title": "Sentiment Score", "value": "82/100", "change": 1.5, "trend": "up", "sparklineBase": 80, "sparklineVariance": 4 }
+]

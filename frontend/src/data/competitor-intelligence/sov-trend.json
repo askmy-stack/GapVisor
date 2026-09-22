@@ -1,0 +1,44 @@
+[
+  {
+    "date": "Jan",
+    "brand": 28,
+    "kong": 24,
+    "postman": 20,
+    "apigee": 18
+  },
+  {
+    "date": "Feb",
+    "brand": 30,
+    "kong": 25,
+    "postman": 22,
+    "apigee": 17
+  },
+  {
+    "date": "Mar",
+    "brand": 29,
+    "kong": 27,
+    "postman": 21,
+    "apigee": 19
+  },
+  {
+    "date": "Apr",
+    "brand": 33,
+    "kong": 26,
+    "postman": 23,
+    "apigee": 16
+  },
+  {
+    "date": "May",
+    "brand": 31,
+    "kong": 28,
+    "postman": 22,
+    "apigee": 18
+  },
+  {
+    "date": "Jun",
+    "brand": 32,
+    "kong": 28,
+    "postman": 24,
+    "apigee": 17
+  }
+]

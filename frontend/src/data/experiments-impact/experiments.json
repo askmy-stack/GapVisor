@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Published Kong comparison page",
+    "type": "Comparison Page",
+    "date": "2023-11-01",
+    "status": "Running",
+    "baseline": "12%",
+    "current": "18%",
+    "lift": "+6%"
+  },
+  {
+    "name": "Added Pricing Calculator",
+    "type": "Interactive Tool",
+    "date": "2023-11-15",
+    "status": "Completed",
+    "baseline": "8%",
+    "current": "15%",
+    "lift": "+7%"
+  },
+  {
+    "name": "New Case Study: Acme Corp",
+    "type": "Case Study",
+    "date": "2023-12-05",
+    "status": "Running",
+    "baseline": "5%",
+    "current": "9%",
+    "lift": "+4%"
+  },
+  {
+    "name": "Updated API Documentation",
+    "type": "Documentation",
+    "date": "2023-12-10",
+    "status": "Running",
+    "baseline": "22%",
+    "current": "24%",
+    "lift": "+2%"
+  },
+  {
+    "name": "Blog: Migrating from Legacy",
+    "type": "Blog Post",
+    "date": "2024-01-02",
+    "status": "Running",
+    "baseline": "3%",
+    "current": "5%",
+    "lift": "+2%"
+  },
+  {
+    "name": "Integration Guide: Slack",
+    "type": "Guide",
+    "date": "2024-01-10",
+    "status": "Paused",
+    "baseline": "10%",
+    "current": "11%",
+    "lift": "+1%"
+  }
+]

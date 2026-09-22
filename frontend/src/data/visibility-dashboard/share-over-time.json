@@ -1,0 +1,9 @@
+[
+  { "name": "Mon", "Northstar": 42, "Kong": 35, "Postman": 28, "Apigee": 22, "Tyk": 15 },
+  { "name": "Tue", "Northstar": 45, "Kong": 32, "Postman": 30, "Apigee": 25, "Tyk": 18 },
+  { "name": "Wed", "Northstar": 38, "Kong": 36, "Postman": 35, "Apigee": 28, "Tyk": 14 },
+  { "name": "Thu", "Northstar": 48, "Kong": 34, "Postman": 32, "Apigee": 24, "Tyk": 20 },
+  { "name": "Fri", "Northstar": 52, "Kong": 38, "Postman": 29, "Apigee": 21, "Tyk": 17 },
+  { "name": "Sat", "Northstar": 50, "Kong": 40, "Postman": 31, "Apigee": 26, "Tyk": 16 },
+  { "name": "Sun", "Northstar": 55, "Kong": 37, "Postman": 33, "Apigee": 24, "Tyk": 19 }
+]

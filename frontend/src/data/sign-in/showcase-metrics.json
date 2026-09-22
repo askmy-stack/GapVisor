@@ -1,0 +1,17 @@
+[
+  {
+    "label": "Recommendation Rate",
+    "value": "48%",
+    "trend": "up"
+  },
+  {
+    "label": "Share of Voice",
+    "value": "12.4%",
+    "trend": "up"
+  },
+  {
+    "label": "Sentiment Index",
+    "value": "8.2/10",
+    "trend": "stable"
+  }
+]

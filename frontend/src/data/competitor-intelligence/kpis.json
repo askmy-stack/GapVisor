@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Your Share of Voice",
+    "value": "32.4%",
+    "delta": "+4.2%",
+    "trend": "up"
+  },
+  {
+    "title": "Top Competitor Share",
+    "value": "28.1%",
+    "delta": "+1.5%",
+    "trend": "up",
+    "sub": "Kong"
+  },
+  {
+    "title": "Categories You Lead",
+    "value": "8",
+    "delta": "+2",
+    "trend": "up"
+  },
+  {
+    "title": "Categories You Trail",
+    "value": "4",
+    "delta": "-1",
+    "trend": "down"
+  }
+]

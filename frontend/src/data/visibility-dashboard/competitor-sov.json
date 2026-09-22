@@ -1,0 +1,7 @@
+[
+  { "name": "Northstar", "share": 42 },
+  { "name": "Kong", "share": 28 },
+  { "name": "Postman", "share": 15 },
+  { "name": "Apigee", "share": 10 },
+  { "name": "Tyk", "share": 5 }
+]

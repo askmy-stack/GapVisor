@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Citation Frequency",
+    "before": "4.2%",
+    "after": "8.8%",
+    "delta": "+110%"
+  },
+  {
+    "label": "Sentiment Score",
+    "before": "0.62",
+    "after": "0.85",
+    "delta": "+37%"
+  },
+  {
+    "label": "AI Source Traffic",
+    "before": "1.2k",
+    "after": "2.8k",
+    "delta": "+133%"
+  },
+  {
+    "label": "Ops Influenced",
+    "before": "4",
+    "after": "12",
+    "delta": "+200%"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Prompts Monitored",
+    "current": 2400,
+    "limit": 3000,
+    "unit": "prompts"
+  },
+  {
+    "label": "Competitors Tracked",
+    "current": 8,
+    "limit": 10,
+    "unit": "competitors"
+  },
+  {
+    "label": "Countries Covered",
+    "current": 15,
+    "limit": 20,
+    "unit": "countries"
+  },
+  {
+    "label": "Model Scans This Month",
+    "current": 450,
+    "limit": 1000,
+    "unit": "scans"
+  },
+  {
+    "label": "Team Seats",
+    "current": 12,
+    "limit": 15,
+    "unit": "seats"
+  }
+]

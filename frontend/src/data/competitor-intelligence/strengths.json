@@ -1,0 +1,23 @@
+[
+  {
+    "id": "kong",
+    "comp": "Kong",
+    "logo": "K",
+    "text": "Kong is cited for extensive open-source documentation and Kubernetes-native integrations.",
+    "stat": "92% Pos. Documentation"
+  },
+  {
+    "id": "postman",
+    "comp": "Postman",
+    "logo": "P",
+    "text": "Postman wins on ease-of-use narrative and free-tier virality among individual developers.",
+    "stat": "45% Mkt Share (Devs)"
+  },
+  {
+    "id": "apigee",
+    "comp": "Apigee",
+    "logo": "A",
+    "text": "Apigee dominates enterprise monetization and legacy modernization discussions.",
+    "stat": "Top Enterprise Choice"
+  }
+]

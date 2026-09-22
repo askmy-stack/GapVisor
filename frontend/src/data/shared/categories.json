@@ -1,0 +1,6 @@
+[
+  { "value": "api-gateway", "label": "API Gateway" },
+  { "value": "service-mesh", "label": "Service Mesh" },
+  { "value": "cloud-infrastructure", "label": "Cloud Infrastructure" },
+  { "value": "developer-tools", "label": "Developer Tools" }
+]

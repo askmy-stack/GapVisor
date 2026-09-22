@@ -1,0 +1,42 @@
+[
+  {
+    "date": "Oct 25",
+    "brand": 10,
+    "competitor": 25
+  },
+  {
+    "date": "Oct 28",
+    "brand": 11,
+    "competitor": 24
+  },
+  {
+    "date": "Oct 31",
+    "brand": 12,
+    "competitor": 26
+  },
+  {
+    "date": "Nov 03",
+    "brand": 15,
+    "competitor": 24
+  },
+  {
+    "date": "Nov 06",
+    "brand": 17,
+    "competitor": 23
+  },
+  {
+    "date": "Nov 09",
+    "brand": 18,
+    "competitor": 22
+  },
+  {
+    "date": "Nov 12",
+    "brand": 18,
+    "competitor": 21
+  },
+  {
+    "date": "Nov 15",
+    "brand": 19,
+    "competitor": 22
+  }
+]

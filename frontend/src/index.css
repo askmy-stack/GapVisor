@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 24% 97%;
+    --foreground: 224 42% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 42% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 42% 10%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 220 20% 93%;
+    --secondary-foreground: 224 42% 12%;
+    --muted: 220 20% 93%;
+    --muted-foreground: 222 12% 44%;
+    --accent: 168 71% 40%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 6 78% 57%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 18% 89%;
+    --input: 220 18% 89%;
+    --ring: 243 75% 59%;
+    --chart-1: 243 75% 59%;
+    --chart-2: 168 71% 40%;
+    --chart-3: 38 92% 55%;
+    --chart-4: 6 78% 57%;
+    --chart-5: 199 89% 52%;
+    --radius: 0.625rem;
+    --sidebar-background: 226 45% 8%;
+    --sidebar-foreground: 220 20% 80%;
+    --sidebar-primary: 243 75% 63%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 35% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 226 35% 16%;
+    --sidebar-ring: 243 75% 63%;
+  }
+
+  .dark {
+    --background: 226 45% 7%;
+    --foreground: 220 25% 94%;
+    --card: 226 40% 10%;
+    --card-foreground: 220 25% 94%;
+    --popover: 226 40% 10%;
+    --popover-foreground: 220 25% 94%;
+    --primary: 243 78% 66%;
+    --primary-foreground: 224 42% 10%;
+    --secondary: 226 30% 15%;
+    --secondary-foreground: 220 25% 94%;
+    --muted: 226 30% 15%;
+    --muted-foreground: 220 12% 62%;
+    --accent: 168 65% 45%;
+    --accent-foreground: 224 42% 10%;
+    --destructive: 6 78% 57%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 226 28% 18%;
+    --input: 226 28% 18%;
+    --ring: 243 78% 66%;
+    --chart-1: 243 78% 66%;
+    --chart-2: 168 65% 45%;
+    --chart-3: 38 92% 58%;
+    --chart-4: 6 78% 60%;
+    --chart-5: 199 89% 58%;
+    --sidebar-background: 226 45% 8%;
+    --sidebar-foreground: 220 20% 80%;
+    --sidebar-primary: 243 78% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 35% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 226 35% 16%;
+    --sidebar-ring: 243 78% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Buyer Prompt",
+    "metric": "1.2M",
+    "desc": "Target queries"
+  },
+  {
+    "label": "AI Answer",
+    "metric": "450K",
+    "desc": "Brand mentioned"
+  },
+  {
+    "label": "Cited Source",
+    "metric": "85K",
+    "desc": "Link citations"
+  },
+  {
+    "label": "Vendor Rec",
+    "metric": "18%",
+    "desc": "Share of voice"
+  },
+  {
+    "label": "Website Activity",
+    "metric": "24K",
+    "desc": "Direct referrals"
+  },
+  {
+    "label": "Opportunity",
+    "metric": "42",
+    "desc": "$1.2M influenced"
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "categories": [
+    "API Management",
+    "Security",
+    "Developer Experience",
+    "Enterprise Scalability",
+    "Pricing"
+  ],
+  "contentTypes": [
+    "Documentation",
+    "Case Studies",
+    "Comparison Pages",
+    "Blog Posts",
+    "Technical Guides"
+  ],
+  "coverage": {
+    "API Management": {
+      "Documentation": "covered",
+      "Case Studies": "covered",
+      "Comparison Pages": "partial",
+      "Blog Posts": "covered",
+      "Technical Guides": "covered"
+    },
+    "Security": {
+      "Documentation": "partial",
+      "Case Studies": "missing",
+      "Comparison Pages": "missing",
+      "Blog Posts": "partial",
+      "Technical Guides": "missing"
+    },
+    "Developer Experience": {
+      "Documentation": "covered",
+      "Case Studies": "partial",
+      "Comparison Pages": "covered",
+      "Blog Posts": "covered",
+      "Technical Guides": "covered"
+    },
+    "Enterprise Scalability": {
+      "Documentation": "covered",
+      "Case Studies": "partial",
+      "Comparison Pages": "missing",
+      "Blog Posts": "missing",
+      "Technical Guides": "partial"
+    },
+    "Pricing": {
+      "Documentation": "partial",
+      "Case Studies": "missing",
+      "Comparison Pages": "covered",
+      "Blog Posts": "missing",
+      "Technical Guides": "missing"
+    }
+  }
+}

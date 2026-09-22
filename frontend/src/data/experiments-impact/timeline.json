@@ -1,0 +1,22 @@
+[
+  {
+    "id": "published",
+    "event": "Content published",
+    "date": "Oct 31, 2023"
+  },
+  {
+    "id": "first-citation",
+    "event": "First citation detected",
+    "date": "Nov 03, 2023"
+  },
+  {
+    "id": "share-lift",
+    "event": "5% share lift detected",
+    "date": "Nov 09, 2023"
+  },
+  {
+    "id": "completed",
+    "event": "First opportunity attributed",
+    "date": "Nov 14, 2023"
+  }
+]

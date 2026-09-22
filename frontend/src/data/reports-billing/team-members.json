@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "name": "Alex Rivera",
+    "email": "alex@example.com",
+    "avatar": "",
+    "role": "Admin",
+    "lastActive": "2 hours ago",
+    "status": "Active"
+  },
+  {
+    "id": "2",
+    "name": "Sarah Chen",
+    "email": "sarah@example.com",
+    "avatar": "",
+    "role": "Editor",
+    "lastActive": "1 day ago",
+    "status": "Active"
+  },
+  {
+    "id": "3",
+    "name": "Michael Scott",
+    "email": "michael@dundermifflin.com",
+    "avatar": "",
+    "role": "Viewer",
+    "lastActive": "3 days ago",
+    "status": "Active"
+  },
+  {
+    "id": "4",
+    "name": "Elena Rodriguez",
+    "email": "elena@example.com",
+    "avatar": "",
+    "role": "Editor",
+    "lastActive": "5 mins ago",
+    "status": "Active"
+  },
+  {
+    "id": "5",
+    "name": "James Wilson",
+    "email": "james@example.com",
+    "avatar": "",
+    "role": "Viewer",
+    "lastActive": "Never",
+    "status": "Invited"
+  },
+  {
+    "id": "6",
+    "name": "Linda Wu",
+    "email": "linda@example.com",
+    "avatar": "",
+    "role": "Admin",
+    "lastActive": "1 week ago",
+    "status": "Active"
+  }
+]

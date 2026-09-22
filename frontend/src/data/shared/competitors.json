@@ -1,0 +1,8 @@
+[
+  { "id": "northstar", "name": "Northstar", "logo": "N", "isBrand": true },
+  { "id": "kong", "name": "Kong", "logo": "K", "isBrand": false },
+  { "id": "postman", "name": "Postman", "logo": "P", "isBrand": false },
+  { "id": "apigee", "name": "Apigee", "logo": "A", "isBrand": false },
+  { "id": "tyk", "name": "Tyk", "logo": "T", "isBrand": false },
+  { "id": "mulesoft", "name": "Mulesoft", "logo": "M", "isBrand": false }
+]

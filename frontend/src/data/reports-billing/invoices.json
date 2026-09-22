@@ -1,0 +1,38 @@
+[
+  {
+    "id": "INV-001",
+    "date": "Nov 1, 2024",
+    "amount": "$6,000.00",
+    "status": "Paid"
+  },
+  {
+    "id": "INV-002",
+    "date": "Oct 1, 2024",
+    "amount": "$6,000.00",
+    "status": "Paid"
+  },
+  {
+    "id": "INV-003",
+    "date": "Sep 1, 2024",
+    "amount": "$6,000.00",
+    "status": "Paid"
+  },
+  {
+    "id": "INV-004",
+    "date": "Aug 1, 2024",
+    "amount": "$6,000.00",
+    "status": "Paid"
+  },
+  {
+    "id": "INV-005",
+    "date": "Jul 1, 2024",
+    "amount": "$2,000.00",
+    "status": "Paid"
+  },
+  {
+    "id": "INV-006",
+    "date": "Jun 1, 2024",
+    "amount": "$2,000.00",
+    "status": "Paid"
+  }
+]

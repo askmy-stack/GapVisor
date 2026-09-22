@@ -1,0 +1,7 @@
+[
+  { "name": "ChatGPT", "value": 85 },
+  { "name": "Claude", "value": 72 },
+  { "name": "Gemini", "value": 64 },
+  { "name": "Perplexity", "value": 91 },
+  { "name": "AI API Key", "value": 78 }
+]

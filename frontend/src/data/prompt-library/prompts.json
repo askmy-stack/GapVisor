@@ -1,0 +1,164 @@
+[
+  {
+    "id": "1",
+    "text": "What's the best API gateway for a mid-size fintech company?",
+    "category": "Fintech",
+    "useCase": "Technology Choice",
+    "intent": "Comparison",
+    "region": "Global",
+    "models": [
+      "gpt",
+      "claude",
+      "gemini",
+      "perp",
+      "ai-api-key"
+    ],
+    "lastRun": "2h ago",
+    "brandMention": 42,
+    "status": "Active"
+  },
+  {
+    "id": "2",
+    "text": "Compare Kong vs Northstar for microservices API management",
+    "category": "DevTools",
+    "useCase": "Competitive Analysis",
+    "intent": "Comparison",
+    "region": "North America",
+    "models": [
+      "gpt",
+      "claude",
+      "perp"
+    ],
+    "lastRun": "5h ago",
+    "brandMention": 68,
+    "status": "Active"
+  },
+  {
+    "id": "3",
+    "text": "How does Stripe's pricing for cross-border payments scale with volume?",
+    "category": "Payments",
+    "useCase": "Pricing Evaluation",
+    "intent": "Evaluation",
+    "region": "Europe",
+    "models": [
+      "gpt",
+      "claude",
+      "gemini"
+    ],
+    "lastRun": "1d ago",
+    "brandMention": 85,
+    "status": "Active"
+  },
+  {
+    "id": "4",
+    "text": "Top alternatives to Datadog for cloud infrastructure monitoring in 2024",
+    "category": "Observability",
+    "useCase": "Procurement",
+    "intent": "Awareness",
+    "region": "Global",
+    "models": [
+      "gpt",
+      "perp",
+      "ai-api-key"
+    ],
+    "lastRun": "3h ago",
+    "brandMention": 15,
+    "status": "Active"
+  },
+  {
+    "id": "5",
+    "text": "Is Auth0 compliant with Brazilian LGPD regulations for SaaS?",
+    "category": "Security",
+    "useCase": "Compliance",
+    "intent": "Decision",
+    "region": "LATAM",
+    "models": [
+      "gpt",
+      "claude",
+      "gemini"
+    ],
+    "lastRun": "12h ago",
+    "brandMention": 92,
+    "status": "Paused"
+  },
+  {
+    "id": "6",
+    "text": "Review of Snowflake vs BigQuery for real-time analytics in retail",
+    "category": "Data",
+    "useCase": "Platform Selection",
+    "intent": "Evaluation",
+    "region": "Global",
+    "models": [
+      "gpt",
+      "claude",
+      "perp",
+      "ai-api-key"
+    ],
+    "lastRun": "6h ago",
+    "brandMention": 35,
+    "status": "Active"
+  },
+  {
+    "id": "7",
+    "text": "Best customer service automation tool for Shopify stores with high volume",
+    "category": "E-commerce",
+    "useCase": "Tool Discovery",
+    "intent": "Awareness",
+    "region": "APAC",
+    "models": [
+      "gpt",
+      "gemini",
+      "perp"
+    ],
+    "lastRun": "2d ago",
+    "brandMention": 22,
+    "status": "Active"
+  },
+  {
+    "id": "8",
+    "text": "Vercel vs Netlify: which provides better edge caching for global sites?",
+    "category": "Hosting",
+    "useCase": "Performance Comparison",
+    "intent": "Comparison",
+    "region": "Global",
+    "models": [
+      "gpt",
+      "claude",
+      "ai-api-key"
+    ],
+    "lastRun": "1w ago",
+    "brandMention": 55,
+    "status": "Paused"
+  },
+  {
+    "id": "9",
+    "text": "Integrating Salesforce with Slack: common pitfalls and best practices",
+    "category": "CRM",
+    "useCase": "Implementation",
+    "intent": "Evaluation",
+    "region": "Global",
+    "models": [
+      "gpt",
+      "claude",
+      "gemini"
+    ],
+    "lastRun": "4h ago",
+    "brandMention": 12,
+    "status": "Active"
+  },
+  {
+    "id": "10",
+    "text": "What are the ROI benefits of moving from Zendesk to Freshdesk?",
+    "category": "Support",
+    "useCase": "Value Analysis",
+    "intent": "Decision",
+    "region": "EMEA",
+    "models": [
+      "gpt",
+      "perp"
+    ],
+    "lastRun": "8h ago",
+    "brandMention": 76,
+    "status": "Active"
+  }
+]

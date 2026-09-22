@@ -1,0 +1,26 @@
+[
+  {
+    "id": "us",
+    "name": "United States"
+  },
+  {
+    "id": "uk",
+    "name": "United Kingdom"
+  },
+  {
+    "id": "de",
+    "name": "Germany"
+  },
+  {
+    "id": "in",
+    "name": "India"
+  },
+  {
+    "id": "br",
+    "name": "Brazil"
+  },
+  {
+    "id": "global",
+    "name": "Global"
+  }
+]

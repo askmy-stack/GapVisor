@@ -1,0 +1,6 @@
+[
+  { "id": 1, "title": "Competitor Kong overtook you in Perplexity results for 'API gateway' category", "severity": "critical", "timestamp": "2 hours ago" },
+  { "id": 2, "title": "Sentiment dropped 12% on Gemini this week", "severity": "warning", "timestamp": "1 day ago" },
+  { "id": 3, "title": "New citations detected from O'Reilly technical blogs", "severity": "info", "timestamp": "2 days ago" },
+  { "id": 4, "title": "Claude 3.5 update improved your 'Reliability' score by 8%", "severity": "info", "timestamp": "3 days ago" }
+]

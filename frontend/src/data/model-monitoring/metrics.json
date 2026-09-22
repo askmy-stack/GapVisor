@@ -1,0 +1,8 @@
+[
+  { "model": "ChatGPT", "inclusion": 84.2, "position": 1.8, "citation": 68.4, "sentiment": 72.1, "runs": 1240, "lastRun": "12m ago", "trend": "up" },
+  { "model": "Claude", "inclusion": 72.5, "position": 2.1, "citation": 82.0, "sentiment": 85.4, "runs": 1150, "lastRun": "45m ago", "trend": "up" },
+  { "model": "Gemini", "inclusion": 65.1, "position": 2.4, "citation": 45.3, "sentiment": 58.2, "runs": 1080, "lastRun": "1h ago", "trend": "down" },
+  { "model": "Perplexity", "inclusion": 91.8, "position": 1.4, "citation": 94.1, "sentiment": 78.6, "runs": 1520, "lastRun": "5m ago", "trend": "up" },
+  { "model": "AI API Key", "inclusion": 78.4, "position": 2.0, "citation": 72.5, "sentiment": 68.9, "runs": 1210, "lastRun": "32m ago", "trend": "stable" },
+  { "model": "Buyer AI", "inclusion": 54.2, "position": 2.8, "citation": 38.2, "sentiment": 62.1, "runs": 450, "lastRun": "2h ago", "trend": "up" }
+]

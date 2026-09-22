@@ -1,0 +1,20 @@
+[
+  {
+    "name": "G2",
+    "count": 124,
+    "rating": 4.8,
+    "competitor": 342
+  },
+  {
+    "name": "Capterra",
+    "count": 86,
+    "rating": 4.5,
+    "competitor": 210
+  },
+  {
+    "name": "TrustRadius",
+    "count": 42,
+    "rating": 4.6,
+    "competitor": 156
+  }
+]

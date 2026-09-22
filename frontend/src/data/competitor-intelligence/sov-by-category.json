@@ -1,0 +1,56 @@
+[
+  {
+    "category": "API Gateway",
+    "brand": 42,
+    "kong": 28,
+    "postman": 12,
+    "apigee": 10,
+    "tyk": 5,
+    "mulesoft": 3
+  },
+  {
+    "category": "Service Mesh",
+    "brand": 18,
+    "kong": 35,
+    "postman": 5,
+    "apigee": 15,
+    "tyk": 10,
+    "mulesoft": 17
+  },
+  {
+    "category": "Security",
+    "brand": 38,
+    "kong": 20,
+    "postman": 8,
+    "apigee": 22,
+    "tyk": 7,
+    "mulesoft": 5
+  },
+  {
+    "category": "Developer Portal",
+    "brand": 25,
+    "kong": 15,
+    "postman": 45,
+    "apigee": 5,
+    "tyk": 5,
+    "mulesoft": 5
+  },
+  {
+    "category": "Observability",
+    "brand": 31,
+    "kong": 22,
+    "postman": 18,
+    "apigee": 12,
+    "tyk": 12,
+    "mulesoft": 5
+  },
+  {
+    "category": "Monetization",
+    "brand": 12,
+    "kong": 10,
+    "postman": 5,
+    "apigee": 40,
+    "tyk": 8,
+    "mulesoft": 25
+  }
+]

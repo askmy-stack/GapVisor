@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Northstar (You)",
+    "sov": "32.4%",
+    "pos": "1.4",
+    "sentiment": "88%",
+    "citations": "1,240",
+    "lead": "8",
+    "isBrand": true
+  },
+  {
+    "name": "Kong",
+    "sov": "28.1%",
+    "pos": "1.8",
+    "sentiment": "82%",
+    "citations": "980",
+    "lead": "5",
+    "isBrand": false
+  },
+  {
+    "name": "Postman",
+    "sov": "18.5%",
+    "pos": "2.1",
+    "sentiment": "91%",
+    "citations": "850",
+    "lead": "3",
+    "isBrand": false
+  },
+  {
+    "name": "Apigee",
+    "sov": "12.2%",
+    "pos": "2.5",
+    "sentiment": "76%",
+    "citations": "620",
+    "lead": "4",
+    "isBrand": false
+  },
+  {
+    "name": "Tyk",
+    "sov": "5.4%",
+    "pos": "3.2",
+    "sentiment": "79%",
+    "citations": "310",
+    "lead": "1",
+    "isBrand": false
+  },
+  {
+    "name": "Mulesoft",
+    "sov": "3.4%",
+    "pos": "3.8",
+    "sentiment": "68%",
+    "citations": "240",
+    "lead": "1",
+    "isBrand": false
+  }
+]

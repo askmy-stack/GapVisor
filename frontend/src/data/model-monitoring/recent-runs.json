@@ -1,0 +1,12 @@
+[
+  { "id": 1, "prompt": "Best cloud CRM for mid-market manufacturing...", "model": "ChatGPT-4o", "time": "2m ago", "mentioned": true, "position": 1, "citations": 4, "sentiment": "Positive" },
+  { "id": 2, "prompt": "Compare top ERP systems for logistics companies", "model": "Claude 3.5 Sonnet", "time": "8m ago", "mentioned": true, "position": 2, "citations": 2, "sentiment": "Neutral" },
+  { "id": 3, "prompt": "What are the security risks of X-Platform?", "model": "Perplexity", "time": "12m ago", "mentioned": true, "position": 1, "citations": 8, "sentiment": "Negative" },
+  { "id": 4, "prompt": "Show me enterprise AI tools for finance", "model": "Gemini 1.5 Pro", "time": "15m ago", "mentioned": false, "position": 0, "citations": 0, "sentiment": "N/A" },
+  { "id": 5, "prompt": "Integrate SSO with modern HR portals", "model": "AI API Key", "time": "22m ago", "mentioned": true, "position": 3, "citations": 1, "sentiment": "Neutral" },
+  { "id": 6, "prompt": "Cost of migrating to serverless architecture", "model": "ChatGPT-4o", "time": "30m ago", "mentioned": true, "position": 1, "citations": 3, "sentiment": "Positive" },
+  { "id": 7, "prompt": "Alternative solutions to Salesforce for startups", "model": "Claude 3.5 Sonnet", "time": "45m ago", "mentioned": true, "position": 2, "citations": 5, "sentiment": "Positive" },
+  { "id": 8, "prompt": "Best managed Kubernetes providers 2024", "model": "Perplexity", "time": "1h ago", "mentioned": true, "position": 1, "citations": 12, "sentiment": "Positive" },
+  { "id": 9, "prompt": "How to scale Postgres for millions of users", "model": "Gemini 1.5 Pro", "time": "1h ago", "mentioned": false, "position": 0, "citations": 0, "sentiment": "N/A" },
+  { "id": 10, "prompt": "DevOps tools for continuous compliance", "model": "AI API Key", "time": "2h ago", "mentioned": true, "position": 4, "citations": 2, "sentiment": "Neutral" }
+]

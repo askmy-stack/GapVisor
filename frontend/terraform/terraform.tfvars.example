@@ -1,0 +1,40 @@
+# Copy to terraform.tfvars and adjust.
+#   cp terraform.tfvars.example terraform.tfvars
+
+project     = "visibilityos"
+environment = "prod"
+aws_region  = "us-east-1"
+
+# --- Domain -----------------------------------------------------------------
+# Reading A (default): the literal domain is the apex of its own zone.
+domain_name      = "visibilityosensarresearch.com"
+hosted_zone_name = null # falls back to domain_name
+enable_www_alias = true
+
+# Reading B: it is a subdomain of an existing ensarresearch.com zone.
+# Uncomment these three and comment out the block above.
+# domain_name        = "visibilityos.ensarresearch.com"
+# hosted_zone_name   = "ensarresearch.com"
+# enable_www_alias   = false
+
+# Set true ONLY if the Route 53 zone does not exist yet. After the first apply,
+# copy the `nameservers` output to the registrar, then leave this true.
+create_hosted_zone = false
+
+# --- S3 ---------------------------------------------------------------------
+# Bucket names are globally unique across all AWS accounts. Defaults to
+# domain_name; override if that is taken.
+# bucket_name = "visibilityos-prod-site"
+
+enable_bucket_versioning = true
+force_destroy_bucket     = false
+
+# --- CloudFront -------------------------------------------------------------
+# PriceClass_100 = US + Europe (cheapest). PriceClass_All = global.
+price_class        = "PriceClass_100"
+enable_access_logs = false
+log_retention_days = 90
+
+tags = {
+  Owner = "growth-engineering"
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "priority": "Critical",
+    "title": "Publish 'Northstar vs Kong: API Gateway Comparison' page",
+    "contentType": "Comparison Pages",
+    "rationale": "Northstar is frequently compared to Kong in technical queries. A dedicated comparison page would capture 40% of this traffic.",
+    "impact": "+4.2% recommendation share",
+    "tags": [
+      "API Management",
+      "Comparison"
+    ],
+    "status": "Not Started"
+  },
+  {
+    "priority": "High",
+    "title": "Update 'GraphQL Security Best Practices' guide",
+    "contentType": "Documentation",
+    "rationale": "Current documentation is missing recent OWASP GraphQL top 10 updates, leading to lower relevance in security-focused AI prompts.",
+    "impact": "+2.1% recommendation share",
+    "tags": [
+      "Security",
+      "GraphQL"
+    ],
+    "status": "In Progress",
+    "assignee": {
+      "name": "Sarah Chen"
+    }
+  },
+  {
+    "priority": "Medium",
+    "title": "Create Case Study for High-Volume FinTech client",
+    "contentType": "Customer Evidence",
+    "rationale": "AI models lack verifiable performance data for Northstar in high-stakes financial environments. Real-world metrics are needed.",
+    "impact": "+1.8% recommendation share",
+    "tags": [
+      "FinTech",
+      "Scalability"
+    ],
+    "status": "In Review",
+    "assignee": {
+      "name": "Alex Rivera"
+    }
+  },
+  {
+    "priority": "Critical",
+    "title": "Add 'SOC 2 Compliance' technical whitepaper",
+    "contentType": "Technical Content",
+    "rationale": "Enterprise buyers frequently ask AI about compliance. Lack of indexed SOC 2 details is the #1 reason Northstar is omitted from 'Enterprise-ready' lists.",
+    "impact": "+3.5% recommendation share",
+    "tags": [
+      "Security",
+      "Compliance"
+    ],
+    "status": "Not Started"
+  },
+  {
+    "priority": "Low",
+    "title": "Refresh 'Microservices Orchestration' blog series",
+    "contentType": "Technical Content",
+    "rationale": "Updating these posts with latest k8s integration features will improve relevance for general architectural queries.",
+    "impact": "+0.8% recommendation share",
+    "tags": [
+      "Kubernetes",
+      "Architecture"
+    ],
+    "status": "In Progress",
+    "assignee": {
+      "name": "Jordan Smith"
+    }
+  },
+  {
+    "priority": "High",
+    "title": "Launch 'Enterprise API Governance' comparison matrix",
+    "contentType": "Comparison Pages",
+    "rationale": "Competitors like Apigee are outranking Northstar for 'Governance' queries due to more detailed feature matrices.",
+    "impact": "+2.5% recommendation share",
+    "tags": [
+      "Governance",
+      "Enterprise"
+    ],
+    "status": "Not Started"
+  },
+  {
+    "priority": "Medium",
+    "title": "Collect G2 reviews for 'API Lifecycle' category",
+    "contentType": "Reviews",
+    "rationale": "Volume of reviews in the API Lifecycle category is 60% lower than the market leader, affecting recommendation rankings in that niche.",
+    "impact": "+1.5% recommendation share",
+    "tags": [
+      "Community",
+      "Social Proof"
+    ],
+    "status": "Not Started"
+  },
+  {
+    "priority": "High",
+    "title": "Write 'Migration from Legacy Gateways' technical guide",
+    "contentType": "Technical Content",
+    "rationale": "Search volume for 'Migrate from Tibco to Northstar' is rising, but we have no content indexed for this transition path.",
+    "impact": "+2.8% recommendation share",
+    "tags": [
+      "Migration",
+      "Legacy"
+    ],
+    "status": "In Progress",
+    "assignee": {
+      "name": "Sarah Chen"
+    }
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "active-experiments",
+    "title": "Active Experiments",
+    "value": "12",
+    "change": "+2 this month",
+    "trend": "up"
+  },
+  {
+    "id": "share-lift",
+    "title": "Avg Recommendation Share Lift",
+    "value": "+18.4%",
+    "change": "+4.2% vs baseline",
+    "trend": "up"
+  },
+  {
+    "id": "citation-change",
+    "title": "Citation Frequency Change",
+    "value": "+24%",
+    "change": "Last 30 days",
+    "trend": "up"
+  },
+  {
+    "id": "pipeline-influence",
+    "title": "Attributed Opportunities",
+    "value": "42",
+    "change": "$1.2M pipeline",
+    "trend": "up"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Best-of category roundup",
+    "description": "Evaluate top competitors in a specific category for overall ranking.",
+    "tag": "Awareness"
+  },
+  {
+    "title": "Vendor vs vendor comparison",
+    "description": "Direct head-to-head comparison between two specific brands.",
+    "tag": "Comparison"
+  },
+  {
+    "title": "Pricing and ROI question",
+    "description": "Analyze how models perceive price-to-value for specific solutions.",
+    "tag": "Decision"
+  },
+  {
+    "title": "Integration/compatibility question",
+    "description": "Technical assessment of how well products work with stacks.",
+    "tag": "Evaluation"
+  }
+]

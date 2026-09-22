@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1",
+    "name": "Fintech Comparison Set",
+    "nextRun": "Today, 18:00",
+    "frequency": "Daily",
+    "models": [
+      "GPT-4o",
+      "Claude 3.5",
+      "Gemini Pro"
+    ]
+  },
+  {
+    "id": "2",
+    "name": "DevTools Market Pulse",
+    "nextRun": "Tomorrow, 09:00",
+    "frequency": "Weekly",
+    "models": [
+      "GPT-4o",
+      "Perplexity"
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Enterprise ERP Analysis",
+    "nextRun": "Oct 15, 12:00",
+    "frequency": "Bi-weekly",
+    "models": [
+      "GPT-4o",
+      "Claude 3.5",
+      "Perplexity",
+      "AI API Key"
+    ]
+  }
+]

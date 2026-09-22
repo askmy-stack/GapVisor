@@ -1,0 +1,14 @@
+{
+  "competitors": [
+    "Postman",
+    "Datadog"
+  ],
+  "categories": [
+    "API Management",
+    "Observability"
+  ],
+  "regions": [
+    "us",
+    "global"
+  ]
+}

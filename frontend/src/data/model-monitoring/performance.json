@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Mon",
+    "chatgpt": 82,
+    "claude": 65,
+    "gemini": 70,
+    "perplexity": 88,
+    "ai-api-key": 75
+  },
+  {
+    "name": "Tue",
+    "chatgpt": 85,
+    "claude": 68,
+    "gemini": 65,
+    "perplexity": 90,
+    "ai-api-key": 78
+  },
+  {
+    "name": "Wed",
+    "chatgpt": 80,
+    "claude": 70,
+    "gemini": 62,
+    "perplexity": 92,
+    "ai-api-key": 74
+  },
+  {
+    "name": "Thu",
+    "chatgpt": 84,
+    "claude": 72,
+    "gemini": 65,
+    "perplexity": 91,
+    "ai-api-key": 78
+  },
+  {
+    "name": "Fri",
+    "chatgpt": 88,
+    "claude": 75,
+    "gemini": 68,
+    "perplexity": 95,
+    "ai-api-key": 82
+  },
+  {
+    "name": "Sat",
+    "chatgpt": 83,
+    "claude": 71,
+    "gemini": 64,
+    "perplexity": 93,
+    "ai-api-key": 80
+  },
+  {
+    "name": "Sun",
+    "chatgpt": 84,
+    "claude": 72,
+    "gemini": 65,
+    "perplexity": 91,
+    "ai-api-key": 78
+  }
+]

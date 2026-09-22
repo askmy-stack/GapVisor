@@ -1,0 +1,21 @@
+{
+  "models": [
+    { "value": "all-models", "label": "All Models" },
+    { "value": "gpt-4o", "label": "GPT-4o" },
+    { "value": "claude-3-5", "label": "Claude 3.5" },
+    { "value": "gemini-1-5", "label": "Gemini 1.5" },
+    { "value": "perplexity", "label": "Perplexity" }
+  ],
+  "categories": [
+    { "value": "all-categories", "label": "All Categories" },
+    { "value": "security", "label": "Security" },
+    { "value": "analytics", "label": "Analytics" },
+    { "value": "infrastructure", "label": "Infrastructure" }
+  ],
+  "outcomes": [
+    { "value": "all-outcomes", "label": "All Outcomes" },
+    { "value": "recommended", "label": "Recommended" },
+    { "value": "not-recommended", "label": "Not Recommended" },
+    { "value": "negative", "label": "Negative Mention" }
+  ]
+}

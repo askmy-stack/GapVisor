@@ -1,0 +1,44 @@
+[
+  {
+    "id": "chatgpt",
+    "status": "Healthy",
+    "lastScan": "12m ago",
+    "inclusion": "84%",
+    "trend": "up"
+  },
+  {
+    "id": "claude",
+    "status": "Healthy",
+    "lastScan": "45m ago",
+    "inclusion": "72%",
+    "trend": "up"
+  },
+  {
+    "id": "gemini",
+    "status": "Degraded",
+    "lastScan": "1h ago",
+    "inclusion": "65%",
+    "trend": "down"
+  },
+  {
+    "id": "perplexity",
+    "status": "Healthy",
+    "lastScan": "5m ago",
+    "inclusion": "91%",
+    "trend": "up"
+  },
+  {
+    "id": "ai-api-key",
+    "status": "Not connected",
+    "lastScan": "—",
+    "inclusion": "—",
+    "trend": "stable"
+  },
+  {
+    "id": "buyer-agents",
+    "status": "Healthy",
+    "lastScan": "2h ago",
+    "inclusion": "54%",
+    "trend": "up"
+  }
+]

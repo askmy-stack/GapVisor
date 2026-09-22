@@ -1,0 +1,26 @@
+[
+  {
+    "id": "daily",
+    "title": "Daily",
+    "plan": "Enterprise",
+    "volume": "~15,000 prompts/mo",
+    "description": "Real-time market shifts and rapid response monitoring.",
+    "recommended": false
+  },
+  {
+    "id": "weekly",
+    "title": "Weekly",
+    "plan": "Pro",
+    "volume": "~3,500 prompts/mo",
+    "description": "Perfect for standard competitive tracking and reporting.",
+    "recommended": true
+  },
+  {
+    "id": "bi-weekly",
+    "title": "Bi-weekly",
+    "plan": "Starter",
+    "volume": "~1,200 prompts/mo",
+    "description": "Baseline visibility tracking for smaller teams.",
+    "recommended": false
+  }
+]
