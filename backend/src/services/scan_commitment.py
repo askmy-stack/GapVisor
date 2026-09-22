@@ -7,7 +7,7 @@ rotating_weekly — see DECISIONS.md and settings.SCAN_COMMITMENT_MODE.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import UTC, date, datetime
 
 from core.config import settings
 
@@ -35,7 +35,7 @@ def plan_models_for_day(
     TODO (product owner): confirm FR-012 — keep rotating_weekly, or switch
     settings.SCAN_COMMITMENT_MODE to hard_daily before Milestone 3 ships.
     """
-    day = day or date.today()
+    day = day or datetime.now(UTC).date()
     mode = settings.SCAN_COMMITMENT_MODE
     measurable = [m for m in enabled_model_ids if m in API_MODEL_ROTATION]
 

@@ -1,11 +1,11 @@
 """Competitor intelligence endpoints (M5 slice)."""
 
 from fastapi import APIRouter
+from pydantic import BaseModel
 from sqlalchemy import select
 
 from core.deps import DbSession, WorkspaceId
 from models import Competitor, MetricDaily
-from pydantic import BaseModel
 
 router = APIRouter(prefix="/competitors", tags=["competitors"])
 
