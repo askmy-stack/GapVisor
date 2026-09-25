@@ -1,4 +1,4 @@
-# Feature Specification: VisibilityOS Backend Platform
+# Feature Specification: GapVisor Backend Platform
 
 **Feature Branch**: `002-backend-platform`
 
@@ -6,7 +6,7 @@
 
 **Status**: Draft — 4 of the 5 original open questions are now resolved (2026-09-15, product owner decision) and reflected below. Open Question 1 (Growth tier scan-commitment semantics) remains unresolved and still gates `FR-012` — everything else is no longer a blocker.
 
-**Input**: User description: "Build the backend for VisibilityOS: track how AI assistants describe a brand versus its competitors, the way Ahrefs or Semrush track Google rankings. The frontend (10 screens) and an extremely detailed technical plan already exist; this spec defines what that plan is building and why, so implementation can proceed against an approved spec instead of the plan front-running it."
+**Input**: User description: "Build the backend for GapVisor: track how AI assistants describe a brand versus its competitors, the way Ahrefs or Semrush track Google rankings. The frontend (10 screens) and an extremely detailed technical plan already exist; this spec defines what that plan is building and why, so implementation can proceed against an approved spec instead of the plan front-running it."
 
 ## User Scenarios & Testing *(mandatory)*
 
