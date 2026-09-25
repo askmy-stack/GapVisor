@@ -1,7 +1,9 @@
-import { Search, Bell, HelpCircle, Plus } from "lucide-react";
+import { Search, Bell, HelpCircle, Plus, WifiOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import MobileNav from "@/components/layout/MobileNav";
+import { useAuth } from "@/auth/AuthProvider";
 import { cn } from "@/lib/utils";
 
 interface DashboardTopbarProps {
@@ -12,6 +14,8 @@ interface DashboardTopbarProps {
 }
 
 export default function DashboardTopbar({ title, description, actions, className }: DashboardTopbarProps) {
+  const { liveApi } = useAuth();
+
   return (
     <header
       className={cn(
@@ -19,12 +23,28 @@ export default function DashboardTopbar({ title, description, actions, className
         className
       )}
     >
+      {!liveApi && (
+        <div className="flex items-center gap-1.5 h-7 px-4 sm:px-6 text-xs font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400 border-b border-amber-500/30">
+          <WifiOff className="h-3.5 w-3.5" />
+          Demo mode — showing static sample data, not your live workspace
+        </div>
+      )}
       <div className="flex items-center gap-3 h-16 px-4 sm:px-6">
         <MobileNav />
-        <div className="min-w-0 flex-1">
-          <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-foreground truncate">{title}</h1>
-          {description && (
-            <p className="hidden sm:block text-xs text-muted-foreground truncate">{description}</p>
+        <div className="min-w-0 flex-1 flex items-center gap-2">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-foreground truncate">{title}</h1>
+            {description && (
+              <p className="hidden sm:block text-xs text-muted-foreground truncate">{description}</p>
+            )}
+          </div>
+          {!liveApi && (
+            <Badge
+              variant="outline"
+              className="hidden sm:inline-flex shrink-0 border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+            >
+              Demo
+            </Badge>
           )}
         </div>
 

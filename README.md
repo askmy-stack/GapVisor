@@ -71,6 +71,18 @@ demo@northstar.dev
 GapVisor-Demo-2026!
 ```
 
+### Live vs. demo mode
+
+On load, the SPA probes the API (`/healthz`). If it's unreachable, sign-in falls back to a
+static JSON demo instead of failing outright. This fallback is always visible, never silent:
+
+- Sign-in shows an amber "Backend unreachable" notice before you log in.
+- Every authenticated screen shows a persistent amber **Demo** badge in the header (and a strip
+  under the topbar) for as long as `liveApi` is false, so demo figures are never mistaken for a
+  real workspace's live metrics.
+
+Start `docker compose up` (or `make be-dev`) so the API is reachable and this indicator clears.
+
 ---
 
 ## Stack
