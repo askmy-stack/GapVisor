@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from core.config import settings
-from models import Answer, AnswerMention, MetricDaily, Prompt
+from models import Answer, AnswerMention, Competitor, MetricDaily, Prompt
 
 
 def rollup_answers(
@@ -93,6 +93,63 @@ def rollup_answers(
                     sample_size=len(values),
                 )
             )
+
+        # Share of voice: brand vs. named competitors, aggregated across models/
+        # categories so competitors_overview can read one value per entity per day.
+        brand_row = db.scalar(
+            select(Competitor).where(
+                Competitor.workspace_id == workspace_id,
+                Competitor.is_brand.is_(True),
+            )
+        )
+        brand_counts: dict[date, int] = defaultdict(int)
+        for answer, _category_id in rows:
+            created = answer.created_at
+            day = created.astimezone(UTC).date() if created.tzinfo else created.date()
+            if answer.outcome != "absent":
+                brand_counts[day] += 1
+
+        competitor_day_counts: dict[date, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        for mention, answer in mention_rows:
+            if not mention.mentioned:
+                continue
+            created = answer.created_at
+            day = created.astimezone(UTC).date() if created.tzinfo else created.date()
+            competitor_day_counts[day][mention.competitor_id] += 1
+
+        for day in set(brand_counts) | set(competitor_day_counts):
+            comp_counts = competitor_day_counts.get(day, {})
+            total = brand_counts.get(day, 0) + sum(comp_counts.values())
+            if total <= 0:
+                continue
+            if brand_row is not None:
+                metrics.append(
+                    _upsert_metric(
+                        db,
+                        workspace_id=workspace_id,
+                        day=day,
+                        metric_key="share_of_voice",
+                        model_id=None,
+                        category_id=None,
+                        competitor_id=brand_row.id,
+                        value=brand_counts.get(day, 0) / total,
+                        sample_size=total,
+                    )
+                )
+            for competitor_id, count in comp_counts.items():
+                metrics.append(
+                    _upsert_metric(
+                        db,
+                        workspace_id=workspace_id,
+                        day=day,
+                        metric_key="share_of_voice",
+                        model_id=None,
+                        category_id=None,
+                        competitor_id=competitor_id,
+                        value=count / total,
+                        sample_size=total,
+                    )
+                )
 
     return metrics
 

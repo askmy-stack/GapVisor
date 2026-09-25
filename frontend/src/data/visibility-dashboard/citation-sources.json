@@ -3,5 +3,8 @@
   { "domain": "g2.com/northstar", "category": "Reviews", "count": 856, "trend": "up" },
   { "domain": "reddit.com/r/devops", "category": "Community", "count": 432, "trend": "down" },
   { "domain": "blog.newrelic.com", "category": "Partner Blogs", "count": 215, "trend": "up" },
-  { "domain": "stackshare.io", "category": "Comparison Sites", "count": 188, "trend": "neutral" }
+  { "domain": "stackshare.io", "category": "Comparison Sites", "count": 188, "trend": "neutral" },
+  { "domain": "capterra.com/northstar", "category": "Reviews", "count": 146, "trend": "up" },
+  { "domain": "news.ycombinator.com", "category": "Community", "count": 97, "trend": "up" },
+  { "domain": "github.com/northstar", "category": "Documentation", "count": 74, "trend": "neutral" }
 ]
