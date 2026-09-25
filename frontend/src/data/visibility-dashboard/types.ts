@@ -69,4 +69,8 @@ export const alertStyles: Record<number, { color: string; bg: string }> = {
   2: { color: "text-amber-500", bg: "bg-amber-500/10" },
   3: { color: "text-blue-500", bg: "bg-blue-500/10" },
   4: { color: "text-emerald-500", bg: "bg-emerald-500/10" },
+  5: { color: "text-blue-500", bg: "bg-blue-500/10" },
+  6: { color: "text-amber-500", bg: "bg-amber-500/10" },
+  7: { color: "text-emerald-500", bg: "bg-emerald-500/10" },
+  8: { color: "text-amber-500", bg: "bg-amber-500/10" },
 };
