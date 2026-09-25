@@ -1,4 +1,4 @@
-# Implementation Plan: VisibilityOS Backend Platform
+# Implementation Plan: GapVisor Backend Platform
 
 **Branch**: `002-backend-platform` | **Date**: 2026-09-03 | **Spec**: not yet written — see note below
 

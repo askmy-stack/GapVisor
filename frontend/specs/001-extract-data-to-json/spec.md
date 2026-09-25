@@ -12,7 +12,7 @@
 
 ### User Story 1 - Change demo numbers on the core analytics screens without touching code (Priority: P1)
 
-A demo owner preparing VisibilityOS for a prospect meeting needs the headline figures on the
+A demo owner preparing GapVisor for a prospect meeting needs the headline figures on the
 Visibility Dashboard and Model Monitoring screens to match the prospect's industry. Today every
 KPI value, chart series, competitor share, citation source, and alert is written inside the
 screen and component files, so changing a single percentage means editing React code and risking
@@ -50,7 +50,7 @@ screens render exactly as before apart from the edited values.
 
 ### User Story 2 - Every remaining screen follows the same data pattern (Priority: P2)
 
-A developer maintaining VisibilityOS needs to know, for any screen, exactly where its data lives.
+A developer maintaining GapVisor needs to know, for any screen, exactly where its data lives.
 The remaining screens — Prompt Library, Answer Analysis, Competitor Intelligence, Content
 Recommendations, Experiments & Impact, Reports & Billing, and Workspace Setup — each still carry
 their sample records inline, including large nested records such as the AI answers with their
@@ -265,7 +265,7 @@ stored.
 - **The refactor is behavior-neutral by definition.** Where the current code produces an odd
   result, the odd result is preserved; correcting business data or fixing latent bugs is out of
   scope and would be raised separately.
-- **Users of this feature are the development and demo team**, not end users of VisibilityOS. The
+- **Users of this feature are the development and demo team**, not end users of GapVisor. The
   application's own users see no change whatsoever.
 - **"Data" means values that describe the fictional business domain** — metrics, records, option
   sets, and sample content. Interface chrome, one-off text, and anything governing appearance is

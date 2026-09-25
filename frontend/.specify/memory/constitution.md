@@ -1,9 +1,13 @@
 <!--
 SYNC IMPACT REPORT
 ==================
+Version change: 1.0.0 -> 1.0.1
+Bump rationale: PATCH. Product renamed VisibilityOS -> GapVisor; this is a wording-only
+naming fix with no change to what any principle requires (see issue #21).
+
 Version change: (unversioned template) -> 1.0.0
 Bump rationale: Initial ratification. All placeholder tokens replaced with concrete,
-project-specific governance for VisibilityOS. Set to 1.0.0 to mark the first binding
+project-specific governance for GapVisor. Set to 1.0.0 to mark the first binding
 version of the constitution.
 
 Modified principles:
@@ -34,13 +38,13 @@ Deferred items / follow-up TODOs:
     `eslint` only until a test runner is adopted; adopting one is a MINOR amendment.
 -->
 
-# VisibilityOS Constitution
+# GapVisor Constitution
 
 ## Core Principles
 
 ### I. Design-System Fidelity
 
-VisibilityOS is a design-led product surface; visual consistency is a functional requirement,
+GapVisor is a design-led product surface; visual consistency is a functional requirement,
 not decoration. All UI MUST be composed from the shadcn/ui and Radix primitives in
 `src/components/ui/` before any new primitive is authored. Color, spacing, radius, and
 typography MUST be expressed through Tailwind tokens and the CSS custom properties defined in
@@ -165,4 +169,4 @@ is not retroactively blocking, but any file touched by a change MUST be brought 
 with the principles governing the lines being modified. Deviations that cannot be resolved MUST
 be raised as a proposed amendment rather than normalized in practice.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-02 | **Last Amended**: 2026-09-02
+**Version**: 1.0.1 | **Ratified**: 2026-09-02 | **Last Amended**: 2026-09-25
