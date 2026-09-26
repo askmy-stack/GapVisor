@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import random
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 # Allow running as `python scripts/seed.py` from backend/
@@ -12,11 +13,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from core.config import settings
 from core.db import SessionLocal
 from core.security import hash_password
 from models import (
     AiModel,
     Answer,
+    AnswerMention,
     Category,
     Competitor,
     Membership,
@@ -26,7 +29,9 @@ from models import (
     User,
     Workspace,
 )
-from services.scan import run_scan
+from services.parse import parse_answer
+from services.provider import MockProvider
+from services.rollup import rollup_answers
 
 CATALOG = [
     {
@@ -98,11 +103,30 @@ REGIONS = [
     ("us", "United States"),
     ("eu", "Europe"),
 ]
-PROMPTS = [
-    "What are the best API gateway platforms for developer-first teams?",
-    "Which tools should I consider for API monitoring and visibility?",
-    "Recommend a platform for managing API programs across engineering teams.",
-]
+# Grouped by category so the backfill below spreads scans realistically across
+# the workspace's monitored surface area instead of a single default bucket.
+PROMPTS_BY_CATEGORY: dict[str, list[str]] = {
+    "API Gateways": [
+        "What are the best API gateway platforms for developer-first teams?",
+        "Which API gateway handles high-traffic enterprise workloads best?",
+        "Compare API gateways for teams migrating off legacy middleware.",
+    ],
+    "Developer Platforms": [
+        "Recommend a platform for managing API programs across engineering teams.",
+        "What developer platform should a fast-moving startup adopt for API delivery?",
+        "Which tools give the best developer experience for publishing internal APIs?",
+    ],
+    "API Observability": [
+        "Which tools should I consider for API monitoring and visibility?",
+        "What's the best way to track API reliability and latency across providers?",
+        "Recommend a platform for AI-driven API observability and alerting.",
+    ],
+}
+
+# Models actually invoked during the historical backfill; "buyer-agents" is a
+# derived/observational model_id (no direct provider calls), so it's excluded.
+BACKFILL_MODEL_IDS = ["chatgpt", "claude", "gemini", "perplexity", "ai-api-key"]
+BACKFILL_DAYS = 14
 
 
 def seed() -> None:
@@ -167,6 +191,23 @@ def seed() -> None:
 
 
 def seed_platform(db: Session, workspace: Workspace) -> None:
+    brand_row = db.scalar(
+        select(Competitor).where(
+            Competitor.workspace_id == workspace.id,
+            Competitor.is_brand.is_(True),
+        )
+    )
+    if brand_row is None:
+        db.add(
+            Competitor(
+                workspace_id=workspace.id,
+                name=workspace.brand_name,
+                logo_letter=workspace.brand_name[:1].upper(),
+                domain=workspace.brand_domains[0] if workspace.brand_domains else None,
+                is_brand=True,
+            )
+        )
+
     for name in COMPETITORS:
         existing = db.scalar(
             select(Competitor).where(
@@ -203,30 +244,114 @@ def seed_platform(db: Session, workspace: Workspace) -> None:
         if existing is None:
             db.add(Region(workspace_id=workspace.id, code=code, name=name, region_method="signaled"))
 
-    default_category = categories_by_name["API Gateways"]
-    for text in PROMPTS:
-        existing = db.scalar(
-            select(Prompt).where(Prompt.workspace_id == workspace.id, Prompt.text == text)
-        )
-        if existing is None:
-            db.add(
-                Prompt(
-                    workspace_id=workspace.id,
-                    text=text,
-                    category_id=default_category.id,
-                    status="active",
-                    samples_per_run=1,
-                )
+    for category_name, prompt_texts in PROMPTS_BY_CATEGORY.items():
+        category = categories_by_name[category_name]
+        for text in prompt_texts:
+            existing = db.scalar(
+                select(Prompt).where(Prompt.workspace_id == workspace.id, Prompt.text == text)
             )
+            if existing is None:
+                db.add(
+                    Prompt(
+                        workspace_id=workspace.id,
+                        text=text,
+                        category_id=category.id,
+                        status="active",
+                        samples_per_run=1,
+                    )
+                )
 
     db.commit()
-    first_prompt = db.scalar(
-        select(Prompt).where(Prompt.workspace_id == workspace.id).order_by(Prompt.created_at).limit(1)
-    )
+
     existing_answer = db.scalar(select(Answer).where(Answer.workspace_id == workspace.id).limit(1))
-    if first_prompt is not None and existing_answer is None:
-        run_scan(workspace.id, first_prompt.id, ["chatgpt"], db=db)
-        print("Seeded one mock scan for dashboard metrics")
+    if existing_answer is None:
+        backfill_scan_history(db, workspace)
+
+
+def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACKFILL_DAYS) -> None:
+    """Populate `days` of realistic scan history across every prompt and model.
+
+    Bypasses `run_scan`'s always-now() timestamp so the dashboard's history-
+    dependent metrics (sample sizes, trends, share of voice) look like an
+    established, actively-monitored workspace instead of a single mock scan.
+    """
+    prompts = list(
+        db.scalars(
+            select(Prompt).where(
+                Prompt.workspace_id == workspace.id,
+                Prompt.status == "active",
+            )
+        ).all()
+    )
+    competitors = list(
+        db.scalars(
+            select(Competitor).where(
+                Competitor.workspace_id == workspace.id,
+                Competitor.archived_at.is_(None),
+                Competitor.is_brand.is_(False),
+            )
+        ).all()
+    )
+    if not prompts:
+        return
+
+    provider = MockProvider()
+    rng = random.Random(f"{workspace.id}:backfill")
+    now = datetime.now(UTC)
+    answer_ids: list[str] = []
+
+    for day_offset in range(days, -1, -1):
+        day_start = now - timedelta(days=day_offset)
+        for prompt in prompts:
+            for model_id in BACKFILL_MODEL_IDS:
+                created_at = day_start.replace(
+                    hour=rng.randint(7, 20),
+                    minute=rng.randint(0, 59),
+                    second=rng.randint(0, 59),
+                    microsecond=0,
+                )
+                raw_text = provider.generate(
+                    workspace=workspace,
+                    prompt=prompt,
+                    model_id=model_id,
+                    competitors=competitors,
+                )
+                parsed = parse_answer(
+                    raw_text=raw_text,
+                    brand_name=workspace.brand_name,
+                    competitors=competitors,
+                )
+                answer = Answer(
+                    workspace_id=workspace.id,
+                    prompt_id=prompt.id,
+                    model_id=model_id,
+                    status="completed",
+                    raw_text=raw_text,
+                    brand_position=parsed.brand_position,
+                    outcome=parsed.outcome,
+                    sentiment_label=parsed.sentiment_label,
+                    parser_version=settings.PARSER_VERSION,
+                    created_at=created_at,
+                )
+                db.add(answer)
+                db.flush()
+                for competitor_id, mentioned in parsed.competitor_mentions.items():
+                    db.add(
+                        AnswerMention(
+                            answer_id=answer.id,
+                            competitor_id=competitor_id,
+                            mentioned=mentioned,
+                        )
+                    )
+                answer_ids.append(answer.id)
+
+    db.flush()
+    rollup_answers(db, workspace_id=workspace.id, answer_ids=answer_ids)
+    db.commit()
+    print(
+        f"Backfilled {len(answer_ids)} mock answers across {days + 1} days, "
+        f"{len(prompts)} prompts, and {len(BACKFILL_MODEL_IDS)} models"
+    )
 
 
 if __name__ == "__main__":

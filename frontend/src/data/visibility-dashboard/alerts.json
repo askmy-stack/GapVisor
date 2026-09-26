@@ -2,5 +2,9 @@
   { "id": 1, "title": "Competitor Kong overtook you in Perplexity results for 'API gateway' category", "severity": "critical", "timestamp": "2 hours ago" },
   { "id": 2, "title": "Sentiment dropped 12% on Gemini this week", "severity": "warning", "timestamp": "1 day ago" },
   { "id": 3, "title": "New citations detected from O'Reilly technical blogs", "severity": "info", "timestamp": "2 days ago" },
-  { "id": 4, "title": "Claude 3.5 update improved your 'Reliability' score by 8%", "severity": "info", "timestamp": "3 days ago" }
+  { "id": 4, "title": "Claude 3.5 update improved your 'Reliability' score by 8%", "severity": "info", "timestamp": "3 days ago" },
+  { "id": 5, "title": "Brand inclusion rate on ChatGPT crossed 90% for the first time", "severity": "info", "timestamp": "4 days ago" },
+  { "id": 6, "title": "Postman gained share of voice in the 'Developer Platforms' category", "severity": "warning", "timestamp": "5 days ago" },
+  { "id": 7, "title": "Weekly scan completed across all 5 monitored models", "severity": "info", "timestamp": "6 days ago" },
+  { "id": 8, "title": "Citation coverage from stackshare.io dropped 9% week-over-week", "severity": "warning", "timestamp": "1 week ago" }
 ]

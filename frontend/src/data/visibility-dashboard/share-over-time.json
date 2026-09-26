@@ -1,9 +1,242 @@
 [
-  { "name": "Mon", "Northstar": 42, "Kong": 35, "Postman": 28, "Apigee": 22, "Tyk": 15 },
-  { "name": "Tue", "Northstar": 45, "Kong": 32, "Postman": 30, "Apigee": 25, "Tyk": 18 },
-  { "name": "Wed", "Northstar": 38, "Kong": 36, "Postman": 35, "Apigee": 28, "Tyk": 14 },
-  { "name": "Thu", "Northstar": 48, "Kong": 34, "Postman": 32, "Apigee": 24, "Tyk": 20 },
-  { "name": "Fri", "Northstar": 52, "Kong": 38, "Postman": 29, "Apigee": 21, "Tyk": 17 },
-  { "name": "Sat", "Northstar": 50, "Kong": 40, "Postman": 31, "Apigee": 26, "Tyk": 16 },
-  { "name": "Sun", "Northstar": 55, "Kong": 37, "Postman": 33, "Apigee": 24, "Tyk": 19 }
+  {
+    "name": "Day 1",
+    "Northstar": 38.6,
+    "Kong": 31.3,
+    "Postman": 30.9,
+    "Apigee": 20.3,
+    "Tyk": 13.0
+  },
+  {
+    "name": "Day 2",
+    "Northstar": 35.7,
+    "Kong": 34.1,
+    "Postman": 29.6,
+    "Apigee": 20.4,
+    "Tyk": 15.7
+  },
+  {
+    "name": "Day 3",
+    "Northstar": 39.0,
+    "Kong": 35.0,
+    "Postman": 28.8,
+    "Apigee": 23.6,
+    "Tyk": 14.5
+  },
+  {
+    "name": "Day 4",
+    "Northstar": 37.2,
+    "Kong": 31.4,
+    "Postman": 31.0,
+    "Apigee": 22.9,
+    "Tyk": 14.7
+  },
+  {
+    "name": "Day 5",
+    "Northstar": 41.9,
+    "Kong": 32.6,
+    "Postman": 31.7,
+    "Apigee": 22.9,
+    "Tyk": 18.1
+  },
+  {
+    "name": "Day 6",
+    "Northstar": 43.5,
+    "Kong": 31.4,
+    "Postman": 26.9,
+    "Apigee": 24.8,
+    "Tyk": 14.6
+  },
+  {
+    "name": "Day 7",
+    "Northstar": 41.9,
+    "Kong": 33.1,
+    "Postman": 29.7,
+    "Apigee": 20.0,
+    "Tyk": 18.3
+  },
+  {
+    "name": "Day 8",
+    "Northstar": 43.8,
+    "Kong": 34.6,
+    "Postman": 31.4,
+    "Apigee": 21.4,
+    "Tyk": 18.1
+  },
+  {
+    "name": "Day 9",
+    "Northstar": 45.3,
+    "Kong": 37.0,
+    "Postman": 30.1,
+    "Apigee": 23.8,
+    "Tyk": 15.6
+  },
+  {
+    "name": "Day 10",
+    "Northstar": 43.5,
+    "Kong": 36.0,
+    "Postman": 28.3,
+    "Apigee": 24.7,
+    "Tyk": 14.0
+  },
+  {
+    "name": "Day 11",
+    "Northstar": 43.3,
+    "Kong": 33.4,
+    "Postman": 27.6,
+    "Apigee": 19.7,
+    "Tyk": 17.5
+  },
+  {
+    "name": "Day 12",
+    "Northstar": 43.3,
+    "Kong": 36.0,
+    "Postman": 28.9,
+    "Apigee": 22.2,
+    "Tyk": 16.4
+  },
+  {
+    "name": "Day 13",
+    "Northstar": 47.1,
+    "Kong": 32.6,
+    "Postman": 32.4,
+    "Apigee": 25.4,
+    "Tyk": 15.4
+  },
+  {
+    "name": "Day 14",
+    "Northstar": 43.4,
+    "Kong": 32.8,
+    "Postman": 29.7,
+    "Apigee": 23.6,
+    "Tyk": 17.5
+  },
+  {
+    "name": "Day 15",
+    "Northstar": 43.6,
+    "Kong": 31.9,
+    "Postman": 30.5,
+    "Apigee": 24.1,
+    "Tyk": 15.3
+  },
+  {
+    "name": "Day 16",
+    "Northstar": 47.7,
+    "Kong": 36.5,
+    "Postman": 29.4,
+    "Apigee": 23.9,
+    "Tyk": 19.1
+  },
+  {
+    "name": "Day 17",
+    "Northstar": 47.3,
+    "Kong": 35.2,
+    "Postman": 32.8,
+    "Apigee": 19.3,
+    "Tyk": 17.6
+  },
+  {
+    "name": "Day 18",
+    "Northstar": 49.5,
+    "Kong": 36.9,
+    "Postman": 29.4,
+    "Apigee": 23.0,
+    "Tyk": 16.4
+  },
+  {
+    "name": "Day 19",
+    "Northstar": 51.8,
+    "Kong": 34.4,
+    "Postman": 32.6,
+    "Apigee": 22.2,
+    "Tyk": 19.3
+  },
+  {
+    "name": "Day 20",
+    "Northstar": 50.5,
+    "Kong": 35.6,
+    "Postman": 29.0,
+    "Apigee": 19.6,
+    "Tyk": 17.9
+  },
+  {
+    "name": "Day 21",
+    "Northstar": 47.3,
+    "Kong": 32.5,
+    "Postman": 31.0,
+    "Apigee": 20.9,
+    "Tyk": 16.7
+  },
+  {
+    "name": "Day 22",
+    "Northstar": 52.6,
+    "Kong": 35.7,
+    "Postman": 32.5,
+    "Apigee": 22.2,
+    "Tyk": 20.1
+  },
+  {
+    "name": "Day 23",
+    "Northstar": 50.8,
+    "Kong": 34.3,
+    "Postman": 30.3,
+    "Apigee": 20.0,
+    "Tyk": 16.2
+  },
+  {
+    "name": "Day 24",
+    "Northstar": 54.4,
+    "Kong": 35.9,
+    "Postman": 29.3,
+    "Apigee": 23.7,
+    "Tyk": 15.8
+  },
+  {
+    "name": "Day 25",
+    "Northstar": 49.8,
+    "Kong": 37.3,
+    "Postman": 30.3,
+    "Apigee": 22.1,
+    "Tyk": 20.7
+  },
+  {
+    "name": "Day 26",
+    "Northstar": 53.7,
+    "Kong": 32.4,
+    "Postman": 31.4,
+    "Apigee": 19.7,
+    "Tyk": 16.4
+  },
+  {
+    "name": "Day 27",
+    "Northstar": 54.3,
+    "Kong": 37.2,
+    "Postman": 32.5,
+    "Apigee": 21.8,
+    "Tyk": 20.1
+  },
+  {
+    "name": "Day 28",
+    "Northstar": 51.6,
+    "Kong": 35.7,
+    "Postman": 29.8,
+    "Apigee": 22.4,
+    "Tyk": 20.2
+  },
+  {
+    "name": "Day 29",
+    "Northstar": 53.4,
+    "Kong": 32.9,
+    "Postman": 32.8,
+    "Apigee": 21.2,
+    "Tyk": 20.2
+  },
+  {
+    "name": "Day 30",
+    "Northstar": 57.7,
+    "Kong": 35.9,
+    "Postman": 31.7,
+    "Apigee": 18.6,
+    "Tyk": 21.3
+  }
 ]
