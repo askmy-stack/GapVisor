@@ -2,7 +2,7 @@
 description: "Task list for 002-backend-platform, derived from plan.md's milestone table"
 ---
 
-# Tasks: VisibilityOS Backend Platform
+# Tasks: GapVisor Backend Platform
 
 **Input**: Design documents from `/specs/002-backend-platform/` (`plan.md`, `data-model.md`, `contracts/api.md`, `spec.md`)
 

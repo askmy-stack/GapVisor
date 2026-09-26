@@ -1,4 +1,4 @@
-# Data Model: VisibilityOS Backend Platform
+# Data Model: GapVisor Backend Platform
 
 **Feature**: `002-backend-platform` | **Plan**: [plan.md](./plan.md)
 

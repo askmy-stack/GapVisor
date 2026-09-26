@@ -6,7 +6,7 @@
 
 ## Summary
 
-Move every hardcoded business and sample data collection out of the VisibilityOS pages and
+Move every hardcoded business and sample data collection out of the GapVisor pages and
 components into JSON files under `src/data`, organized by feature, leaving components holding
 only markup, logic, and presentation.
 

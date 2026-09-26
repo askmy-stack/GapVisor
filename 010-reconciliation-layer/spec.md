@@ -4,7 +4,7 @@
 **Depends on**: `002` M4 + `006`  
 **Status**: Spec scaffold — **pilot with real customers before generalizing**
 
-Compare VisibilityOS metrics to third-party exports and decide if differences are noise vs real divergence using confidence tests.
+Compare GapVisor metrics to third-party exports and decide if differences are noise vs real divergence using confidence tests.
 
 ## Gate
 

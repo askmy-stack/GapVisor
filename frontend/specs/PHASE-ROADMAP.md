@@ -1,4 +1,4 @@
-# VisibilityOS — Phase Roadmap
+# GapVisor — Phase Roadmap
 
 **Purpose**: entry point for any coding agent (or person) picking up work on this repo. Read this first, then open the phase you're assigned.
 

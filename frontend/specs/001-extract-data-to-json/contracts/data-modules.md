@@ -2,7 +2,7 @@
 
 **Feature**: [../spec.md](../spec.md) | **Plan**: [../plan.md](../plan.md)
 
-VisibilityOS exposes no network API. Its one internal interface introduced by this feature is the
+GapVisor exposes no network API. Its one internal interface introduced by this feature is the
 **data module** — the boundary between JSON data files and the React components that render them.
 This contract is what code review and `/speckit-analyze` check against.
 

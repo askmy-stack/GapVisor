@@ -1,4 +1,4 @@
-# API Contract: VisibilityOS Backend Platform
+# API Contract: GapVisor Backend Platform
 
 **Feature**: `002-backend-platform` | **Plan**: [../plan.md](../plan.md)
 
