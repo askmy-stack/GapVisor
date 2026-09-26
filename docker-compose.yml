@@ -91,7 +91,7 @@ services:
         condition: service_started
 
   frontend:
-    image: node:20-alpine
+    image: node:20-bookworm-slim
     working_dir: /app
     volumes:
       - ./frontend:/app
@@ -99,6 +99,7 @@ services:
     command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
     environment:
       VITE_API_BASE: /api/v1
+      VITE_API_PROXY_TARGET: http://api:8000
     ports:
       - "5173:5173"
     depends_on:
