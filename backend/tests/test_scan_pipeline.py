@@ -113,9 +113,19 @@ def test_rollup_answers_sqlite_when_possible():
         metrics = rollup_answers(db, workspace_id=workspace_id, answer_ids=[answer.id])
         db.commit()
 
-        assert len(metrics) == 3
+        # inclusion_rate (aggregate) + recommendation_share (aggregate) +
+        # inclusion_rate (per-competitor) + share_of_voice (per-competitor).
+        # No brand Competitor row exists in this fixture, so no brand
+        # share_of_voice row is written (see rollup_answers' brand_row guard).
+        assert len(metrics) == 4
         stored = db.query(MetricDaily).filter(MetricDaily.metric_key == "recommendation_share").one()
         assert stored.value == 1.0
         assert stored.sample_size == 1
+
+        sov = db.query(MetricDaily).filter(MetricDaily.metric_key == "share_of_voice").one()
+        assert sov.competitor_id == competitor.id
+        assert sov.value == 0.5  # 1 competitor mention / (1 brand mention + 1 competitor mention)
+        assert sov.sample_size == 2
+        assert sov.model_id is None  # aggregated across models, not per-model
     finally:
         db.close()
