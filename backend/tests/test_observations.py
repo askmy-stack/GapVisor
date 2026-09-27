@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 
+from adapters.providers import MockProvider
 from models import (
     AiModel,
     Answer,
@@ -19,10 +20,8 @@ from models import (
 )
 from models.base import Base
 from services.parse import parse_answer
-from services.provider import MockProvider
 from services.scan import record_observation
 from services.validation import classify_observation
-
 
 # ---------------------------------------------------------------------------
 # classify_observation: pure unit tests, no DB needed
@@ -206,7 +205,7 @@ def test_record_observation_marks_unknown_ai_model_gracefully(sqlite_session):
         prompt=prompt,
         model_id="ghost-model",
         competitors=[],
-    )
+    ).raw_text
     parsed = parse_answer(raw_text=raw_text, brand_name="Northstar", competitors=[])
     answer = Answer(
         workspace_id=workspace_id,

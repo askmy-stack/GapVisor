@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 
+from adapters.providers import MockProvider
 from models import (
     AiModel,
     Answer,
@@ -17,7 +18,6 @@ from models import (
 )
 from models.base import Base
 from services.parse import parse_answer
-from services.provider import MockProvider
 from services.rollup import rollup_answers
 
 
@@ -49,8 +49,9 @@ def test_mock_provider_and_parser_are_deterministic():
         competitors=competitors,
     )
 
-    assert first == second
-    parsed = parse_answer(raw_text=first, brand_name="Northstar", competitors=competitors)
+    assert first.status == "completed"
+    assert first.raw_text == second.raw_text
+    parsed = parse_answer(raw_text=first.raw_text, brand_name="Northstar", competitors=competitors)
     assert parsed.outcome in {"recommended", "mentioned"}
     assert parsed.brand_position is not None
     assert any(parsed.competitor_mentions.values())

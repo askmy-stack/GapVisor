@@ -5,8 +5,8 @@ from dataclasses import dataclass
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
+from adapters.providers import MockProvider
 from services.parse import parse_answer
-from services.provider import MockProvider
 
 router = APIRouter(tags=["public-grader"])
 
@@ -54,14 +54,14 @@ def visibility_grader(body: GraderRequest) -> GraderResponse:
     competitors = [_FakeCompetitor(id=f"c{i}", name=n) for i, n in enumerate(names)]
     workspace = _FakeWorkspace(id="grader", brand_name=body.brand_name)
     prompt = _FakePrompt(id="grader-prompt", text=body.prompt)
-    raw = MockProvider().generate(
+    response = MockProvider().generate(
         workspace=workspace,  # type: ignore[arg-type]
         prompt=prompt,  # type: ignore[arg-type]
         model_id="chatgpt",
         competitors=competitors,  # type: ignore[arg-type]
     )
     parsed = parse_answer(
-        raw_text=raw,
+        raw_text=response.raw_text or "",
         brand_name=body.brand_name,
         competitors=competitors,  # type: ignore[arg-type]
     )

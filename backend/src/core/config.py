@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     SCAN_COMMITMENT_MODE: ScanCommitmentMode = "rotating_weekly"
     SYNC_SCANS: bool = True
     PARSER_VERSION: int = 1
+    # Bump when services/normalize.py's cleaning rules change materially,
+    # same reasoning as PARSER_VERSION: lets Observation/Answer rows record
+    # which version of the pipeline produced them.
+    NORMALIZER_VERSION: int = 1
     PROMPT_QUOTA_DEFAULT: int = 500
 
 
