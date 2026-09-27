@@ -1,0 +1,3356 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "GapVisor API",
+        "description": "Backend for AI recommendation visibility monitoring (002-backend-platform)",
+        "version": "0.2.0"
+    },
+    "paths": {
+        "/healthz": {
+            "get": {
+                "tags": [
+                    "health"
+                ],
+                "summary": "Healthz",
+                "operationId": "healthz_healthz_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Healthz Healthz Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register",
+                "operationId": "register_api_v1_auth_register_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "operationId": "login_api_v1_auth_login_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/refresh": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh",
+                "operationId": "refresh_api_v1_auth_refresh_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "operationId": "logout_api_v1_auth_logout_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Logout Api V1 Auth Logout Post"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/oauth/{provider}": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Oauth Stub",
+                "operationId": "oauth_stub_api_v1_auth_oauth__provider__get",
+                "parameters": [
+                    {
+                        "name": "provider",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Provider"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true,
+                                    "title": "Response Oauth Stub Api V1 Auth Oauth  Provider  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Me",
+                "operationId": "me_api_v1_auth_me_get",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MeResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/showcase-metrics": {
+            "get": {
+                "tags": [
+                    "public"
+                ],
+                "summary": "Showcase Metrics",
+                "description": "Unauthenticated sign-in panel metrics (replaces sign-in/showcase-metrics.json).",
+                "operationId": "showcase_metrics_api_v1_public_showcase_metrics_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Showcase Metrics Api V1 Public Showcase Metrics Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/grader": {
+            "post": {
+                "tags": [
+                    "public-grader"
+                ],
+                "summary": "Visibility Grader",
+                "description": "One-shot free diagnostic (HubSpot AEO Grader motion). Mock until live keys.",
+                "operationId": "visibility_grader_api_v1_public_grader_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GraderRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GraderResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reference/models": {
+            "get": {
+                "tags": [
+                    "reference"
+                ],
+                "summary": "List Models",
+                "operationId": "list_models_api_v1_reference_models_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/AiModelOut"
+                                    },
+                                    "type": "array",
+                                    "title": "Response List Models Api V1 Reference Models Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/reference/setup": {
+            "get": {
+                "tags": [
+                    "reference"
+                ],
+                "summary": "Setup Reference",
+                "description": "Minimal setup reference for the workspace wizard (expanded in M1).",
+                "operationId": "setup_reference_api_v1_reference_setup_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Setup Reference Api V1 Reference Setup Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspaces": {
+            "post": {
+                "tags": [
+                    "workspaces"
+                ],
+                "summary": "Create Workspace",
+                "description": "Create workspace for the caller's first org (M1 expands multi-workspace).",
+                "operationId": "create_workspace_api_v1_workspaces_post",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WorkspaceCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkspaceOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/workspaces/{workspace_id}": {
+            "get": {
+                "tags": [
+                    "workspaces"
+                ],
+                "summary": "Get Workspace",
+                "operationId": "get_workspace_api_v1_workspaces__workspace_id__get",
+                "parameters": [
+                    {
+                        "name": "workspace_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Workspace Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WorkspaceOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/prompts": {
+            "get": {
+                "tags": [
+                    "prompts"
+                ],
+                "summary": "List Prompts",
+                "operationId": "list_prompts_api_v1_prompts_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PromptOut"
+                                    },
+                                    "title": "Response List Prompts Api V1 Prompts Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "prompts"
+                ],
+                "summary": "Create Prompt",
+                "operationId": "create_prompt_api_v1_prompts_post",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PromptCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PromptOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/prompts/{prompt_id}": {
+            "get": {
+                "tags": [
+                    "prompts"
+                ],
+                "summary": "Get Prompt",
+                "operationId": "get_prompt_api_v1_prompts__prompt_id__get",
+                "parameters": [
+                    {
+                        "name": "prompt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Prompt Id"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PromptOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "prompts"
+                ],
+                "summary": "Patch Prompt",
+                "operationId": "patch_prompt_api_v1_prompts__prompt_id__patch",
+                "parameters": [
+                    {
+                        "name": "prompt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Prompt Id"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PromptPatchRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PromptOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/prompts/{prompt_id}/run": {
+            "post": {
+                "tags": [
+                    "prompts"
+                ],
+                "summary": "Run Prompt",
+                "operationId": "run_prompt_api_v1_prompts__prompt_id__run_post",
+                "parameters": [
+                    {
+                        "name": "prompt_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Prompt Id"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/RunPromptRequest"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "title": "Body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnswerSummaryOut"
+                                    },
+                                    "title": "Response Run Prompt Api V1 Prompts  Prompt Id  Run Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/monitoring/scans": {
+            "post": {
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Run Scans",
+                "operationId": "run_scans_api_v1_monitoring_scans_post",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/ScanRequest"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "title": "Body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnswerSummaryOut"
+                                    },
+                                    "title": "Response Run Scans Api V1 Monitoring Scans Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/monitoring/overview": {
+            "get": {
+                "tags": [
+                    "monitoring"
+                ],
+                "summary": "Monitoring Overview",
+                "operationId": "monitoring_overview_api_v1_monitoring_overview_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MonitoringOverviewOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/overview": {
+            "get": {
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Dashboard Overview",
+                "operationId": "dashboard_overview_api_v1_dashboard_overview_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardOverviewOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/answers": {
+            "get": {
+                "tags": [
+                    "answers"
+                ],
+                "summary": "List Answers",
+                "operationId": "list_answers_api_v1_answers_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnswerListOut"
+                                    },
+                                    "title": "Response List Answers Api V1 Answers Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/competitors/overview": {
+            "get": {
+                "tags": [
+                    "competitors"
+                ],
+                "summary": "Competitors Overview",
+                "operationId": "competitors_overview_api_v1_competitors_overview_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitorsOverviewOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/competitors": {
+            "get": {
+                "tags": [
+                    "competitors"
+                ],
+                "summary": "List Competitors",
+                "operationId": "list_competitors_api_v1_competitors_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitorOut"
+                                    },
+                                    "title": "Response List Competitors Api V1 Competitors Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/recommendations": {
+            "get": {
+                "tags": [
+                    "recommendations"
+                ],
+                "summary": "List Recommendations",
+                "operationId": "list_recommendations_api_v1_recommendations_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecommendationOut"
+                                    },
+                                    "title": "Response List Recommendations Api V1 Recommendations Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "recommendations"
+                ],
+                "summary": "Create Recommendation",
+                "operationId": "create_recommendation_api_v1_recommendations_post",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecommendationCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecommendationOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/recommendations/generate": {
+            "post": {
+                "tags": [
+                    "recommendations"
+                ],
+                "summary": "Generate From Gaps",
+                "operationId": "generate_from_gaps_api_v1_recommendations_generate_post",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecommendationOut"
+                                    },
+                                    "title": "Response Generate From Gaps Api V1 Recommendations Generate Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/recommendations/{rec_id}": {
+            "patch": {
+                "tags": [
+                    "recommendations"
+                ],
+                "summary": "Patch Recommendation",
+                "operationId": "patch_recommendation_api_v1_recommendations__rec_id__patch",
+                "parameters": [
+                    {
+                        "name": "rec_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Rec Id"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecommendationPatch"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecommendationOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/experiments": {
+            "get": {
+                "tags": [
+                    "experiments"
+                ],
+                "summary": "List Experiments",
+                "operationId": "list_experiments_api_v1_experiments_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ExperimentOut"
+                                    },
+                                    "title": "Response List Experiments Api V1 Experiments Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "experiments"
+                ],
+                "summary": "Create Experiment",
+                "operationId": "create_experiment_api_v1_experiments_post",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExperimentCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExperimentOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/experiments/{experiment_id}": {
+            "get": {
+                "tags": [
+                    "experiments"
+                ],
+                "summary": "Get Experiment",
+                "operationId": "get_experiment_api_v1_experiments__experiment_id__get",
+                "parameters": [
+                    {
+                        "name": "experiment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Experiment Id"
+                        }
+                    },
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExperimentOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/billing/usage": {
+            "get": {
+                "tags": [
+                    "billing"
+                ],
+                "summary": "Usage",
+                "operationId": "usage_api_v1_billing_usage_get",
+                "parameters": [
+                    {
+                        "name": "X-Workspace-Id",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "X-Workspace-Id"
+                        }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "title": "Authorization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UsageOut"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/confidence/series": {
+            "post": {
+                "tags": [
+                    "confidence"
+                ],
+                "summary": "Analyze Series",
+                "operationId": "analyze_series_api_v1_confidence_series_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SeriesRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Analyze Series Api V1 Confidence Series Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/confidence/change": {
+            "post": {
+                "tags": [
+                    "confidence"
+                ],
+                "summary": "Analyze Change",
+                "operationId": "analyze_change_api_v1_confidence_change_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangeRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "Response Analyze Change Api V1 Confidence Change Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AiModelOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "long_name": {
+                        "type": "string",
+                        "title": "Long Name"
+                    },
+                    "badge": {
+                        "type": "string",
+                        "title": "Badge"
+                    },
+                    "measurement_method": {
+                        "type": "string",
+                        "title": "Measurement Method"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "long_name",
+                    "badge",
+                    "measurement_method",
+                    "enabled"
+                ],
+                "title": "AiModelOut"
+            },
+            "AnswerListOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "prompt_id": {
+                        "type": "string",
+                        "title": "Prompt Id"
+                    },
+                    "model_id": {
+                        "type": "string",
+                        "title": "Model Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "brand_position": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Position"
+                    },
+                    "outcome": {
+                        "type": "string",
+                        "title": "Outcome"
+                    },
+                    "sentiment_label": {
+                        "type": "string",
+                        "title": "Sentiment Label"
+                    },
+                    "parser_version": {
+                        "type": "integer",
+                        "title": "Parser Version"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    },
+                    "prompt_text": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Prompt Text"
+                    },
+                    "raw_text": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Raw Text"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "prompt_id",
+                    "model_id",
+                    "status",
+                    "brand_position",
+                    "outcome",
+                    "sentiment_label",
+                    "parser_version",
+                    "created_at"
+                ],
+                "title": "AnswerListOut"
+            },
+            "AnswerSummaryOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "prompt_id": {
+                        "type": "string",
+                        "title": "Prompt Id"
+                    },
+                    "model_id": {
+                        "type": "string",
+                        "title": "Model Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "brand_position": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Position"
+                    },
+                    "outcome": {
+                        "type": "string",
+                        "title": "Outcome"
+                    },
+                    "sentiment_label": {
+                        "type": "string",
+                        "title": "Sentiment Label"
+                    },
+                    "parser_version": {
+                        "type": "integer",
+                        "title": "Parser Version"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "prompt_id",
+                    "model_id",
+                    "status",
+                    "brand_position",
+                    "outcome",
+                    "sentiment_label",
+                    "parser_version",
+                    "created_at"
+                ],
+                "title": "AnswerSummaryOut"
+            },
+            "ChangeRequest": {
+                "properties": {
+                    "before": {
+                        "type": "number",
+                        "title": "Before"
+                    },
+                    "after": {
+                        "type": "number",
+                        "title": "After"
+                    },
+                    "sample_size": {
+                        "type": "integer",
+                        "title": "Sample Size"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "before",
+                    "after",
+                    "sample_size"
+                ],
+                "title": "ChangeRequest"
+            },
+            "CompetitorOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "logo_letter": {
+                        "type": "string",
+                        "title": "Logo Letter"
+                    },
+                    "domain": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Domain"
+                    },
+                    "is_brand": {
+                        "type": "boolean",
+                        "title": "Is Brand"
+                    },
+                    "share": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Share"
+                    },
+                    "sample_size": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Sample Size"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "logo_letter",
+                    "is_brand"
+                ],
+                "title": "CompetitorOut"
+            },
+            "CompetitorsOverviewOut": {
+                "properties": {
+                    "workspace_id": {
+                        "type": "string",
+                        "title": "Workspace Id"
+                    },
+                    "competitors": {
+                        "items": {
+                            "$ref": "#/components/schemas/CompetitorOut"
+                        },
+                        "type": "array",
+                        "title": "Competitors"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace_id",
+                    "competitors"
+                ],
+                "title": "CompetitorsOverviewOut"
+            },
+            "DashboardOverviewOut": {
+                "properties": {
+                    "workspace_id": {
+                        "type": "string",
+                        "title": "Workspace Id"
+                    },
+                    "metrics": {
+                        "items": {
+                            "$ref": "#/components/schemas/MetricOut"
+                        },
+                        "type": "array",
+                        "title": "Metrics"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace_id",
+                    "metrics"
+                ],
+                "title": "DashboardOverviewOut"
+            },
+            "ExperimentCreate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Name"
+                    },
+                    "hypothesis": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Hypothesis"
+                    },
+                    "recommendation_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Recommendation Id"
+                    },
+                    "start_date": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Start Date"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "title": "ExperimentCreate"
+            },
+            "ExperimentOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "hypothesis": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Hypothesis"
+                    },
+                    "recommendation_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Recommendation Id"
+                    },
+                    "start_date": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Start Date"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "baseline_inclusion": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Baseline Inclusion"
+                    },
+                    "current_inclusion": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Current Inclusion"
+                    },
+                    "lift": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Lift"
+                    },
+                    "confidence": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": true,
+                                "type": "object"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Confidence"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "hypothesis",
+                    "recommendation_id",
+                    "start_date",
+                    "status"
+                ],
+                "title": "ExperimentOut"
+            },
+            "GraderRequest": {
+                "properties": {
+                    "brand_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Brand Name"
+                    },
+                    "domain": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Domain"
+                    },
+                    "competitors": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Competitors"
+                    },
+                    "prompt": {
+                        "type": "string",
+                        "title": "Prompt",
+                        "default": "What are the best tools in this category for a mid-size company?"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand_name"
+                ],
+                "title": "GraderRequest"
+            },
+            "GraderResponse": {
+                "properties": {
+                    "brand_name": {
+                        "type": "string",
+                        "title": "Brand Name"
+                    },
+                    "visibility_score": {
+                        "type": "number",
+                        "title": "Visibility Score"
+                    },
+                    "outcome": {
+                        "type": "string",
+                        "title": "Outcome"
+                    },
+                    "brand_position": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Brand Position"
+                    },
+                    "sample_note": {
+                        "type": "string",
+                        "title": "Sample Note"
+                    },
+                    "dimensions": {
+                        "additionalProperties": {
+                            "type": "number"
+                        },
+                        "type": "object",
+                        "title": "Dimensions"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "brand_name",
+                    "visibility_score",
+                    "outcome",
+                    "brand_position",
+                    "sample_note",
+                    "dimensions"
+                ],
+                "title": "GraderResponse"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "LoginRequest": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "title": "LoginRequest"
+            },
+            "LoginResponse": {
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "title": "Access Token"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "title": "Token Type",
+                        "default": "bearer"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserOut"
+                    },
+                    "memberships": {
+                        "items": {
+                            "$ref": "#/components/schemas/MembershipOut"
+                        },
+                        "type": "array",
+                        "title": "Memberships"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "access_token",
+                    "user",
+                    "memberships"
+                ],
+                "title": "LoginResponse"
+            },
+            "MeResponse": {
+                "properties": {
+                    "user": {
+                        "$ref": "#/components/schemas/UserOut"
+                    },
+                    "memberships": {
+                        "items": {
+                            "$ref": "#/components/schemas/MembershipOut"
+                        },
+                        "type": "array",
+                        "title": "Memberships"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "user",
+                    "memberships"
+                ],
+                "title": "MeResponse"
+            },
+            "MembershipOut": {
+                "properties": {
+                    "workspace_id": {
+                        "type": "string",
+                        "title": "Workspace Id"
+                    },
+                    "role": {
+                        "type": "string",
+                        "title": "Role"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "workspace_name": {
+                        "type": "string",
+                        "title": "Workspace Name"
+                    },
+                    "brand_name": {
+                        "type": "string",
+                        "title": "Brand Name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace_id",
+                    "role",
+                    "status",
+                    "workspace_name",
+                    "brand_name"
+                ],
+                "title": "MembershipOut"
+            },
+            "MetricOut": {
+                "properties": {
+                    "metric_key": {
+                        "type": "string",
+                        "title": "Metric Key"
+                    },
+                    "value": {
+                        "type": "number",
+                        "title": "Value"
+                    },
+                    "sample_size": {
+                        "type": "integer",
+                        "title": "Sample Size"
+                    },
+                    "model_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Id"
+                    },
+                    "category_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Category Id"
+                    },
+                    "competitor_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Competitor Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "metric_key",
+                    "value",
+                    "sample_size"
+                ],
+                "title": "MetricOut"
+            },
+            "MonitoringOverviewOut": {
+                "properties": {
+                    "workspace_id": {
+                        "type": "string",
+                        "title": "Workspace Id"
+                    },
+                    "active_prompts": {
+                        "type": "integer",
+                        "title": "Active Prompts"
+                    },
+                    "total_answers": {
+                        "type": "integer",
+                        "title": "Total Answers"
+                    },
+                    "latest_answer_at": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Latest Answer At"
+                    },
+                    "sync_scans": {
+                        "type": "boolean",
+                        "title": "Sync Scans"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "workspace_id",
+                    "active_prompts",
+                    "total_answers",
+                    "latest_answer_at",
+                    "sync_scans"
+                ],
+                "title": "MonitoringOverviewOut"
+            },
+            "PromptCreateRequest": {
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Text"
+                    },
+                    "category_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Category Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "default": "active"
+                    },
+                    "samples_per_run": {
+                        "type": "integer",
+                        "minimum": 1.0,
+                        "title": "Samples Per Run",
+                        "default": 1
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "text"
+                ],
+                "title": "PromptCreateRequest"
+            },
+            "PromptOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "workspace_id": {
+                        "type": "string",
+                        "title": "Workspace Id"
+                    },
+                    "text": {
+                        "type": "string",
+                        "title": "Text"
+                    },
+                    "category_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Category Id"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "samples_per_run": {
+                        "type": "integer",
+                        "title": "Samples Per Run"
+                    },
+                    "archived_at": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Archived At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "workspace_id",
+                    "text",
+                    "category_id",
+                    "status",
+                    "samples_per_run"
+                ],
+                "title": "PromptOut"
+            },
+            "PromptPatchRequest": {
+                "properties": {
+                    "text": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Text"
+                    },
+                    "category_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Category Id"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Status"
+                    },
+                    "samples_per_run": {
+                        "anyOf": [
+                            {
+                                "type": "integer",
+                                "minimum": 1.0
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Samples Per Run"
+                    },
+                    "archived": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Archived"
+                    }
+                },
+                "type": "object",
+                "title": "PromptPatchRequest"
+            },
+            "RecommendationCreate": {
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Title"
+                    },
+                    "rationale": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Rationale"
+                    },
+                    "predicted_impact": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Predicted Impact"
+                    },
+                    "source": {
+                        "type": "string",
+                        "title": "Source",
+                        "default": "customer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "title"
+                ],
+                "title": "RecommendationCreate"
+            },
+            "RecommendationOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "rationale": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Rationale"
+                    },
+                    "predicted_impact": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Predicted Impact"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status"
+                    },
+                    "source": {
+                        "type": "string",
+                        "title": "Source"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "rationale",
+                    "predicted_impact",
+                    "status",
+                    "source"
+                ],
+                "title": "RecommendationOut"
+            },
+            "RecommendationPatch": {
+                "properties": {
+                    "title": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Title"
+                    },
+                    "rationale": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Rationale"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Status"
+                    }
+                },
+                "type": "object",
+                "title": "RecommendationPatch"
+            },
+            "RegisterRequest": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "title": "Password"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Name"
+                    },
+                    "organization_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Organization Name"
+                    },
+                    "brand_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Brand Name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "password",
+                    "name",
+                    "organization_name",
+                    "brand_name"
+                ],
+                "title": "RegisterRequest"
+            },
+            "RunPromptRequest": {
+                "properties": {
+                    "model_ids": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Ids"
+                    }
+                },
+                "type": "object",
+                "title": "RunPromptRequest"
+            },
+            "ScanRequest": {
+                "properties": {
+                    "workspace_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Workspace Id"
+                    },
+                    "prompt_id": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Prompt Id"
+                    },
+                    "model_ids": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Model Ids"
+                    }
+                },
+                "type": "object",
+                "title": "ScanRequest"
+            },
+            "SeriesRequest": {
+                "properties": {
+                    "values": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array",
+                        "title": "Values"
+                    }
+                },
+                "type": "object",
+                "title": "SeriesRequest"
+            },
+            "UsageOut": {
+                "properties": {
+                    "prompts_used": {
+                        "type": "integer",
+                        "title": "Prompts Used"
+                    },
+                    "prompts_quota": {
+                        "type": "integer",
+                        "title": "Prompts Quota"
+                    },
+                    "answers_this_month": {
+                        "type": "integer",
+                        "title": "Answers This Month"
+                    },
+                    "scan_commitment_mode": {
+                        "type": "string",
+                        "title": "Scan Commitment Mode"
+                    },
+                    "pricing_lane": {
+                        "type": "string",
+                        "title": "Pricing Lane",
+                        "default": "undecided"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "prompts_used",
+                    "prompts_quota",
+                    "answers_this_month",
+                    "scan_commitment_mode"
+                ],
+                "title": "UsageOut"
+            },
+            "UserOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "email": {
+                        "type": "string",
+                        "title": "Email"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "avatar_url": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Avatar Url"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "email",
+                    "name"
+                ],
+                "title": "UserOut"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    },
+                    "input": {
+                        "title": "Input"
+                    },
+                    "ctx": {
+                        "type": "object",
+                        "title": "Context"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "WorkspaceCreateRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Name"
+                    },
+                    "brand_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Brand Name"
+                    },
+                    "brand_domains": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Brand Domains"
+                    },
+                    "monitoring_frequency": {
+                        "type": "string",
+                        "title": "Monitoring Frequency",
+                        "default": "weekly"
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "title": "Timezone",
+                        "default": "UTC"
+                    },
+                    "competitors": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Competitors"
+                    },
+                    "categories": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Categories"
+                    },
+                    "regions": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Regions"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "brand_name"
+                ],
+                "title": "WorkspaceCreateRequest"
+            },
+            "WorkspaceOut": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "brand_name": {
+                        "type": "string",
+                        "title": "Brand Name"
+                    },
+                    "brand_domains": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Brand Domains"
+                    },
+                    "monitoring_frequency": {
+                        "type": "string",
+                        "title": "Monitoring Frequency"
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "title": "Timezone"
+                    },
+                    "onboarding_completed_at": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Onboarding Completed At"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "brand_name",
+                    "brand_domains",
+                    "monitoring_frequency",
+                    "timezone"
+                ],
+                "title": "WorkspaceOut"
+            }
+        }
+    }
+}
