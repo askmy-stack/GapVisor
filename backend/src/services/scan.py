@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from adapters.providers import MockProvider, ProviderAdapter
 from core.config import settings
 from core.db import SessionLocal
 from models import (
@@ -18,11 +19,18 @@ from models import (
     Prompt,
     Workspace,
 )
+from services.normalize import normalize_response
 from services.parse import ParsedAnswer, parse_answer
-from services.provider import MockProvider, Provider
 from services.rollup import rollup_answers
 from services.scan_commitment import plan_models_for_day
 from services.validation import classify_observation
+
+
+def _failed_parse() -> ParsedAnswer:
+    """Placeholder extraction for a provider call that failed or timed
+    out — distinct from a real "absent" outcome (a completed answer that
+    genuinely didn't mention the brand)."""
+    return ParsedAnswer(brand_position=None, outcome="error", sentiment_label="neutral", competitor_mentions={})
 
 
 def run_scan(
@@ -31,7 +39,7 @@ def run_scan(
     model_ids: list[str] | None = None,
     *,
     db: Session | None = None,
-    provider: Provider | None = None,
+    provider: ProviderAdapter | None = None,
 ) -> list[Answer]:
     """Run a prompt scan synchronously and roll up daily metrics."""
     owns_session = db is None
@@ -63,25 +71,34 @@ def run_scan(
 
             for _ in range(prompt.samples_per_run):
                 started_at = time.perf_counter()
-                raw_text = local_provider.generate(
+                response = local_provider.generate(
                     workspace=workspace,
                     prompt=prompt,
                     model_id=model_id,
                     competitors=list(competitors),
                 )
                 latency_ms = int((time.perf_counter() - started_at) * 1000)
-                parsed = parse_answer(
-                    raw_text=raw_text,
-                    brand_name=workspace.brand_name,
-                    competitors=list(competitors),
-                )
+                normalized = normalize_response(response)
+
+                if normalized.status == "completed":
+                    parsed = parse_answer(
+                        raw_text=normalized.text,
+                        brand_name=workspace.brand_name,
+                        competitors=list(competitors),
+                    )
+                else:
+                    # Provider call failed or timed out, or produced nothing
+                    # usable after normalization — record that honestly
+                    # rather than pretending we got a real answer.
+                    parsed = _failed_parse()
+
                 captured_at = datetime.now(UTC)
                 answer = Answer(
                     workspace_id=workspace_id,
                     prompt_id=prompt_id,
                     model_id=model_id,
-                    status="completed",
-                    raw_text=raw_text,
+                    status=normalized.status,
+                    raw_text=normalized.text,
                     brand_position=parsed.brand_position,
                     outcome=parsed.outcome,
                     sentiment_label=parsed.sentiment_label,
@@ -106,10 +123,11 @@ def run_scan(
                     answer=answer,
                     model_id=model_id,
                     ai_model=ai_model,
-                    raw_text=raw_text,
+                    raw_text=normalized.text,
                     latency_ms=latency_ms,
                     captured_at=captured_at,
                     parsed=parsed,
+                    normalizer_version=normalized.normalizer_version,
                 )
 
         session.flush()
@@ -147,10 +165,11 @@ def record_observation(
     answer: Answer,
     model_id: str,
     ai_model: AiModel | None,
-    raw_text: str,
+    raw_text: str | None,
     latency_ms: int | None,
     captured_at: datetime,
     parsed: ParsedAnswer,
+    normalizer_version: int = 1,
 ) -> Observation:
     """Write the Observation + ObservationExtraction pair for one generated
     answer. Additive to the existing Answer/AnswerMention/MetricDaily path,
@@ -177,7 +196,7 @@ def record_observation(
         raw_response_ref=None,
         validation_status=validation_status,
         parser_version=answer.parser_version,
-        normalizer_version=1,
+        normalizer_version=normalizer_version,
         captured_at=captured_at,
     )
     session.add(observation)

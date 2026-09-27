@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from adapters.providers import MockProvider
 from core.config import settings
 from core.db import SessionLocal
 from core.security import hash_password
@@ -31,7 +32,6 @@ from models import (
     Workspace,
 )
 from services.parse import ParsedAnswer, parse_answer
-from services.provider import MockProvider
 from services.rollup import rollup_answers
 from services.scan import record_observation
 
@@ -383,7 +383,7 @@ def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACK
                     prompt=prompt,
                     model_id=model_id,
                     competitors=competitors,
-                )
+                ).raw_text
                 parsed = parse_answer(
                     raw_text=raw_text,
                     brand_name=workspace.brand_name,
