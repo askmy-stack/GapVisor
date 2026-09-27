@@ -9,7 +9,10 @@ from models.platform import (
     ContentRecommendation,
     Experiment,
     MetricDaily,
+    Observation,
+    ObservationExtraction,
     Prompt,
+    PromptFamily,
     Region,
 )
 from models.refresh_token import RefreshToken
@@ -26,8 +29,11 @@ __all__ = [
     "Experiment",
     "Membership",
     "MetricDaily",
+    "Observation",
+    "ObservationExtraction",
     "Organization",
     "Prompt",
+    "PromptFamily",
     "RefreshToken",
     "Region",
     "User",

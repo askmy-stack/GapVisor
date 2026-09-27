@@ -2,8 +2,29 @@ from datetime import date, datetime
 
 from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import JSON
 
 from models.base import Base, TimestampMixin, new_uuid
+
+
+class PromptFamily(Base, TimestampMixin):
+    """A cluster of prompts that probe the same underlying buyer intent.
+
+    vNext observation/disagreement/causal-graph work is scoped per prompt
+    family rather than per individual prompt string, since disagreement
+    across near-duplicate phrasings of the same question is noise, not
+    signal. Optional on Prompt for now — existing prompts are ungrouped
+    until a workspace explicitly clusters them.
+    """
+
+    __tablename__ = "prompt_families"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
+    name: Mapped[str] = mapped_column(Text, nullable=False)
+    description: Mapped[str | None] = mapped_column(Text)
+
+    prompts = relationship("Prompt", back_populates="prompt_family")
 
 
 class Competitor(Base):
@@ -46,11 +67,13 @@ class Prompt(Base, TimestampMixin):
     workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     category_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("categories.id"))
+    prompt_family_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("prompt_families.id"))
     status: Mapped[str] = mapped_column(String(32), nullable=False, default="active")
     samples_per_run: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     category = relationship("Category", back_populates="prompts")
+    prompt_family = relationship("PromptFamily", back_populates="prompts")
     answers = relationship("Answer", back_populates="prompt")
 
 
@@ -133,3 +156,92 @@ class Experiment(Base, TimestampMixin):
     recommendation_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("content_recommendations.id"))
     start_date: Mapped[date | None] = mapped_column(Date)
     status: Mapped[str] = mapped_column(String(32), nullable=False, default="planned")
+
+
+class Observation(Base):
+    """One raw, provenance-tagged collection event: one prompt sent to one
+    AI surface and the response that came back, before any brand/claim
+    extraction happens.
+
+    This is additive to (not a replacement for) `Answer`: `run_scan` writes
+    both an `Answer` (existing dashboard/rollup pipeline, unchanged) and an
+    `Observation` (this table) for every generated sample. Observation adds
+    the provenance and validation fields the vNext plan requires that
+    `Answer` was never designed to carry — surface/provider/collection-method
+    labeling and a VALID/UNCERTAIN/INVALID gate on whether an answer is
+    trustworthy enough to feed metrics at all.
+
+    `ai_models.id` (e.g. "chatgpt", "claude") already functions as this
+    codebase's surface identifier — one row per directly-scannable surface,
+    see `AiModel`'s own docstring. `surface` here is a copy of that id at
+    observation time, not a new taxonomy, so multiple distinct surfaces per
+    model (e.g. a consumer web UI vs. the same model's API) can be
+    introduced later without a backfill.
+    """
+
+    __tablename__ = "observations"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
+    prompt_id: Mapped[str] = mapped_column(String(36), ForeignKey("prompts.id"), nullable=False)
+    prompt_family_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("prompt_families.id"))
+    answer_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("answers.id"))
+
+    surface: Mapped[str] = mapped_column(String(64), nullable=False)
+    provider: Mapped[str | None] = mapped_column(String(64))
+    model_id: Mapped[str] = mapped_column(String(64), ForeignKey("ai_models.id"), nullable=False)
+    collection_method: Mapped[str] = mapped_column(String(32), nullable=False)
+    # Signaled region for this observation, when known. Nullable: the
+    # existing Prompt model has no region assignment yet (see Region model),
+    # so this is honestly unset rather than defaulted to a guessed value.
+    region: Mapped[str | None] = mapped_column(String(32))
+
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    raw_text: Mapped[str | None] = mapped_column(Text)
+    # Pointer to externally-stored raw response (e.g. object storage). No
+    # blob store is wired up yet, so this stays null until one exists;
+    # raw_text above is the source of truth for now.
+    raw_response_ref: Mapped[str | None] = mapped_column(Text)
+
+    validation_status: Mapped[str] = mapped_column(String(16), nullable=False, default="UNCERTAIN")
+    parser_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    normalizer_version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+    captured_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    extraction = relationship("ObservationExtraction", back_populates="observation", uselist=False)
+
+
+class ObservationExtraction(Base):
+    """Extracted recommendation evidence for one Observation (spec section
+    5.2): brand/competitor mentions, rank, and an extraction confidence
+    score. Kept as a separate table from Observation (rather than more
+    columns bolted onto it) so raw collection and derived extraction can
+    evolve — and be re-run at a new parser_version — independently, per the
+    plan's `SOURCE.raw_response_ref` / re-parse principle (see also the
+    existing backfill-from-raw-answers direction in issue #28).
+    """
+
+    __tablename__ = "observation_extractions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    observation_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("observations.id"), nullable=False, unique=True
+    )
+
+    brand_mentioned: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    recommendation_rank: Mapped[int | None] = mapped_column(Integer)
+    outcome: Mapped[str] = mapped_column(String(32), nullable=False)
+    sentiment_label: Mapped[str] = mapped_column(String(32), nullable=False)
+    # {competitor_id: mentioned_bool}
+    competitor_mentions: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    # Claim/citation extraction (spec section 10: Claim, Citation entities)
+    # isn't implemented yet — both stay empty lists until that work lands,
+    # rather than fabricating placeholder content.
+    claims: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    citations: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    extraction_confidence: Mapped[float] = mapped_column(Float, nullable=False)
+    parser_version: Mapped[int] = mapped_column(Integer, nullable=False)
+
+    observation = relationship("Observation", back_populates="extraction")

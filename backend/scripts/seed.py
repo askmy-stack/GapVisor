@@ -23,15 +23,17 @@ from models import (
     Category,
     Competitor,
     Membership,
+    Observation,
     Organization,
     Prompt,
     Region,
     User,
     Workspace,
 )
-from services.parse import parse_answer
+from services.parse import ParsedAnswer, parse_answer
 from services.provider import MockProvider
 from services.rollup import rollup_answers
+from services.scan import record_observation
 
 CATALOG = [
     {
@@ -266,6 +268,68 @@ def seed_platform(db: Session, workspace: Workspace) -> None:
     existing_answer = db.scalar(select(Answer).where(Answer.workspace_id == workspace.id).limit(1))
     if existing_answer is None:
         backfill_scan_history(db, workspace)
+    else:
+        # Answers already exist (workspace seeded before the vNext G1
+        # migration added `observations`), so the historical backfill above
+        # never ran for them. Reconstruct observations from the
+        # already-stored raw answers instead of re-scanning.
+        backfill_observations_for_existing_answers(db, workspace)
+
+
+def backfill_observations_for_existing_answers(db: Session, workspace: Workspace) -> None:
+    """One-time reconstruction of Observation/ObservationExtraction rows for
+    Answers that predate the vNext G1 migration. Idempotent: skips any
+    answer that already has an observation, so re-running the seed script
+    (as happens on every container start) is a no-op after the first pass.
+    """
+    already_covered = set(
+        db.scalars(
+            select(Observation.answer_id).where(
+                Observation.workspace_id == workspace.id,
+                Observation.answer_id.is_not(None),
+            )
+        ).all()
+    )
+    answers = list(
+        db.scalars(select(Answer).where(Answer.workspace_id == workspace.id)).all()
+    )
+    pending = [a for a in answers if a.id not in already_covered]
+    if not pending:
+        return
+
+    ai_model_cache: dict[str, AiModel | None] = {}
+    mentions_by_answer: dict[str, dict[str, bool]] = {}
+    for mention in db.scalars(
+        select(AnswerMention).join(Answer, Answer.id == AnswerMention.answer_id).where(
+            Answer.workspace_id == workspace.id
+        )
+    ).all():
+        mentions_by_answer.setdefault(mention.answer_id, {})[mention.competitor_id] = mention.mentioned
+
+    for answer in pending:
+        if answer.model_id not in ai_model_cache:
+            ai_model_cache[answer.model_id] = db.get(AiModel, answer.model_id)
+        prompt = db.get(Prompt, answer.prompt_id)
+        parsed = ParsedAnswer(
+            brand_position=answer.brand_position,
+            outcome=answer.outcome,
+            sentiment_label=answer.sentiment_label,
+            competitor_mentions=mentions_by_answer.get(answer.id, {}),
+        )
+        record_observation(
+            db,
+            workspace_id=workspace.id,
+            prompt=prompt,
+            answer=answer,
+            model_id=answer.model_id,
+            ai_model=ai_model_cache[answer.model_id],
+            raw_text=answer.raw_text or "",
+            latency_ms=None,  # reconstructed after the fact; never measured
+            captured_at=answer.created_at,
+            parsed=parsed,
+        )
+    db.commit()
+    print(f"Backfilled {len(pending)} observations from pre-existing answers")
 
 
 def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACKFILL_DAYS) -> None:
@@ -299,11 +363,15 @@ def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACK
     rng = random.Random(f"{workspace.id}:backfill")
     now = datetime.now(UTC)
     answer_ids: list[str] = []
+    ai_model_cache: dict[str, AiModel | None] = {}
 
     for day_offset in range(days, -1, -1):
         day_start = now - timedelta(days=day_offset)
         for prompt in prompts:
             for model_id in BACKFILL_MODEL_IDS:
+                if model_id not in ai_model_cache:
+                    ai_model_cache[model_id] = db.get(AiModel, model_id)
+
                 created_at = day_start.replace(
                     hour=rng.randint(7, 20),
                     minute=rng.randint(0, 59),
@@ -344,13 +412,25 @@ def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACK
                         )
                     )
                 answer_ids.append(answer.id)
+                record_observation(
+                    db,
+                    workspace_id=workspace.id,
+                    prompt=prompt,
+                    answer=answer,
+                    model_id=model_id,
+                    ai_model=ai_model_cache[model_id],
+                    raw_text=raw_text,
+                    latency_ms=None,  # backfilled retroactively; not a measured call
+                    captured_at=created_at,
+                    parsed=parsed,
+                )
 
     db.flush()
     rollup_answers(db, workspace_id=workspace.id, answer_ids=answer_ids)
     db.commit()
     print(
-        f"Backfilled {len(answer_ids)} mock answers across {days + 1} days, "
-        f"{len(prompts)} prompts, and {len(BACKFILL_MODEL_IDS)} models"
+        f"Backfilled {len(answer_ids)} mock answers (+ observations) across "
+        f"{days + 1} days, {len(prompts)} prompts, and {len(BACKFILL_MODEL_IDS)} models"
     )
 
 
