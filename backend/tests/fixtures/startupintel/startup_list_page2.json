@@ -1,0 +1,21 @@
+{
+    "items": [
+        {
+            "name": "Sample Gateway Co",
+            "domain": "sample-gateway.example",
+            "crunchbase_id": null,
+            "founded_year": 2019,
+            "industry": "developer tools",
+            "stage": "series_b",
+            "hq_city": "Sample City",
+            "hq_country": "US",
+            "employee_count": 140,
+            "total_funding_usd": 62000000.0,
+            "last_funding_date": "2026-09-12T00:00:00Z",
+            "id": "4242d86b-7a72-47d5-81a8-dbae22d7dc57",
+            "created_at": "2026-09-28T12:31:07.909089Z",
+            "updated_at": "2026-09-28T12:31:07.909092Z"
+        }
+    ],
+    "total": 4
+}

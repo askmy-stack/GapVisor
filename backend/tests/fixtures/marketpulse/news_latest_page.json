@@ -1,0 +1,131 @@
+{
+    "articles": [
+        {
+            "id": 9,
+            "event_id": "b4c01ffa-d5c4-4a1a-96c0-4ba73a6930f3",
+            "headline": "DDOG beats earnings expectations, shares jump in pre-market",
+            "summary": "Company news for DDOG: DDOG beats earnings expectations, shares jump in pre-market",
+            "category": "company",
+            "symbols": [
+                "DDOG"
+            ],
+            "sentiment_score": 1.0,
+            "published_at": "2026-09-28T12:29:24.226250",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 8,
+            "event_id": "f6d1d6ae-dc2d-4b15-b8e5-d185acd8f5b7",
+            "headline": "NET CEO outlines long-term strategy at investor day",
+            "summary": "Company news for NET: NET CEO outlines long-term strategy at investor day",
+            "category": "company",
+            "symbols": [
+                "NET"
+            ],
+            "sentiment_score": 0.0,
+            "published_at": "2026-09-28T12:29:24.226223",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 7,
+            "event_id": "1540dcb5-4df2-45d5-ab2f-246f0e31c3d4",
+            "headline": "DDOG CEO outlines long-term strategy at investor day",
+            "summary": "Company news for DDOG: DDOG CEO outlines long-term strategy at investor day",
+            "category": "company",
+            "symbols": [
+                "DDOG"
+            ],
+            "sentiment_score": 0.0,
+            "published_at": "2026-09-28T12:29:24.226194",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 6,
+            "event_id": "912abb0d-faf0-4795-bbcd-3186d09bad5c",
+            "headline": "NET CEO outlines long-term strategy at investor day",
+            "summary": "Company news for NET: NET CEO outlines long-term strategy at investor day",
+            "category": "company",
+            "symbols": [
+                "NET"
+            ],
+            "sentiment_score": 0.0,
+            "published_at": "2026-09-28T12:29:24.226159",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 5,
+            "event_id": "bbc0c0fa-131a-45e3-bc49-dcba20d76801",
+            "headline": "Analysts upgrade DDOG citing strong cloud growth",
+            "summary": "Company news for DDOG: Analysts upgrade DDOG citing strong cloud growth",
+            "category": "company",
+            "symbols": [
+                "DDOG"
+            ],
+            "sentiment_score": 1.0,
+            "published_at": "2026-09-28T12:29:24.226106",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 4,
+            "event_id": "a3e29441-0f1f-4b2b-9e38-2f8fc3b83ac2",
+            "headline": "Analysts upgrade NET citing strong cloud growth",
+            "summary": "Company news for NET: Analysts upgrade NET citing strong cloud growth",
+            "category": "company",
+            "symbols": [
+                "NET"
+            ],
+            "sentiment_score": 1.0,
+            "published_at": "2026-09-28T12:29:24.224434",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 3,
+            "event_id": "5be20fb6-e75d-4b7a-93d0-952347f70eb9",
+            "headline": "NET CEO outlines long-term strategy at investor day",
+            "summary": "Company news for NET: NET CEO outlines long-term strategy at investor day",
+            "category": "company",
+            "symbols": [
+                "NET"
+            ],
+            "sentiment_score": 0.0,
+            "published_at": "2026-09-28T12:28:14.948527",
+            "source": "mock_company_wire",
+            "url": null
+        },
+        {
+            "id": 2,
+            "event_id": "07b2d6da-2037-4895-bd59-658c7f35a818",
+            "headline": "Oil prices slip on demand concerns",
+            "summary": "Market update: Oil prices slip on demand concerns. Broad indices reacted with moderate moves.",
+            "category": "market",
+            "symbols": [],
+            "sentiment_score": -1.0,
+            "published_at": "2026-09-28T12:28:14.948509",
+            "source": "mock_market_wire",
+            "url": null
+        },
+        {
+            "id": 1,
+            "event_id": "fb7c94cf-68e6-4e9e-b3ca-95ad271c4a0b",
+            "headline": "Fed signals cautious stance on rate cuts amid inflation data",
+            "summary": "Market update: Fed signals cautious stance on rate cuts amid inflation data. Broad indices reacted with moderate moves.",
+            "category": "market",
+            "symbols": [],
+            "sentiment_score": 0.0,
+            "published_at": "2026-09-28T12:28:14.948189",
+            "source": "mock_market_wire",
+            "url": null
+        }
+    ],
+    "metadata": {
+        "offset": 0,
+        "limit": 50,
+        "next_offset": null
+    }
+}

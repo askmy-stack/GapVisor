@@ -83,6 +83,63 @@ def tracked_entities_for_workspace(db: Session, *, workspace_id: str) -> list[Tr
     return entities
 
 
+@dataclass(frozen=True)
+class TrackedCompany:
+    """A tracked entity with the identifiers company-data adapters join on
+    (StartupIntel by domain, MarketPulse by ticker)."""
+
+    entity_id: str
+    name: str
+    domains: tuple[str, ...] = ()
+    ticker_symbol: str | None = None
+
+
+def normalize_domain(value: str | None) -> str | None:
+    if not value:
+        return None
+    domain = value.strip().lower()
+    domain = re.sub(r"^[a-z][a-z0-9+.-]*://", "", domain)
+    domain = domain.split("/", 1)[0].split(":", 1)[0]
+    domain = domain.removeprefix("www.")
+    return domain or None
+
+
+def tracked_companies_for_workspace(db: Session, *, workspace_id: str) -> list[TrackedCompany]:
+    """The brand (workspace id; its brand_domains plus the is_brand
+    competitor row's domain/ticker) and each active non-brand competitor."""
+    workspace = db.get(Workspace, workspace_id)
+    if workspace is None:
+        return []
+    competitors = db.scalars(
+        select(Competitor).where(Competitor.workspace_id == workspace_id, Competitor.archived_at.is_(None))
+    ).all()
+
+    brand_domains = {normalize_domain(d) for d in (workspace.brand_domains or [])}
+    brand_ticker: str | None = None
+    companies: list[TrackedCompany] = []
+    for c in competitors:
+        ticker = c.ticker_symbol.strip().upper() if c.ticker_symbol else None
+        if c.is_brand:
+            brand_domains.add(normalize_domain(c.domain))
+            brand_ticker = brand_ticker or ticker
+            continue
+        domain = normalize_domain(c.domain)
+        companies.append(
+            TrackedCompany(entity_id=c.id, name=c.name, domains=(domain,) if domain else (), ticker_symbol=ticker)
+        )
+    brand_domains.discard(None)
+    companies.insert(
+        0,
+        TrackedCompany(
+            entity_id=workspace.id,
+            name=workspace.brand_name,
+            domains=tuple(sorted(brand_domains)),
+            ticker_symbol=brand_ticker,
+        ),
+    )
+    return companies
+
+
 @dataclass
 class IngestReport:
     accepted: int = 0

@@ -3,15 +3,21 @@
 from datetime import datetime
 from typing import Any
 
+import httpx
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 
-from adapters.external_signals import social_signal_pipeline
+from adapters.external_signals import marketpulse, social_signal_pipeline, startupintel
 from core.config import settings
 from core.deps import DbSession, WorkspaceId
 from models import ExternalSignal
-from services.signals import ExternalSignalEnvelope, ingest_signals, tracked_entities_for_workspace
+from services.signals import (
+    ExternalSignalEnvelope,
+    ingest_signals,
+    tracked_companies_for_workspace,
+    tracked_entities_for_workspace,
+)
 
 router = APIRouter(prefix="/signals", tags=["signals"])
 
@@ -85,6 +91,69 @@ def ingest_social_signal_pipeline(
         rejected=report.rejected,
         skipped=mapping.skipped,
     )
+
+
+def _sync_report(db: DbSession, workspace_id: str, envelopes: list, skipped: list) -> IngestReportOut:
+    report = ingest_signals(db, workspace_id=workspace_id, envelopes=envelopes)
+    db.commit()
+    return IngestReportOut(
+        accepted=report.accepted, duplicates=report.duplicates, rejected=report.rejected, skipped=skipped
+    )
+
+
+def _upstream_failure(name: str, exc: Exception) -> HTTPException:
+    return HTTPException(status_code=502, detail=f"{name} request failed: {type(exc).__name__}: {exc}")
+
+
+@router.post("/sync/startupintel", response_model=IngestReportOut)
+def sync_startupintel(db: DbSession, workspace_id: WorkspaceId) -> IngestReportOut:
+    """Pull StartupIntel's company list and ingest funding_event signals for
+    companies whose domain matches the brand or a tracked competitor."""
+    if not settings.STARTUPINTEL_ENABLED or not settings.STARTUPINTEL_BASE_URL:
+        raise HTTPException(status_code=503, detail="The StartupIntel integration is disabled or has no base URL")
+    client = startupintel.StartupIntelClient(
+        settings.STARTUPINTEL_BASE_URL, timeout=settings.EXTERNAL_SIGNAL_TIMEOUT_SECONDS
+    )
+    try:
+        items = client.fetch_startups()
+    except (httpx.HTTPError, startupintel.UpstreamError, ValueError) as exc:
+        raise _upstream_failure("StartupIntel", exc) from exc
+    finally:
+        client.close()
+
+    mapping = startupintel.map_startups(
+        items,
+        workspace_id=workspace_id,
+        tracked=tracked_companies_for_workspace(db, workspace_id=workspace_id),
+        source_base_url=settings.STARTUPINTEL_BASE_URL,
+    )
+    return _sync_report(db, workspace_id, mapping.envelopes, mapping.skipped)
+
+
+@router.post("/sync/marketpulse", response_model=IngestReportOut)
+def sync_marketpulse(db: DbSession, workspace_id: WorkspaceId) -> IngestReportOut:
+    """Pull MarketPulse anomalies and news for tracked tickers. Market
+    context only: never a financial prediction."""
+    if not settings.MARKETPULSE_ENABLED or not settings.MARKETPULSE_BASE_URL:
+        raise HTTPException(status_code=503, detail="The MarketPulse integration is disabled or has no base URL")
+    client = marketpulse.MarketPulseClient(
+        settings.MARKETPULSE_BASE_URL,
+        api_key=settings.MARKETPULSE_API_KEY,
+        timeout=settings.EXTERNAL_SIGNAL_TIMEOUT_SECONDS,
+    )
+    try:
+        anomalies = client.fetch_anomalies()
+        news = client.fetch_news()
+    except (httpx.HTTPError, marketpulse.UpstreamError, ValueError) as exc:
+        raise _upstream_failure("MarketPulse", exc) from exc
+    finally:
+        client.close()
+
+    tracked = tracked_companies_for_workspace(db, workspace_id=workspace_id)
+    kwargs = {"workspace_id": workspace_id, "tracked": tracked, "source_base_url": settings.MARKETPULSE_BASE_URL}
+    a = marketpulse.map_anomalies(anomalies, **kwargs)
+    n = marketpulse.map_news(news, **kwargs)
+    return _sync_report(db, workspace_id, a.envelopes + n.envelopes, a.skipped + n.skipped)
 
 
 @router.get("", response_model=ExternalSignalListOut)

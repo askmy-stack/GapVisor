@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     # Needs the optional py-outlier dependency (the `anomaly` extra); the
     # endpoints return 503 when it isn't installed.
     ANOMALY_DETECTION_ENABLED: bool = True
+    # Off by default: both need a running upstream service to be useful.
+    STARTUPINTEL_ENABLED: bool = False
+    STARTUPINTEL_BASE_URL: str | None = None
+    MARKETPULSE_ENABLED: bool = False
+    MARKETPULSE_BASE_URL: str | None = None
+    MARKETPULSE_API_KEY: str | None = None
+    EXTERNAL_SIGNAL_TIMEOUT_SECONDS: float = 10.0
 
 
 @lru_cache

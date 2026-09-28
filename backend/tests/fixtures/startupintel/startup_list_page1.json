@@ -1,0 +1,53 @@
+{
+    "items": [
+        {
+            "name": "Sample Bootstrapped Ltd",
+            "domain": "sample-bootstrapped.example",
+            "crunchbase_id": null,
+            "founded_year": 2018,
+            "industry": null,
+            "stage": null,
+            "hq_city": null,
+            "hq_country": null,
+            "employee_count": 35,
+            "total_funding_usd": null,
+            "last_funding_date": null,
+            "id": "462f73a1-2872-4256-9200-8816663f66f4",
+            "created_at": "2026-09-28T12:31:07.962094Z",
+            "updated_at": "2026-09-28T12:31:07.962096Z"
+        },
+        {
+            "name": "Sample Untracked Inc",
+            "domain": "sample-untracked.example",
+            "crunchbase_id": null,
+            "founded_year": 2020,
+            "industry": null,
+            "stage": "series_a",
+            "hq_city": null,
+            "hq_country": null,
+            "employee_count": null,
+            "total_funding_usd": 15000000.0,
+            "last_funding_date": "2026-09-01T00:00:00Z",
+            "id": "49664b59-421d-4d41-a8a3-3e03298df7dd",
+            "created_at": "2026-09-28T12:31:07.945949Z",
+            "updated_at": "2026-09-28T12:31:07.945951Z"
+        },
+        {
+            "name": "Sample Testing Labs",
+            "domain": "sample-testing.example",
+            "crunchbase_id": null,
+            "founded_year": 2021,
+            "industry": "developer tools",
+            "stage": "seed",
+            "hq_city": null,
+            "hq_country": null,
+            "employee_count": 18,
+            "total_funding_usd": 4500000.0,
+            "last_funding_date": "2025-11-03T00:00:00Z",
+            "id": "5587e2a1-3f2c-4a17-ab4d-56f99e3bf107",
+            "created_at": "2026-09-28T12:31:07.931423Z",
+            "updated_at": "2026-09-28T12:31:07.931425Z"
+        }
+    ],
+    "total": 4
+}
