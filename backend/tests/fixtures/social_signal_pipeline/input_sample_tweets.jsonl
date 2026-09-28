@@ -1,0 +1,4 @@
+{"id":"gv-sample-1","text":"Sample fixture: developers are discussing the new Kong plugin release for AI gateway routing.","username":"gv_demo_dev","created_at":"2026-09-20T14:00:00Z","is_sample":true,"like_count":120,"retweet_count":31}
+{"id":"gv-sample-2","text":"Sample fixture: Kong launch thread comparing the update to other API gateways for developer teams.","username":"gv_demo_dev2","created_at":"2026-09-21T09:30:00Z","is_sample":true,"like_count":88,"retweet_count":19}
+{"id":"gv-sample-3","text":"Sample fixture: warning, Northstar docs are hard to find and the setup guide looks outdated.","username":"gv_demo_ops","created_at":"2026-09-22T16:45:00Z","is_sample":true,"like_count":14,"retweet_count":3}
+{"id":"gv-sample-4","text":"Sample fixture: general chatter about cloud costs with no product mentioned.","username":"gv_demo_misc","created_at":"2026-09-22T18:00:00Z","is_sample":true,"like_count":5,"retweet_count":0}

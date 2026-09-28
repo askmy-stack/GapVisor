@@ -352,3 +352,47 @@ class CausalEdge(Base, TimestampMixin):
     confidence: Mapped[float] = mapped_column(Float, nullable=False)
     # OBSERVED | CORRELATED | SUPPORTED | NOT_SUPPORTED | INCONCLUSIVE
     causal_status: Mapped[str] = mapped_column(String(16), nullable=False, default="OBSERVED")
+
+
+class ExternalSignal(Base, TimestampMixin):
+    """One normalized signal from an external system (vNext plan section
+    5.3's shared envelope), e.g. a competitor product-launch discussion from
+    social-signal-pipeline.
+
+    GapVisor stores the *normalized* signal plus its provenance, never the
+    upstream system's raw internal state. Ingesting a signal makes no causal
+    claim about anything — linking a signal to a visibility change happens
+    later, as a CORRELATED edge at most (see services/anomalies.py).
+
+    `(workspace_id, source_system, external_signal_id)` is unique so
+    re-ingesting the same upstream export is idempotent.
+    """
+
+    __tablename__ = "external_signals"
+    __table_args__ = (
+        Index(
+            "uq_external_signals_source",
+            "workspace_id",
+            "source_system",
+            "external_signal_id",
+            unique=True,
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
+    # "brand" (entity_id == workspace_id) | "competitor" (entity_id == competitors.id)
+    entity_type: Mapped[str] = mapped_column(String(16), nullable=False)
+    entity_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    source_system: Mapped[str] = mapped_column(String(64), nullable=False)
+    signal_type: Mapped[str] = mapped_column(String(64), nullable=False)
+    # The envelope's signal_id — the upstream-stable identity used for
+    # dedupe, distinct from this row's own primary key.
+    external_signal_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    value: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    # Nullable: some upstream systems (e.g. market anomalies) carry no
+    # confidence at all, and inventing one would be false precision.
+    confidence: Mapped[float | None] = mapped_column(Float)
+    provenance: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    schema_version: Mapped[str] = mapped_column(String(16), nullable=False)
