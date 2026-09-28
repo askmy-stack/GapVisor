@@ -175,6 +175,17 @@ class ContentRecommendation(Base, TimestampMixin):
 
 
 class Experiment(Base, TimestampMixin):
+    """vNext G6 Experiment Lab (plan section 12): hypothesis -> intervention
+    -> experiment -> measurement -> supported/not-supported/inconclusive.
+
+    Structural configuration (intervention, windows, holdout, evidence) is
+    set once at creation and stored here. The actual measurement
+    (baseline/current means, lift, confidence, result) is computed
+    on-the-fly from real MetricDaily/Observation data every time the
+    experiment is read — same pattern the pre-vNext `_enrich` used — rather
+    than persisted and going stale as more data arrives.
+    """
+
     __tablename__ = "experiments"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
@@ -184,6 +195,29 @@ class Experiment(Base, TimestampMixin):
     recommendation_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("content_recommendations.id"))
     start_date: Mapped[date | None] = mapped_column(Date)
     status: Mapped[str] = mapped_column(String(32), nullable=False, default="planned")
+
+    # "{model_id}_inclusion_rate" (the convention services/recommendations.py
+    # already emits in recommended_experiment) or the legacy plain
+    # "inclusion_rate" for an experiment created without a specific model
+    # target — see services/experiments.py for how each is resolved.
+    primary_metric: Mapped[str] = mapped_column(String(64), nullable=False, default="inclusion_rate")
+    secondary_metrics: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    measurement_window_days: Mapped[int] = mapped_column(Integer, nullable=False, default=28)
+    # {"type": str, "description": str} — a human description of what
+    # changed, not a tracked content-asset row (no such system exists yet).
+    intervention: Mapped[dict | None] = mapped_column(JSON)
+    # Real held-out-group measurement (splitting prompts into treatment vs.
+    # control) isn't implemented — there's no mechanism to apply an
+    # intervention to only some prompts. When set, this records *intent*
+    # (which prompts would be held out) for a future phase to act on; it is
+    # never used by today's measurement, which compares the whole
+    # workspace's before/after. Documented here rather than silently
+    # ignored, and never fabricated as if a real RCT ran.
+    holdout_definition: Mapped[dict | None] = mapped_column(JSON)
+    # Observation/signal ids supporting the hypothesis (plan section 5.4) —
+    # copied from the source recommendation's evidence_refs when created
+    # via POST /recommendations/{id}/experiment; empty otherwise.
+    supporting_evidence_refs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
 
 
 class Observation(Base):

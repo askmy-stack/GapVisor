@@ -1,4 +1,5 @@
-"""Experiments & impact (M6 observational slice)."""
+"""Experiment Lab (vNext plan section 12): hypothesis -> intervention ->
+experiment -> measurement -> SUPPORTED/NOT_SUPPORTED/INCONCLUSIVE."""
 
 from datetime import UTC, date, datetime
 
@@ -7,8 +8,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 
 from core.deps import DbSession, WorkspaceId
-from models import Experiment, MetricDaily
-from services.confidence import mean_with_interval
+from models import Experiment
+from services.experiments import measure_experiment
 
 router = APIRouter(prefix="/experiments", tags=["experiments"])
 
@@ -18,6 +19,11 @@ class ExperimentCreate(BaseModel):
     hypothesis: str | None = None
     recommendation_id: str | None = None
     start_date: date | None = None
+    primary_metric: str = "inclusion_rate"
+    secondary_metrics: list[str] = Field(default_factory=list)
+    measurement_window_days: int = Field(default=28, ge=1)
+    intervention: dict | None = None
+    holdout_definition: dict | None = None
 
 
 class ExperimentOut(BaseModel):
@@ -27,10 +33,21 @@ class ExperimentOut(BaseModel):
     recommendation_id: str | None
     start_date: date | None
     status: str
+    primary_metric: str
+    secondary_metrics: list[str]
+    measurement_window_days: int
+    intervention: dict | None
+    holdout_definition: dict | None
+    supporting_evidence_refs: list[str]
+
     baseline_inclusion: float | None = None
     current_inclusion: float | None = None
+    baseline_sample_size: int = 0
+    current_sample_size: int = 0
     lift: float | None = None
     confidence: dict | None = None
+    result: str
+    result_reason: str
 
     model_config = {"from_attributes": True}
 
@@ -54,6 +71,11 @@ def create_experiment(
         recommendation_id=body.recommendation_id,
         start_date=body.start_date or datetime.now(UTC).date(),
         status="running" if body.start_date else "planned",
+        primary_metric=body.primary_metric,
+        secondary_metrics=body.secondary_metrics,
+        measurement_window_days=body.measurement_window_days,
+        intervention=body.intervention,
+        holdout_definition=body.holdout_definition,
     )
     db.add(row)
     db.commit()
@@ -70,21 +92,7 @@ def get_experiment(experiment_id: str, db: DbSession, workspace_id: WorkspaceId)
 
 
 def _enrich(db, workspace_id: str, row: Experiment) -> ExperimentOut:
-    metrics = db.scalars(
-        select(MetricDaily).where(
-            MetricDaily.workspace_id == workspace_id,
-            MetricDaily.metric_key == "inclusion_rate",
-            MetricDaily.model_id.is_(None),
-        )
-    ).all()
-    baseline_vals = [m.value for m in metrics if row.start_date and m.date < row.start_date]
-    current_vals = [m.value for m in metrics if row.start_date and m.date >= row.start_date]
-    if not current_vals and metrics:
-        current_vals = [metrics[-1].value]
-    baseline = sum(baseline_vals) / len(baseline_vals) if baseline_vals else None
-    current = sum(current_vals) / len(current_vals) if current_vals else None
-    lift = (current - baseline) if baseline is not None and current is not None else None
-    conf = mean_with_interval(current_vals) if current_vals else None
+    measurement = measure_experiment(db, workspace_id=workspace_id, experiment=row)
     return ExperimentOut(
         id=row.id,
         name=row.name,
@@ -92,8 +100,18 @@ def _enrich(db, workspace_id: str, row: Experiment) -> ExperimentOut:
         recommendation_id=row.recommendation_id,
         start_date=row.start_date,
         status=row.status,
-        baseline_inclusion=baseline,
-        current_inclusion=current,
-        lift=lift,
-        confidence=conf,
+        primary_metric=row.primary_metric,
+        secondary_metrics=row.secondary_metrics,
+        measurement_window_days=row.measurement_window_days,
+        intervention=row.intervention,
+        holdout_definition=row.holdout_definition,
+        supporting_evidence_refs=row.supporting_evidence_refs,
+        baseline_inclusion=measurement.baseline_mean,
+        current_inclusion=measurement.current_mean,
+        baseline_sample_size=measurement.baseline_sample_size,
+        current_sample_size=measurement.current_sample_size,
+        lift=measurement.lift,
+        confidence=measurement.confidence,
+        result=measurement.result,
+        result_reason=measurement.result_reason,
     )
