@@ -1,0 +1,51 @@
+{
+    "anomalies": [
+        {
+            "id": 2,
+            "event_id": "071e008c-d1ee-4699-b03d-c0d4639276d5",
+            "symbol": "NET",
+            "timestamp": "2026-09-21T14:36:00",
+            "anomaly_type": "price_zscore",
+            "severity": "low",
+            "z_score": 2.91614496912796,
+            "volume_ratio": 0.7287543711332284,
+            "price": 95.61,
+            "price_change_pct": -0.18791105543376846,
+            "description": "NET showed unusual downward activity: z-score=2.92, volume_ratio=0.73x",
+            "related_news_ids": []
+        },
+        {
+            "id": 1,
+            "event_id": "28069b9f-be22-452e-8b3e-a6dcb5ddc6bb",
+            "symbol": "NET",
+            "timestamp": "2026-09-21T14:35:00",
+            "anomaly_type": "price_zscore+volume_spike",
+            "severity": "critical",
+            "z_score": 4.330543503909184,
+            "volume_ratio": 3.1938707742405414,
+            "price": 95.79,
+            "price_change_pct": 4.6427791129560845,
+            "description": "NET showed unusual upward activity: z-score=4.33, volume_ratio=3.19x",
+            "related_news_ids": []
+        },
+        {
+            "id": 3,
+            "event_id": "ce79735b-5687-4409-9a75-582df2f3cbca",
+            "symbol": "DDOG",
+            "timestamp": "2026-09-21T14:27:00",
+            "anomaly_type": "price_zscore",
+            "severity": "low",
+            "z_score": 2.556685093156836,
+            "volume_ratio": 1.0102360245871902,
+            "price": 118.74,
+            "price_change_pct": 0.20253164556961592,
+            "description": "DDOG showed unusual upward activity: z-score=2.56, volume_ratio=1.01x",
+            "related_news_ids": []
+        }
+    ],
+    "metadata": {
+        "offset": 0,
+        "limit": 50,
+        "next_offset": null
+    }
+}

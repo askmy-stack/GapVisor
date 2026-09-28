@@ -35,6 +35,8 @@ class Competitor(Base):
     name: Mapped[str] = mapped_column(Text, nullable=False)
     logo_letter: Mapped[str] = mapped_column(String(4), nullable=False)
     domain: Mapped[str | None] = mapped_column(Text)
+    # Public-market ticker, only for the optional MarketPulse adapter.
+    ticker_symbol: Mapped[str | None] = mapped_column(String(16))
     is_brand: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
