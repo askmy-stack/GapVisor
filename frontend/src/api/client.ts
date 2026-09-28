@@ -229,6 +229,30 @@ export type MonitoringOverviewOut = {
   sync_scans: boolean;
 };
 
+export type ModelSnapshotOut = {
+  model_id: string;
+  surface: string;
+  brand_mentioned: boolean;
+  recommendation_rank: number | null;
+  validation_status: string;
+};
+
+export type PromptDisagreementOut = {
+  prompt_id: string;
+  prompt_text: string;
+  models: ModelSnapshotOut[];
+  presence_agreement: number | null;
+  rank_agreement: number | null;
+  citation_agreement: number | null;
+  citation_agreement_reason: string | null;
+  stability_band: "HIGH" | "MODERATE" | "LOW" | null;
+};
+
+export type DisagreementListOut = {
+  workspace_id: string;
+  prompts: PromptDisagreementOut[];
+};
+
 export async function listPrompts() {
   return apiFetch<PromptOut[]>("/prompts");
 }
@@ -268,6 +292,13 @@ export async function runMonitoringScan(payload?: {
 
 export async function fetchMonitoringOverview() {
   return apiFetch<MonitoringOverviewOut>("/monitoring/overview");
+}
+
+/** Model Disagreement Index (vNext G3). Omit promptId for a workspace-wide
+ * list (one entry per active prompt with at least one VALID observation). */
+export async function fetchDisagreement(promptId?: string) {
+  const qs = promptId ? `?prompt_id=${encodeURIComponent(promptId)}` : "";
+  return apiFetch<DisagreementListOut>(`/visibility/disagreement${qs}`);
 }
 
 export async function fetchModels() {

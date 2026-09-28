@@ -7,6 +7,7 @@ import { DetailCharts } from "@/components/VisibilityDashboard/DetailCharts";
 import { CompetitorSOV } from "@/components/VisibilityDashboard/CompetitorSOV";
 import { CitationCoverage } from "@/components/VisibilityDashboard/CitationCoverage";
 import { AlertsPanel } from "@/components/VisibilityDashboard/AlertsPanel";
+import { RecommendationStability } from "@/components/VisibilityDashboard/RecommendationStability";
 import { kpis } from "@/data/visibility-dashboard";
 import { useDashboardOverview } from "@/data/visibility-dashboard/hooks";
 
@@ -44,6 +45,9 @@ export default function VisibilityDashboard() {
               />
             ))}
           </div>
+
+          {/* vNext: Model Disagreement Index (live-only; renders nothing in demo mode) */}
+          <RecommendationStability />
 
           {/* Section 3: Large Chart */}
           <ShareOverTimeChart />
