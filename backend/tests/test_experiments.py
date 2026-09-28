@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Experiment, MetricDaily
 from models.base import Base
-from services.experiments import _daily_weighted_values, _parse_primary_metric, measure_experiment
+from services.experiments import _parse_primary_metric, daily_weighted_values, measure_experiment
 
 WORKSPACE_ID = "workspace-1"
 
@@ -66,7 +66,7 @@ def test_parse_primary_metric_bare_key_has_no_model():
 
 
 # ---------------------------------------------------------------------------
-# _daily_weighted_values
+# daily_weighted_values
 # ---------------------------------------------------------------------------
 
 
@@ -75,7 +75,7 @@ def test_daily_weighted_values_combines_categories_by_sample_size():
         _metric(date(2026, 9, 1), "chatgpt", 0.8, 10, category_id="cat-a"),
         _metric(date(2026, 9, 1), "chatgpt", 0.2, 30, category_id="cat-b"),
     ]
-    result = _daily_weighted_values(rows)
+    result = daily_weighted_values(rows)
     value, n = result[date(2026, 9, 1)]
     assert n == 40
     # (0.8*10 + 0.2*30) / 40 = (8 + 6) / 40 = 0.35

@@ -396,3 +396,61 @@ class ExternalSignal(Base, TimestampMixin):
     confidence: Mapped[float | None] = mapped_column(Float)
     provenance: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     schema_version: Mapped[str] = mapped_column(String(16), nullable=False)
+
+
+class Anomaly(Base, TimestampMixin):
+    """An unusual shift in one visibility time series (vNext G8).
+
+    Py-Outlier finds the numerical anomaly; GapVisor owns what the series
+    means and what to do about it (plan section 16). An anomaly is an
+    *investigation candidate*, never a conclusion — `services/anomalies.py`
+    can link preceding external signals to it, but only as CORRELATED
+    causal edges.
+
+    A series is identified by (metric_key, model_id, competitor_id); one
+    anomaly per series per day, so re-running detection is idempotent.
+    """
+
+    __tablename__ = "anomalies"
+    __table_args__ = (
+        Index(
+            "uq_anomalies_series_day",
+            "workspace_id",
+            "metric_key",
+            "model_id",
+            "competitor_id",
+            "detected_for",
+            unique=True,
+            postgresql_nulls_not_distinct=True,
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
+    metric_key: Mapped[str] = mapped_column(String(64), nullable=False)
+    model_id: Mapped[str | None] = mapped_column(String(64))
+    competitor_id: Mapped[str | None] = mapped_column(String(36))
+    # "brand" (entity_id == workspace_id) | "competitor" (entity_id == competitors.id)
+    entity_type: Mapped[str] = mapped_column(String(16), nullable=False)
+    entity_id: Mapped[str] = mapped_column(String(36), nullable=False)
+
+    detected_for: Mapped[date] = mapped_column(Date, nullable=False)
+    observed_value: Mapped[float] = mapped_column(Float, nullable=False)
+    target_sample_size: Mapped[int] = mapped_column(Integer, nullable=False)
+    baseline_mean: Mapped[float] = mapped_column(Float, nullable=False)
+    baseline_stdev: Mapped[float] = mapped_column(Float, nullable=False)
+    baseline_points: Mapped[int] = mapped_column(Integer, nullable=False)
+    delta: Mapped[float] = mapped_column(Float, nullable=False)
+    # "drop" | "spike"
+    direction: Mapped[str] = mapped_column(String(8), nullable=False)
+    score: Mapped[float] = mapped_column(Float, nullable=False)
+    threshold: Mapped[float] = mapped_column(Float, nullable=False)
+    # e.g. "py-outlier.zscore" and the pinned upstream version it ran with.
+    method: Mapped[str] = mapped_column(String(64), nullable=False)
+    detector_version: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    # OPEN | INVESTIGATING | DISMISSED
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="OPEN")
+    hypothesis_recommendation_id: Mapped[str | None] = mapped_column(
+        String(36), ForeignKey("content_recommendations.id")
+    )

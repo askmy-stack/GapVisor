@@ -12,7 +12,7 @@ from models.base import Base
 from services.recommendations import (
     DEFAULT_MEASUREMENT_WINDOW_DAYS,
     MAX_RECOMMENDATIONS_PER_GENERATION,
-    _evidence_strength,
+    evidence_strength_for,
     generate_evidence_backed_recommendations,
 )
 
@@ -119,12 +119,12 @@ def test_evidence_refs_do_not_leak_across_categories(db):
 
 def test_evidence_strength_thresholds_match_confidence_layer():
     """Aligned with services/confidence.py: n>=30 reliable, n>=10 meaningful."""
-    assert _evidence_strength(5) == "WEAK"
-    assert _evidence_strength(9) == "WEAK"
-    assert _evidence_strength(10) == "MODERATE"
-    assert _evidence_strength(29) == "MODERATE"
-    assert _evidence_strength(30) == "STRONG"
-    assert _evidence_strength(1000) == "STRONG"
+    assert evidence_strength_for(5) == "WEAK"
+    assert evidence_strength_for(9) == "WEAK"
+    assert evidence_strength_for(10) == "MODERATE"
+    assert evidence_strength_for(29) == "MODERATE"
+    assert evidence_strength_for(30) == "STRONG"
+    assert evidence_strength_for(1000) == "STRONG"
 
 
 def test_healthy_inclusion_rate_generates_nothing(db):

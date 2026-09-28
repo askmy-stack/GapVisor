@@ -2,6 +2,7 @@ from models.ai_model import AiModel
 from models.membership import Membership
 from models.organization import Organization
 from models.platform import (
+    Anomaly,
     Answer,
     AnswerMention,
     Category,
@@ -23,6 +24,7 @@ from models.workspace import Workspace
 
 __all__ = [
     "AiModel",
+    "Anomaly",
     "Answer",
     "AnswerMention",
     "Category",

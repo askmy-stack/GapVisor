@@ -18,3 +18,5 @@ ruff>=0.8.0
 mypy>=1.13.0
 pytest>=8.3.0
 pytest-asyncio>=0.24.0
+# Optional: anomaly scoring (vNext G8). Pinned; not published on PyPI.
+anomaly-detection @ https://github.com/askmy-stack/py-outlier/archive/9a15aba1b259d1982f65a8f12742cf5f4ae2a4c1.tar.gz
