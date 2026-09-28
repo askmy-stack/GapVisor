@@ -2,14 +2,20 @@
 
 vNext G5: platform-generated recommendations are evidence-backed and
 falsifiable (plan section 11) — see services/recommendations.py.
+vNext G6: a recommendation with a recommended_experiment config can be
+converted directly into a running Experiment — see services/experiments.py.
 """
+
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 
+from api.experiments import ExperimentOut
+from api.experiments import _enrich as _enrich_experiment
 from core.deps import CurrentUser, DbSession, WorkspaceId
-from models import ContentRecommendation
+from models import ContentRecommendation, Experiment
 from services.recommendations import generate_evidence_backed_recommendations
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
@@ -86,6 +92,40 @@ def generate_from_gaps(db: DbSession, workspace_id: WorkspaceId) -> list[Content
     for row in created:
         db.refresh(row)
     return created
+
+
+@router.post("/{rec_id}/experiment", response_model=ExperimentOut, status_code=status.HTTP_201_CREATED)
+def convert_to_experiment(rec_id: str, db: DbSession, workspace_id: WorkspaceId) -> ExperimentOut:
+    """Turn an evidence-backed recommendation into a running Experiment
+    (plan section 20). Refuses to run on a recommendation with no real
+    evidence or experiment config — e.g. a customer-authored one, which
+    legitimately has neither (see ContentRecommendation's docstring)."""
+    rec = db.get(ContentRecommendation, rec_id)
+    if rec is None or rec.workspace_id != workspace_id:
+        raise HTTPException(status_code=404, detail="Recommendation not found")
+    if not rec.evidence_refs or not rec.recommended_experiment:
+        raise HTTPException(
+            status_code=400,
+            detail="This recommendation has no evidence-backed experiment config to convert",
+        )
+
+    experiment = Experiment(
+        workspace_id=workspace_id,
+        name=rec.title,
+        hypothesis=rec.rationale,
+        recommendation_id=rec.id,
+        start_date=datetime.now(UTC).date(),
+        status="running",
+        primary_metric=rec.recommended_experiment.get("primary_metric", "inclusion_rate"),
+        measurement_window_days=rec.recommended_experiment.get("measurement_window_days", 28),
+        intervention={"type": "content_change", "description": rec.title},
+        supporting_evidence_refs=list(rec.evidence_refs),
+    )
+    db.add(experiment)
+    rec.status = "testing"
+    db.commit()
+    db.refresh(experiment)
+    return _enrich_experiment(db, workspace_id, experiment)
 
 
 @router.patch("/{rec_id}", response_model=RecommendationOut)
