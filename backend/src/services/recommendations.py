@@ -85,6 +85,11 @@ def generate_evidence_backed_recommendations(
             MetricDaily.metric_key == "inclusion_rate",
             MetricDaily.value < LOW_INCLUSION_THRESHOLD,
             MetricDaily.model_id.is_not(None),
+            # Brand rows only. rollup_answers also writes inclusion_rate
+            # per competitor (competitor_id set); without this filter a
+            # competitor's low inclusion produced a "low inclusion"
+            # recommendation for the brand.
+            MetricDaily.competitor_id.is_(None),
         )
         .order_by(MetricDaily.date.desc())
     ).all()
