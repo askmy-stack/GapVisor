@@ -32,6 +32,11 @@ class Settings(BaseSettings):
     NORMALIZER_VERSION: int = 1
     PROMPT_QUOTA_DEFAULT: int = 500
 
+    # Optional external-signal integrations (vNext G7-G9). Each is an
+    # adapter behind its own flag; none is a runtime dependency of the core
+    # observation/recommendation/experiment loop.
+    SOCIAL_SIGNALS_ENABLED: bool = True
+
 
 @lru_cache
 def get_settings() -> Settings:
