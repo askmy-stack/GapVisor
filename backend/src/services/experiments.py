@@ -82,6 +82,10 @@ def measure_experiment(db: Session, *, workspace_id: str, experiment: Experiment
     query = select(MetricDaily).where(
         MetricDaily.workspace_id == workspace_id,
         MetricDaily.metric_key == metric_key,
+        # Brand-level rows only: rollup_answers also writes inclusion_rate
+        # per competitor, and blending those in would measure a mix of the
+        # brand's and its competitors' inclusion.
+        MetricDaily.competitor_id.is_(None),
     )
     if model_id:
         query = query.where(MetricDaily.model_id == model_id)

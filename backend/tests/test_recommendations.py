@@ -209,3 +209,29 @@ def test_respects_workspace_isolation(db):
 
     created = generate_evidence_backed_recommendations(db, workspace_id=WORKSPACE_ID)
     assert created == []
+
+
+def test_competitor_inclusion_rows_never_generate_brand_recommendations(db):
+    """Regression: rollup_answers writes inclusion_rate per competitor too
+    (competitor_id set). Live demo data had the brand at 100% inclusion on
+    every row while competitors were at 0%, and the generator produced
+    "low inclusion" recommendations for the brand from those competitor
+    rows. Only brand rows (competitor_id NULL) may qualify."""
+    competitor_row = MetricDaily(
+        workspace_id=WORKSPACE_ID,
+        date=date(2026, 9, 1),
+        metric_key="inclusion_rate",
+        model_id="claude",
+        competitor_id="competitor-kong",
+        value=0.0,
+        sample_size=20,
+        parser_version=1,
+    )
+    brand_row = _add_metric(db, model_id="claude", value=1.0, sample_size=20, day=date(2026, 9, 1))
+    db.add(competitor_row)
+    _add_observations(db, model_id="claude", day=date(2026, 9, 1), count=20)
+    db.commit()
+    assert brand_row.competitor_id is None
+
+    created = generate_evidence_backed_recommendations(db, workspace_id=WORKSPACE_ID)
+    assert created == []

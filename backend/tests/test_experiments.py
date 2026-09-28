@@ -214,3 +214,20 @@ def test_respects_workspace_isolation(db):
     measurement = measure_experiment(db, workspace_id=WORKSPACE_ID, experiment=_experiment())
     assert measurement.result == "INCONCLUSIVE"
     assert measurement.result_reason == "no_data"
+
+
+def test_competitor_inclusion_rows_are_excluded_from_brand_measurement(db):
+    """Regression: per-competitor inclusion_rate rows must not be blended
+    into a brand experiment's baseline (live demo data showed a 0.667
+    "baseline" that was really brand 1.0 mixed with competitor rows)."""
+    db.add(_metric(date(2026, 9, 1), "chatgpt", 1.0, 10))
+    competitor_row = _metric(date(2026, 9, 1), "chatgpt", 0.0, 10)
+    competitor_row.competitor_id = "competitor-kong"
+    db.add(competitor_row)
+    db.commit()
+
+    measurement = measure_experiment(
+        db, workspace_id=WORKSPACE_ID, experiment=_experiment(start_date=date(2026, 9, 10))
+    )
+    assert measurement.baseline_mean == pytest.approx(1.0)
+    assert measurement.baseline_sample_size == 10
