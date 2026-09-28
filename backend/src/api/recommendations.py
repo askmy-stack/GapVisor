@@ -1,11 +1,16 @@
-"""Content recommendations (M5 hybrid: platform-drafted + customer-authored)."""
+"""Content recommendations (M5 hybrid: platform-drafted + customer-authored).
+
+vNext G5: platform-generated recommendations are evidence-backed and
+falsifiable (plan section 11) — see services/recommendations.py.
+"""
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 
 from core.deps import CurrentUser, DbSession, WorkspaceId
-from models import ContentRecommendation, MetricDaily
+from models import ContentRecommendation
+from services.recommendations import generate_evidence_backed_recommendations
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
@@ -17,6 +22,10 @@ class RecommendationOut(BaseModel):
     predicted_impact: str | None
     status: str
     source: str
+    evidence_refs: list
+    evidence_strength: str | None
+    causal_status: str | None
+    recommended_experiment: dict | None
 
     model_config = {"from_attributes": True}
 
@@ -53,6 +62,8 @@ def create_recommendation(
     workspace_id: WorkspaceId,
     current_user: CurrentUser,
 ) -> ContentRecommendation:
+    # Customer-authored: a person's own idea isn't backed by observation
+    # data, so it legitimately carries no evidence/causal-status fields.
     row = ContentRecommendation(
         workspace_id=workspace_id,
         title=body.title,
@@ -70,39 +81,10 @@ def create_recommendation(
 
 @router.post("/generate", response_model=list[RecommendationOut])
 def generate_from_gaps(db: DbSession, workspace_id: WorkspaceId) -> list[ContentRecommendation]:
-    low = db.scalars(
-        select(MetricDaily).where(
-            MetricDaily.workspace_id == workspace_id,
-            MetricDaily.metric_key == "inclusion_rate",
-            MetricDaily.value < 50,
-        )
-    ).all()
-    created: list[ContentRecommendation] = []
-    for m in low[:5]:
-        row = ContentRecommendation(
-            workspace_id=workspace_id,
-            title=f"Improve inclusion on {m.model_id or 'all models'}",
-            rationale=f"Inclusion rate {m.value:.1f}% over sample_size={m.sample_size}",
-            predicted_impact=f"+{max(2.0, (50 - m.value) * 0.2):.1f}% inclusion",
-            source="platform",
-            status="draft",
-        )
-        db.add(row)
-        created.append(row)
-    if not created:
-        row = ContentRecommendation(
-            workspace_id=workspace_id,
-            title="Publish comparison page vs top competitor",
-            rationale="No low-inclusion gaps yet — seed a default platform draft.",
-            predicted_impact="+3.0% share",
-            source="platform",
-            status="draft",
-        )
-        db.add(row)
-        created.append(row)
+    created = generate_evidence_backed_recommendations(db, workspace_id=workspace_id)
     db.commit()
-    for r in created:
-        db.refresh(r)
+    for row in created:
+        db.refresh(row)
     return created
 
 

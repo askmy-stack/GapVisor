@@ -133,6 +133,16 @@ class MetricDaily(Base):
 
 
 class ContentRecommendation(Base, TimestampMixin):
+    """A platform- or customer-authored content recommendation. vNext G5
+    (plan section 11) requires every recommendation to be evidence-backed
+    and falsifiable: `evidence_refs` point at the real Observation rows
+    behind it, `evidence_strength` and `causal_status` say how much to
+    trust it and whether it's been tested, and `recommended_experiment`
+    is how a customer could test it. Customer-authored recommendations
+    (source="customer") legitimately have none of this — a person's own
+    idea isn't backed by observation data — so all four stay nullable.
+    """
+
     __tablename__ = "content_recommendations"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
@@ -144,6 +154,24 @@ class ContentRecommendation(Base, TimestampMixin):
     source: Mapped[str] = mapped_column(String(32), nullable=False, default="platform")
     assignee_user_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("users.id"))
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    # Observation ids this recommendation was generated from. Empty for a
+    # customer-authored recommendation; never empty for a platform-generated
+    # one (services/recommendations.py refuses to generate without real
+    # evidence).
+    evidence_refs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    # WEAK | MODERATE | STRONG — sample-size-based, aligned with the
+    # existing confidence-layer thresholds (services/confidence.py:
+    # n>=30 "reliable", n>=10 "meaningful"), not a separately invented scale.
+    evidence_strength: Mapped[str | None] = mapped_column(String(16))
+    # NOT_YET_TESTED | SUPPORTED | NOT_SUPPORTED | INCONCLUSIVE (plan
+    # section 3.4). Every freshly generated recommendation starts
+    # NOT_YET_TESTED; only a resolved Experiment (G6) can move it, and
+    # nothing in this codebase sets SUPPORTED on generation.
+    causal_status: Mapped[str | None] = mapped_column(String(20))
+    # {"primary_metric": str, "measurement_window_days": int} — a
+    # suggested experiment config, not a created Experiment row.
+    recommended_experiment: Mapped[dict | None] = mapped_column(JSON)
 
 
 class Experiment(Base, TimestampMixin):
