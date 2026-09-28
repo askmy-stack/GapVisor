@@ -12,6 +12,7 @@ from models import (
     AiModel,
     Answer,
     Category,
+    CausalEdge,
     Competitor,
     Observation,
     ObservationExtraction,
@@ -107,6 +108,7 @@ def sqlite_session():
                 Answer.__table__,
                 Observation.__table__,
                 ObservationExtraction.__table__,
+                CausalEdge.__table__,
             ],
         )
     except SQLAlchemyError as exc:
