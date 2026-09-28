@@ -28,6 +28,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+anomaly = [
+  "anomaly-detection @ https://github.com/askmy-stack/py-outlier/archive/9a15aba1b259d1982f65a8f12742cf5f4ae2a4c1.tar.gz",
+]
 dev = [
   "pytest>=8.3.0",
   "pytest-asyncio>=0.24.0",

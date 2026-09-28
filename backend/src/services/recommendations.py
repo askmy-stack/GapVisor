@@ -31,7 +31,7 @@ MAX_EVIDENCE_REFS = 10
 DEFAULT_MEASUREMENT_WINDOW_DAYS = 28
 
 
-def _evidence_strength(sample_size: int) -> str:
+def evidence_strength_for(sample_size: int) -> str:
     """WEAK | MODERATE | STRONG, aligned with the existing confidence-layer
     thresholds in services/confidence.py (n>=30 "reliable", n>=10
     "meaningful counts as a real change"), not a separately invented scale.
@@ -119,7 +119,7 @@ def generate_evidence_backed_recommendations(
             source="platform",
             status="draft",
             evidence_refs=evidence_refs,
-            evidence_strength=_evidence_strength(metric.sample_size),
+            evidence_strength=evidence_strength_for(metric.sample_size),
             causal_status="NOT_YET_TESTED",
             recommended_experiment={
                 "primary_metric": f"{metric.model_id}_inclusion_rate",

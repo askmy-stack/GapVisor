@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     # adapter behind its own flag; none is a runtime dependency of the core
     # observation/recommendation/experiment loop.
     SOCIAL_SIGNALS_ENABLED: bool = True
+    # Needs the optional py-outlier dependency (the `anomaly` extra); the
+    # endpoints return 503 when it isn't installed.
+    ANOMALY_DETECTION_ENABLED: bool = True
 
 
 @lru_cache

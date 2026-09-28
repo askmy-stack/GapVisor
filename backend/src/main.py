@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api import (
+    anomalies,
     answers,
     auth,
     billing,
@@ -57,6 +58,7 @@ app.include_router(answers.router, prefix=API)
 app.include_router(competitors.router, prefix=API)
 app.include_router(observations.router, prefix=API)
 app.include_router(visibility.router, prefix=API)
+app.include_router(anomalies.router, prefix=API)
 app.include_router(graph.router, prefix=API)
 app.include_router(signals.router, prefix=API)
 app.include_router(recommendations.router, prefix=API)

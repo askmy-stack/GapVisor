@@ -32,3 +32,4 @@ frontend/terraform/terraform.tfvars
 .cursor/
 *.canvas.tsx
 agent-transcripts/
+celerybeat-schedule*

@@ -58,7 +58,7 @@ def _parse_primary_metric(primary_metric: str) -> tuple[str, str | None]:
     return primary_metric, None
 
 
-def _daily_weighted_values(rows: list[MetricDaily]) -> dict[date, tuple[float, int]]:
+def daily_weighted_values(rows: list[MetricDaily]) -> dict[date, tuple[float, int]]:
     """One (weighted mean value, total sample_size) per calendar day,
     combining every matching model/category row for that day rather than
     treating a small-sample category the same as a large one."""
@@ -90,7 +90,7 @@ def measure_experiment(db: Session, *, workspace_id: str, experiment: Experiment
     if model_id:
         query = query.where(MetricDaily.model_id == model_id)
     rows = list(db.scalars(query).all())
-    daily = _daily_weighted_values(rows)
+    daily = daily_weighted_values(rows)
 
     if experiment.start_date is None or not daily:
         return ExperimentMeasurement(
