@@ -19,6 +19,7 @@ from models import (
     Prompt,
     Workspace,
 )
+from services.causal_graph import record_edge
 from services.normalize import normalize_response
 from services.parse import ParsedAnswer, parse_answer
 from services.rollup import rollup_answers
@@ -201,18 +202,51 @@ def record_observation(
     )
     session.add(observation)
     session.flush()
+    brand_mentioned = parsed.brand_position is not None
+    extraction_confidence = _CONFIDENCE_BY_VALIDATION_STATUS[validation_status]
     session.add(
         ObservationExtraction(
             observation_id=observation.id,
-            brand_mentioned=parsed.brand_position is not None,
+            brand_mentioned=brand_mentioned,
             recommendation_rank=parsed.brand_position,
             outcome=parsed.outcome,
             sentiment_label=parsed.sentiment_label,
             competitor_mentions=dict(parsed.competitor_mentions),
             claims=[],
             citations=[],
-            extraction_confidence=_CONFIDENCE_BY_VALIDATION_STATUS[validation_status],
+            extraction_confidence=extraction_confidence,
             parser_version=answer.parser_version,
         )
     )
+
+    # Causal Visibility Graph (vNext G4): structural facts only, always
+    # causal_status="OBSERVED" — never a causal claim. See
+    # services/causal_graph.py for which edge types this codebase can
+    # honestly populate today.
+    record_edge(
+        session,
+        workspace_id=workspace_id,
+        source_type="prompt",
+        source_id=prompt.id,
+        target_type="observation",
+        target_id=observation.id,
+        edge_type="PROMPT_PRODUCED_RESPONSE",
+        observed_at=captured_at,
+        evidence_refs=[observation.id],
+        confidence=1.0,
+    )
+    if brand_mentioned:
+        record_edge(
+            session,
+            workspace_id=workspace_id,
+            source_type="observation",
+            source_id=observation.id,
+            target_type="workspace",
+            target_id=workspace_id,
+            edge_type="RESPONSE_MENTIONED_BRAND",
+            observed_at=captured_at,
+            evidence_refs=[observation.id],
+            confidence=extraction_confidence,
+        )
+
     return observation

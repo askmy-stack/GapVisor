@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from adapters.providers import MockProvider
 from core.config import settings
@@ -22,6 +22,7 @@ from models import (
     Answer,
     AnswerMention,
     Category,
+    CausalEdge,
     Competitor,
     Membership,
     Observation,
@@ -31,6 +32,7 @@ from models import (
     User,
     Workspace,
 )
+from services.causal_graph import record_edge
 from services.parse import ParsedAnswer, parse_answer
 from services.rollup import rollup_answers
 from services.scan import record_observation
@@ -275,6 +277,12 @@ def seed_platform(db: Session, workspace: Workspace) -> None:
         # already-stored raw answers instead of re-scanning.
         backfill_observations_for_existing_answers(db, workspace)
 
+    # Observations created by either path above already get causal edges
+    # from record_observation() itself. This covers the remaining gap:
+    # observations that existed before the vNext G4 migration added
+    # causal_edges at all.
+    backfill_causal_edges_for_existing_observations(db, workspace)
+
 
 def backfill_observations_for_existing_answers(db: Session, workspace: Workspace) -> None:
     """One-time reconstruction of Observation/ObservationExtraction rows for
@@ -330,6 +338,63 @@ def backfill_observations_for_existing_answers(db: Session, workspace: Workspace
         )
     db.commit()
     print(f"Backfilled {len(pending)} observations from pre-existing answers")
+
+
+def backfill_causal_edges_for_existing_observations(db: Session, workspace: Workspace) -> None:
+    """Retroactively write PROMPT_PRODUCED_RESPONSE / RESPONSE_MENTIONED_BRAND
+    edges for Observations created before the vNext G4 migration added
+    causal_edges. Idempotent: skips any observation that already has a
+    PROMPT_PRODUCED_RESPONSE edge (new observations get edges directly
+    from record_observation(), so this only ever touches the backlog).
+    """
+    already_covered = set(
+        db.scalars(
+            select(CausalEdge.target_id).where(
+                CausalEdge.workspace_id == workspace.id,
+                CausalEdge.edge_type == "PROMPT_PRODUCED_RESPONSE",
+                CausalEdge.target_type == "observation",
+            )
+        ).all()
+    )
+    observations = list(
+        db.scalars(
+            select(Observation)
+            .options(joinedload(Observation.extraction))
+            .where(Observation.workspace_id == workspace.id)
+        ).all()
+    )
+    pending = [o for o in observations if o.id not in already_covered]
+    if not pending:
+        return
+
+    for obs in pending:
+        record_edge(
+            db,
+            workspace_id=workspace.id,
+            source_type="prompt",
+            source_id=obs.prompt_id,
+            target_type="observation",
+            target_id=obs.id,
+            edge_type="PROMPT_PRODUCED_RESPONSE",
+            observed_at=obs.captured_at,
+            evidence_refs=[obs.id],
+            confidence=1.0,
+        )
+        if obs.extraction is not None and obs.extraction.brand_mentioned:
+            record_edge(
+                db,
+                workspace_id=workspace.id,
+                source_type="observation",
+                source_id=obs.id,
+                target_type="workspace",
+                target_id=workspace.id,
+                edge_type="RESPONSE_MENTIONED_BRAND",
+                observed_at=obs.captured_at,
+                evidence_refs=[obs.id],
+                confidence=obs.extraction.extraction_confidence,
+            )
+    db.commit()
+    print(f"Backfilled causal edges for {len(pending)} pre-existing observations")
 
 
 def backfill_scan_history(db: Session, workspace: Workspace, *, days: int = BACKFILL_DAYS) -> None:

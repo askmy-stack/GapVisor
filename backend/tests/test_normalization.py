@@ -10,6 +10,7 @@ from models import (
     AiModel,
     Answer,
     AnswerMention,
+    CausalEdge,
     Competitor,
     MetricDaily,
     Observation,
@@ -95,6 +96,7 @@ def sqlite_session():
                 Observation.__table__,
                 ObservationExtraction.__table__,
                 MetricDaily.__table__,
+                CausalEdge.__table__,
             ],
         )
         # Workspace.brand_domains is postgresql.ARRAY(Text), which the

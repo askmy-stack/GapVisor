@@ -14,6 +14,7 @@ from api import (
     dashboard,
     experiments,
     grader,
+    graph,
     health,
     monitoring,
     observations,
@@ -55,6 +56,7 @@ app.include_router(answers.router, prefix=API)
 app.include_router(competitors.router, prefix=API)
 app.include_router(observations.router, prefix=API)
 app.include_router(visibility.router, prefix=API)
+app.include_router(graph.router, prefix=API)
 app.include_router(recommendations.router, prefix=API)
 app.include_router(experiments.router, prefix=API)
 app.include_router(billing.router, prefix=API)

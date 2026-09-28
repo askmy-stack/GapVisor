@@ -245,3 +245,48 @@ class ObservationExtraction(Base):
     parser_version: Mapped[int] = mapped_column(Integer, nullable=False)
 
     observation = relationship("Observation", back_populates="extraction")
+
+
+class CausalEdge(Base, TimestampMixin):
+    """One edge in the Causal Visibility Graph (vNext plan section 10): a
+    graph-shaped domain model living in Postgres, not a graph database —
+    the plan is explicit that a graph DB is premature until this
+    relational shape demonstrably can't keep up.
+
+    `source_type`/`target_type` name which table `source_id`/`target_id`
+    point into (e.g. "prompt", "observation", "workspace"); there's no FK
+    constraint because a single edges table spans several unrelated target
+    tables, the same trade-off `MetricDaily` already makes with its
+    optional `model_id`/`category_id`/`competitor_id` columns.
+
+    `causal_status` MUST NOT be inferred as SUPPORTED merely from an edge
+    existing or from time order (the plan's explicit rule) — every edge
+    this codebase currently writes automatically is causal_status
+    "OBSERVED" (a structural fact: this response was produced by this
+    prompt, this response mentioned the brand), never a causal claim.
+    SUPPORTED/NOT_SUPPORTED only make sense once an Experiment resolves
+    (G6) and are never set here.
+    """
+
+    __tablename__ = "causal_edges"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    workspace_id: Mapped[str] = mapped_column(String(36), ForeignKey("workspaces.id"), nullable=False)
+
+    source_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    source_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    target_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    target_id: Mapped[str] = mapped_column(String(36), nullable=False)
+
+    # PROMPT_PRODUCED_RESPONSE | RESPONSE_MENTIONED_BRAND | RESPONSE_CITED_SOURCE |
+    # SOURCE_MAPS_TO_ASSET | ASSET_CHANGED_BY_INTERVENTION |
+    # INTERVENTION_TESTED_BY_EXPERIMENT | EXPERIMENT_OBSERVED_METRIC | SIGNAL_PRECEDED_CHANGE
+    edge_type: Mapped[str] = mapped_column(String(48), nullable=False)
+    observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    # IDs of the records that back this edge (e.g. the observation_id an
+    # OBSERVED edge is derived from) — always non-empty; an edge with no
+    # evidence isn't an edge, it's a guess.
+    evidence_refs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    confidence: Mapped[float] = mapped_column(Float, nullable=False)
+    # OBSERVED | CORRELATED | SUPPORTED | NOT_SUPPORTED | INCONCLUSIVE
+    causal_status: Mapped[str] = mapped_column(String(16), nullable=False, default="OBSERVED")
