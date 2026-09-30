@@ -8,8 +8,17 @@ import { InvoicesHistory } from "@/components/ReportsBilling/InvoicesHistory";
 import { ComplianceSettings } from "@/components/ReportsBilling/ComplianceSettings";
 import { ExecutiveReports } from "@/components/ReportsBilling/ExecutiveReports";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRef, useState } from "react";
 
 export default function ReportsBilling() {
+  const [tab, setTab] = useState("overview");
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  function showPlans() {
+    setTab("overview");
+    requestAnimationFrame(() => tabsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
+
   return (
     <DashboardShell>
       <DashboardTopbar
@@ -19,15 +28,15 @@ export default function ReportsBilling() {
       <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-8">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2">
-            <PlanSummary />
+            <PlanSummary onUpgrade={showPlans} />
           </div>
           <div className="xl:col-span-1">
             <UsageLimits />
           </div>
         </div>
 
-        <Tabs defaultValue="overview" className="w-full space-y-6">
-          <TabsList className="bg-background border-b rounded-none h-12 w-full justify-start p-0 gap-6">
+        <Tabs ref={tabsRef} value={tab} onValueChange={setTab} className="w-full space-y-6 scroll-mt-24">
+          <TabsList className="bg-background border-b rounded-none h-12 w-full justify-start p-0 gap-6 overflow-x-auto overflow-y-hidden">
             <TabsTrigger 
               value="overview" 
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-2 font-semibold"

@@ -9,16 +9,40 @@ import SecondaryMetrics from "@/components/ExperimentsImpact/SecondaryMetrics";
 import SignalGraph from "@/components/ExperimentsImpact/SignalGraph";
 import ExperimentTimeline from "@/components/ExperimentsImpact/ExperimentTimeline";
 import RecommendedNext from "@/components/ExperimentsImpact/RecommendedNext";
+import { NewExperimentDialog, type ExperimentDraft } from "@/components/ExperimentsImpact/NewExperimentDialog";
+import { experiments as initialExperiments, type Experiment } from "@/data/experiments-impact";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function ExperimentsImpact() {
+  const [rows, setRows] = useState<Experiment[]>(initialExperiments);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [initial, setInitial] = useState<Partial<ExperimentDraft> | undefined>();
+  const deepDiveRef = useRef<HTMLDivElement>(null);
+
+  function openNew(name?: string) {
+    setInitial(name ? { name } : undefined);
+    setDialogOpen(true);
+  }
+
+  function addExperiment(draft: ExperimentDraft) {
+    setRows((prev) => [
+      { name: draft.name, type: draft.type, date: draft.startDate, status: "Draft", baseline: "—", current: "—", lift: "—" },
+      ...prev,
+    ]);
+    toast.success("Experiment saved as a draft", {
+      description: "Demo mode: saved for this session only. Tracking starts once the API is connected.",
+    });
+  }
+
   return (
     <DashboardShell>
       <DashboardTopbar
         title="Experiments & Impact"
         description="Track whether content changes move AI recommendation share and pipeline"
         actions={
-          <Button size="sm" className="gap-1.5">
-            <Plus className="h-4 w-4" /> New Experiment
+          <Button size="sm" className="gap-1.5" onClick={() => openNew()}>
+            <Plus className="h-4 w-4" /> New experiment
           </Button>
         }
       />
@@ -31,10 +55,14 @@ export default function ExperimentsImpact() {
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold tracking-tight">Active & Recent Experiments</h2>
           </div>
-          <ExperimentsTable />
+          <ExperimentsTable
+            experiments={rows}
+            featuredName={initialExperiments[0]?.name}
+            onOpenFeatured={() => deepDiveRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div ref={deepDiveRef} className="grid grid-cols-1 lg:grid-cols-3 gap-6 scroll-mt-24">
           {/* 3) Detailed "Experiment Impact" card */}
           <ImpactChart />
 
@@ -43,7 +71,7 @@ export default function ExperimentsImpact() {
             <ExperimentTimeline />
             
             {/* 7) "Recommended Next Experiments" card */}
-            <RecommendedNext />
+            <RecommendedNext onLaunch={(title) => openNew(title)} />
           </div>
         </div>
 
@@ -58,6 +86,7 @@ export default function ExperimentsImpact() {
         {/* 5) "Longitudinal Signal Graph" card */}
         <SignalGraph />
       </main>
+      <NewExperimentDialog open={dialogOpen} onOpenChange={setDialogOpen} initial={initial} onSubmit={addExperiment} />
     </DashboardShell>
   );
 }

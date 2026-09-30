@@ -19,7 +19,7 @@ export function ShowcasePanel() {
             See exactly how ChatGPT, Claude, Gemini, and Perplexity recommend your software
           </h2>
           <p className="text-sidebar-foreground/70 text-lg max-w-sm">
-            The first platform built for the era of AI-driven B2B software discovery.
+            The first platform built for the era of AI driven B2B software discovery.
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export function ShowcasePanel() {
             <div>
               <p className="font-semibold text-sidebar-foreground">80% of buyers</p>
               <p className="text-sm text-sidebar-foreground/60">
-                Use AI chatbots for software shortlists before contacting sales — G2 2024 Report
+                Use AI chatbots for software shortlists before contacting sales. G2, 2024 Report.
               </p>
             </div>
           </div>
@@ -43,16 +43,20 @@ export function ShowcasePanel() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="space-y-1">
-                <p className="text-xs font-medium text-sidebar-foreground/60 uppercase">Visibility Score</p>
+                <p className="text-xs font-medium text-sidebar-foreground/60">Visibility score</p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold text-sidebar-foreground">72.4</span>
-                  <span className="text-sm font-medium text-accent">+12.5%</span>
+                  <span className="text-sm font-medium text-sidebar-primary">+12.5%</span>
                 </div>
               </div>
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-sidebar-accent bg-muted flex items-center justify-center overflow-hidden">
-                    <img className="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/default-placeholder.png" />
+                {["N", "K", "P", "A", "T"].map((letter, i) => (
+                  <div
+                    key={letter}
+                    style={{ zIndex: 5 - i }}
+                    className="w-8 h-8 rounded-full border-2 border-sidebar-accent bg-sidebar-primary/15 text-sidebar-primary text-xs font-semibold flex items-center justify-center"
+                  >
+                    {letter}
                   </div>
                 ))}
               </div>
@@ -80,13 +84,11 @@ export function ShowcasePanel() {
         </Card>
       </div>
 
-      <div className="relative z-10 flex items-center justify-between border-t border-sidebar-border pt-8 mt-12">
-        <div className="flex items-center gap-6 opacity-40 grayscale contrast-200">
-           {/* Mock logos */}
-           <span className="text-xs font-bold tracking-tighter italic">CHARTMOGUL</span>
-           <span className="text-xs font-bold tracking-tighter italic">INTERCOM</span>
-           <span className="text-xs font-bold tracking-tighter italic">SEGMENT</span>
-        </div>
+      <div className="relative z-10 border-t border-sidebar-border pt-6 mt-12">
+        <p className="text-xs text-sidebar-foreground/50">
+          Built for teams shipping developer tools, API platforms, and
+          infrastructure software.
+        </p>
       </div>
     </div>
   );

@@ -1,10 +1,20 @@
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { UserPlus, CheckCircle2, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { teamMembers } from "@/data/reports-billing";
 
 import type { Priority, Status } from "@/data/content-recommendations";
 
@@ -22,6 +32,9 @@ interface RecommendationCardProps {
     name: string;
     avatar?: string;
   };
+  unread?: boolean;
+  onStatusChange: (status: Status) => void;
+  onAssign: (name: string | null) => void;
 }
 
 const priorityColors: Record<Priority, string> = {
@@ -40,13 +53,40 @@ export function RecommendationCard({
   tags,
   status,
   assignee,
+  unread = false,
+  onStatusChange,
+  onAssign,
 }: RecommendationCardProps) {
+  const complete = status === "Published";
+  const assignMenu = (trigger: React.ReactNode) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-52">
+        <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">Assign to</DropdownMenuLabel>
+        {teamMembers.map((m) => (
+          <DropdownMenuItem key={m.id} onSelect={() => onAssign(m.name)}>
+            {m.name}
+          </DropdownMenuItem>
+        ))}
+        {assignee && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => onAssign(null)}>Unassign</DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
-    <Card className="hover:border-primary/50 transition-colors">
+    <Card className={cn("hover:border-primary/50 transition-colors", complete && "opacity-75")}>
       <CardHeader className="p-4 pb-2 space-y-3">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {unread && (
+                <span className="h-2 w-2 rounded-full bg-primary" aria-label="New" title="New" />
+              )}
               <Badge variant="outline" className={cn("font-semibold", priorityColors[priority])}>
                 {priority}
               </Badge>
@@ -56,8 +96,8 @@ export function RecommendationCard({
             </div>
             <h4 className="font-semibold text-lg leading-tight pt-1">{title}</h4>
           </div>
-          <Select defaultValue={status}>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+          <Select value={status} onValueChange={(v) => onStatusChange(v as Status)}>
+            <SelectTrigger className="w-[130px] h-8 text-xs shrink-0" aria-label="Status">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -94,24 +134,35 @@ export function RecommendationCard({
       </CardContent>
       <CardFooter className="p-4 pt-2 flex items-center justify-between border-t bg-muted/10">
         <div className="flex items-center gap-2">
-          {assignee ? (
-            <div className="flex items-center gap-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage src={assignee.avatar} />
-                <AvatarFallback>{assignee.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span className="text-xs text-muted-foreground">{assignee.name}</span>
-            </div>
-          ) : (
-            <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1 text-muted-foreground">
-              <UserPlus className="h-3 w-3" /> Assign
-            </Button>
-          )}
+          {assignee
+            ? assignMenu(
+                <button
+                  type="button"
+                  className="flex items-center gap-2 rounded-md px-1 py-0.5 hover:bg-muted/50"
+                  aria-label={`Assigned to ${assignee.name}. Change assignee`}
+                >
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={assignee.avatar} />
+                    <AvatarFallback>{assignee.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-xs text-muted-foreground">{assignee.name}</span>
+                </button>,
+              )
+            : assignMenu(
+                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1 text-muted-foreground">
+                  <UserPlus className="h-3 w-3" /> Assign
+                </Button>,
+              )}
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" size="sm" className="h-8 text-xs">View Detail</Button>
-          <Button size="sm" variant="outline" className="h-8 text-xs gap-1">
-            <CheckCircle2 className="h-3 w-3" /> Mark Complete
+          <Button
+            size="sm"
+            variant={complete ? "secondary" : "outline"}
+            className="h-8 text-xs gap-1"
+            onClick={() => onStatusChange(complete ? "In Progress" : "Published")}
+            aria-pressed={complete}
+          >
+            <CheckCircle2 className="h-3 w-3" /> {complete ? "Completed" : "Mark complete"}
           </Button>
         </div>
       </CardFooter>

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 import { planTiers as plans } from "@/data/reports-billing";
 export function PlanTiers() {
@@ -42,6 +43,11 @@ export function PlanTiers() {
                 variant={plan.current ? "secondary" : "default"} 
                 className="w-full"
                 disabled={plan.current}
+                onClick={() =>
+                  toast(`Demo mode: you are still on the current plan`, {
+                    description: `No change was made. Switching to ${plan.name} goes through billing once the API is connected.`,
+                  })
+                }
               >
                 {plan.cta}
               </Button>

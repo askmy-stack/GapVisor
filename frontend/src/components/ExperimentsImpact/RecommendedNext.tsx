@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, Sparkles } from "lucide-react";
 
 import { recommendedNext as suggestions } from "@/data/experiments-impact";
-export default function RecommendedNext() {
+export default function RecommendedNext({ onLaunch }: { onLaunch: (title: string) => void }) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -14,7 +14,7 @@ export default function RecommendedNext() {
       <CardContent>
         <div className="space-y-4">
           {suggestions.map((s) => (
-            <div key={s.title} className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
+            <div key={s.title} className="flex items-center justify-between gap-3 p-3 rounded-lg border bg-muted/20">
               <div className="space-y-1">
                 <h4 className="text-sm font-medium">{s.title}</h4>
                 <div className="flex items-center gap-2">
@@ -24,7 +24,7 @@ export default function RecommendedNext() {
                   <span className="text-[10px] text-muted-foreground font-medium">{s.estimate}</span>
                 </div>
               </div>
-              <Button size="sm" variant="outline" className="h-8 gap-1 text-xs">
+              <Button size="sm" variant="outline" className="h-8 gap-1 text-xs shrink-0" onClick={() => onLaunch(s.title)}>
                 <Rocket className="h-3 w-3" /> Launch
               </Button>
             </div>

@@ -2,9 +2,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 
-import { templates } from "@/data/prompt-library";
+import { templates, type PromptTemplate } from "@/data/prompt-library";
 
-export default function PromptTemplates() {
+export default function PromptTemplates({ onUseTemplate }: { onUseTemplate: (template: PromptTemplate) => void }) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 py-4">
@@ -30,7 +30,7 @@ export default function PromptTemplates() {
               <p className="text-xs text-muted-foreground line-clamp-2 mb-4">
                 {template.description}
               </p>
-              <Button variant="outline" size="sm" className="w-full h-8 text-xs font-medium">
+              <Button variant="outline" size="sm" className="w-full h-8 text-xs font-medium" onClick={() => onUseTemplate(template)}>
                 Use template
               </Button>
             </div>

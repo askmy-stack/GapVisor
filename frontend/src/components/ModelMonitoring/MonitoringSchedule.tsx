@@ -2,8 +2,41 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Settings, RefreshCw, Calendar, ShieldCheck } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import { toast } from "sonner";
+
+const FREQUENCIES = ["Every hour", "Every 4 hours", "Every 12 hours", "Daily", "Weekly"];
 
 export function MonitoringSchedule() {
+  const [frequency, setFrequency] = useState("Every 4 hours");
+  const [draft, setDraft] = useState(frequency);
+  const [open, setOpen] = useState(false);
+
+  function save() {
+    setFrequency(draft);
+    setOpen(false);
+    toast.success(`Scan frequency set to ${draft.toLowerCase()}`, {
+      description: "Demo mode: saved for this session only. The schedule saves to your workspace once the API is connected.",
+    });
+  }
+
   return (
     <Card className="bg-primary/[0.02] border-primary/20">
       <CardHeader>
@@ -22,7 +55,7 @@ export function MonitoringSchedule() {
               <span className="text-muted-foreground flex items-center gap-2">
                 <Calendar className="w-4 h-4" /> Frequency
               </span>
-              <span className="font-semibold">Every 4 Hours</span>
+              <span className="font-semibold">{frequency}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground flex items-center gap-2">
@@ -48,14 +81,50 @@ export function MonitoringSchedule() {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-4 flex justify-between border-t border-primary/10">
+      <CardFooter className="pt-4 flex flex-wrap gap-3 justify-between border-t border-primary/10">
         <p className="text-xs text-muted-foreground italic">
           Last system update: 12 minutes ago. All sensors reporting normal.
         </p>
-        <Button variant="outline" size="sm" className="gap-2">
-          <Settings className="w-4 h-4" /> Configure Monitoring
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={() => {
+            setDraft(frequency);
+            setOpen(true);
+          }}
+        >
+          <Settings className="w-4 h-4" /> Configure monitoring
         </Button>
       </CardFooter>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[420px]">
+          <DialogHeader>
+            <DialogTitle>Configure monitoring</DialogTitle>
+            <DialogDescription>Choose how often GapVisor scans every monitored model.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-2 py-2">
+            <Label htmlFor="monitoring-frequency">Scan frequency</Label>
+            <Select value={draft} onValueChange={setDraft}>
+              <SelectTrigger id="monitoring-frequency">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {FREQUENCIES.map((f) => (
+                  <SelectItem key={f} value={f}>{f}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button type="button" onClick={save}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

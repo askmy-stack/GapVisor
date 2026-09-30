@@ -1,4 +1,4 @@
-import type { AiModel, Competitor, Category } from "./types";
+import type { Competitor, Category } from "./types";
 import competitorsJson from "./competitors.json";
 import categoriesJson from "./categories.json";
 import { aiModels as catalog } from "./models";

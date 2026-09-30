@@ -1,32 +1,30 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Radio } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { navItems } from "@/components/layout/nav-items";
+import { Logo } from "@/components/layout/Logo";
 import { useState } from "react";
+import { useAccount } from "@/components/layout/use-account";
 
 export default function MobileNav() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const { name, email, signOut } = useAccount();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden shrink-0">
+        <Button variant="ghost" size="icon" className="lg:hidden shrink-0" aria-label="Open navigation">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[260px] p-0 bg-sidebar text-sidebar-foreground border-sidebar-border">
-        <div className="flex items-center gap-2 px-4 h-16 border-b border-sidebar-border">
-          <div className="h-8 w-8 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-            <Radio className="h-4.5 w-4.5 text-sidebar-primary-foreground" strokeWidth={2.5} />
-          </div>
-          <span className="font-semibold tracking-tight text-sidebar-accent-foreground text-[15px]">
-            Gap<span className="text-sidebar-primary">Visor</span>
-          </span>
+      <SheetContent side="left" className="w-[260px] p-0 flex flex-col bg-sidebar text-sidebar-foreground border-sidebar-border">
+        <div className="flex items-center px-4 h-16 border-b border-sidebar-border">
+          <Logo variant="dark" size="sm" />
         </div>
-        <nav className="p-2.5 space-y-1">
+        <nav className="flex-1 overflow-y-auto p-2.5 space-y-1">
           {navItems.map((item) => {
             const active = location.pathname === item.to;
             const Icon = item.icon;
@@ -48,6 +46,23 @@ export default function MobileNav() {
             );
           })}
         </nav>
+        <div className="border-t border-sidebar-border p-2.5">
+          <div className="px-3 py-2 min-w-0">
+            <p className="text-sm font-medium text-sidebar-accent-foreground truncate">{name}</p>
+            <p className="text-xs text-sidebar-foreground/60 truncate">{email}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              void signOut();
+            }}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent/60"
+          >
+            <LogOut className="h-[18px] w-[18px] shrink-0" />
+            Sign out
+          </button>
+        </div>
       </SheetContent>
     </Sheet>
   );

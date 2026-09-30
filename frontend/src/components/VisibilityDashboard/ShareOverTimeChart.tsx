@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { badgeVariants } from "@/components/ui/badge";
 import { 
   LineChart, 
   Line, 
@@ -11,25 +11,50 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { shareOverTime as data } from "@/data/visibility-dashboard";
-import { aiModels } from "@/data/shared";
+import { shareOverTime } from "@/data/visibility-dashboard";
+import { SHARE_SERIES } from "@/components/VisibilityDashboard/dashboard-filters";
+import { cn } from "@/lib/utils";
 
-const MODELS = aiModels.filter((m) => m.id !== "buyer-agents").map((m) => m.name);
+interface ShareOverTimeChartProps {
+  rangeDays: number;
+  visibleSeries: string[];
+  onToggleSeries: (series: string) => void;
+}
 
-export function ShareOverTimeChart() {
+export function ShareOverTimeChart({ rangeDays, visibleSeries, onToggleSeries }: ShareOverTimeChartProps) {
+  const data = shareOverTime.slice(-rangeDays);
+  const hidden = (s: string) => !visibleSeries.includes(s);
+
   return (
     <Card className="col-span-full">
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <CardTitle>AI Recommendation Share Over Time</CardTitle>
-          <CardDescription>Visibility percentage across top monitored LLMs</CardDescription>
+          <CardDescription>
+            Visibility percentage across top monitored LLMs
+            {rangeDays > shareOverTime.length && `. Sample data covers the last ${shareOverTime.length} days.`}
+          </CardDescription>
         </div>
-        <div className="flex flex-wrap gap-1">
-          {MODELS.map((model) => (
-            <Badge key={model} variant="outline" className="cursor-pointer hover:bg-accent">
-              {model}
-            </Badge>
-          ))}
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Show or hide brands">
+          {SHARE_SERIES.map((series) => {
+            const on = !hidden(series);
+            return (
+              <button
+                key={series}
+                type="button"
+                onClick={() => onToggleSeries(series)}
+                aria-pressed={on}
+                disabled={on && visibleSeries.length === 1}
+                className={cn(
+                  badgeVariants({ variant: on ? "secondary" : "outline" }),
+                  "cursor-pointer disabled:cursor-not-allowed",
+                  !on && "text-muted-foreground line-through",
+                )}
+              >
+                {series}
+              </button>
+            );
+          })}
         </div>
       </CardHeader>
       <CardContent>
@@ -63,15 +88,16 @@ export function ShareOverTimeChart() {
               <Line 
                 type="monotone" 
                 dataKey="Northstar" 
+                hide={hidden("Northstar")}
                 stroke="hsl(var(--primary))" 
                 strokeWidth={3} 
                 dot={{ r: 4, strokeWidth: 2 }}
                 activeDot={{ r: 6 }}
               />
-              <Line type="monotone" dataKey="Kong" stroke="#f43f5e" strokeWidth={2} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="Postman" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="Apigee" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
-              <Line type="monotone" dataKey="Tyk" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="Kong" hide={hidden("Kong")} stroke="#f43f5e" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="Postman" hide={hidden("Postman")} stroke="#8b5cf6" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="Apigee" hide={hidden("Apigee")} stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="Tyk" hide={hidden("Tyk")} stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

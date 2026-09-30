@@ -3,10 +3,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { recentRuns } from "@/data/model-monitoring";
 
+type Run = (typeof recentRuns)[number];
+
 export function RecentRuns() {
+  const [selected, setSelected] = useState<Run | null>(null);
+
   return (
     <Card>
       <CardHeader>
@@ -60,7 +74,7 @@ export function RecentRuns() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" className="h-8 gap-1">
+                    <Button variant="ghost" size="sm" className="h-8 gap-1" onClick={() => setSelected(run)} aria-label={`View run: ${run.prompt}`}>
                       View <ExternalLink className="w-3 h-3" />
                     </Button>
                   </TableCell>
@@ -70,6 +84,36 @@ export function RecentRuns() {
           </Table>
         </div>
       </CardContent>
+
+      <Dialog open={selected !== null} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="sm:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle>Monitoring run</DialogTitle>
+            <DialogDescription>{selected?.prompt}</DialogDescription>
+          </DialogHeader>
+          {selected && (
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+              <dt className="text-muted-foreground">Model</dt>
+              <dd className="font-medium">{selected.model}</dd>
+              <dt className="text-muted-foreground">Run time</dt>
+              <dd className="font-medium">{selected.time}</dd>
+              <dt className="text-muted-foreground">Brand mentioned</dt>
+              <dd className="font-medium">{selected.mentioned ? "Yes" : "No"}</dd>
+              <dt className="text-muted-foreground">Position</dt>
+              <dd className="font-medium">{selected.position > 0 ? `#${selected.position}` : "Not ranked"}</dd>
+              <dt className="text-muted-foreground">Citations</dt>
+              <dd className="font-medium">{selected.citations}</dd>
+              <dt className="text-muted-foreground">Sentiment</dt>
+              <dd className="font-medium">{selected.sentiment}</dd>
+            </dl>
+          )}
+          <DialogFooter>
+            <Button asChild>
+              <Link to="/answers">Open answer analysis</Link>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

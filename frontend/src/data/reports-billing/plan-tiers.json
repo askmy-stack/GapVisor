@@ -1,44 +1,44 @@
 [
   {
     "name": "Starter",
-    "price": "$2,000",
-    "description": "Perfect for small teams and early-stage tracking.",
+    "price": "$49",
+    "description": "For a solo builder getting the first real signal.",
     "features": [
-      "500 Prompts Monitored",
-      "3 Competitors Tracked",
-      "5 Countries Covered",
-      "Weekly Model Scans",
-      "3 Team Seats"
+      "100 prompts monitored",
+      "2 competitors tracked",
+      "3 countries covered",
+      "Weekly model scans",
+      "1 team seat"
     ],
     "cta": "Downgrade",
     "current": false
   },
   {
     "name": "Growth",
-    "price": "$6,000",
-    "description": "Scale your visibility with advanced intelligence.",
+    "price": "$149",
+    "description": "For a team actively managing AI visibility.",
     "features": [
-      "3,000 Prompts Monitored",
-      "10 Competitors Tracked",
-      "20 Countries Covered",
-      "Daily Model Scans",
-      "15 Team Seats"
+      "500 prompts monitored",
+      "5 competitors tracked",
+      "8 countries covered",
+      "Daily model scans",
+      "5 team seats"
     ],
-    "cta": "Current Plan",
+    "cta": "Current plan",
     "current": true
   },
   {
-    "name": "Enterprise",
-    "price": "$15,000",
-    "description": "Dedicated support and unlimited strategic depth.",
+    "name": "Scale",
+    "price": "$249",
+    "description": "For a team running this as a core motion.",
     "features": [
-      "Unlimited Prompts",
-      "Unlimited Competitors",
-      "Global Coverage",
-      "Real-time Scans",
-      "Unlimited Team Seats"
+      "1,500 prompts monitored",
+      "12 competitors tracked",
+      "20 countries covered",
+      "Real time model scans",
+      "15 team seats"
     ],
-    "cta": "Upgrade to Enterprise",
+    "cta": "Upgrade to Scale",
     "current": false
   }
 ]

@@ -63,7 +63,10 @@ export default {
           ring: 'hsl(var(--sidebar-ring))'
         },
       },
-      fontFamily: {},
+      fontFamily: {
+        sans: ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['"Space Grotesk"', '"IBM Plex Sans"', 'ui-sans-serif', 'sans-serif'],
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

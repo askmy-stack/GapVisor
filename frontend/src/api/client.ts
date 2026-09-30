@@ -5,6 +5,14 @@
 
 const API_BASE = import.meta.env.VITE_API_BASE || "/api/v1";
 
+/**
+ * Health probe URL. Defaults to /healthz on the API's origin: same origin when
+ * VITE_API_BASE is a path, the API host when it is an absolute URL.
+ */
+const HEALTH_URL =
+  import.meta.env.VITE_API_HEALTH_URL ||
+  (/^https?:\/\//i.test(API_BASE) ? new URL("/healthz", API_BASE).toString() : "/healthz");
+
 export class ApiError extends Error {
   status: number;
   body: unknown;
@@ -314,11 +322,27 @@ export async function fetchModels() {
   >("/reference/models");
 }
 
-/** True when the API process is reachable (used to toggle live vs demo mode). */
+/**
+ * True when the API process is reachable (used to toggle live vs demo mode).
+ *
+ * A static host with an SPA fallback (the CloudFront setup in terraform/)
+ * answers /healthz with index.html and a 200, so a plain `res.ok` check would
+ * wrongly report the API as up. Require the JSON body the API returns.
+ */
 export async function probeApi(): Promise<boolean> {
   try {
-    const res = await fetch("/healthz", { method: "GET" });
-    return res.ok;
+    // A hung connection (dead proxy, firewall dropping packets) must not hang
+    // the demo/live decision forever, so bound the probe with a timeout.
+    const res = await fetch(HEALTH_URL, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!res.ok) return false;
+    const type = res.headers.get("content-type") ?? "";
+    if (!type.includes("application/json")) return false;
+    const body = (await res.json()) as { status?: unknown };
+    return body?.status === "ok";
   } catch {
     return false;
   }

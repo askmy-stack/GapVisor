@@ -1,4 +1,8 @@
 import type React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { downloadJson, slugify } from "@/lib/download";
 import {
   CheckCircle2,
   XCircle,
@@ -25,6 +29,35 @@ interface AnswerDetailProps {
 }
 
 export function AnswerDetail({ record }: AnswerDetailProps) {
+  const navigate = useNavigate();
+  const [reviewed, setReviewed] = useState<Set<string>>(new Set());
+  const [flagged, setFlagged] = useState<Set<string>>(new Set());
+  const isReviewed = reviewed.has(record.id);
+
+  const toggleReviewed = () => {
+    setReviewed((prev) => {
+      const next = new Set(prev);
+      if (next.has(record.id)) next.delete(record.id);
+      else next.add(record.id);
+      return next;
+    });
+    toast(isReviewed ? "Marked as not reviewed" : "Marked as reviewed", {
+      description: "Demo mode: saved for this session only.",
+    });
+  };
+
+  const flagClaim = (claim: string) => {
+    const key = `${record.id}:${claim}`;
+    setFlagged((prev) => new Set(prev).add(key));
+    toast.success("Flagged for correction", {
+      description: "Demo mode: tracked for this session. Correction requests reach your team once the API is connected.",
+    });
+  };
+
+  const exportAnswer = () => {
+    downloadJson(`answer-${record.id}-${slugify(record.model)}.json`, record);
+    toast.success("Answer exported as JSON");
+  };
   const highlightText = (text: string) => {
     let highlighted = text;
     brandNames.forEach(keyword => {
@@ -128,8 +161,14 @@ export function AnswerDetail({ record }: AnswerDetailProps) {
                       {item.severity}
                     </Badge>
                   </div>
-                  <Button variant="outline" size="sm" className="h-7 text-[10px] w-full">
-                    Flag for correction
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 text-[10px] w-full"
+                    onClick={() => flagClaim(item.claim)}
+                    disabled={flagged.has(`${record.id}:${item.claim}`)}
+                  >
+                    {flagged.has(`${record.id}:${item.claim}`) ? "Flagged for correction" : "Flag for correction"}
                   </Button>
                 </div>
               ))}
@@ -162,8 +201,10 @@ export function AnswerDetail({ record }: AnswerDetailProps) {
                   </div>
                   <div className="flex items-center gap-3">
                     <Badge variant="outline" className="text-[10px]">{source.authority}</Badge>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground">
-                      <ExternalLink className="h-3 w-3" />
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" asChild>
+                      <a href={source.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${source.title} in a new tab`}>
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
                     </Button>
                   </div>
                 </div>
@@ -174,14 +215,14 @@ export function AnswerDetail({ record }: AnswerDetailProps) {
 
         {/* Bottom Actions */}
         <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t">
-          <Button variant="outline" className="gap-2">
-            <Download className="h-4 w-4" /> Export Answer
+          <Button variant="outline" className="gap-2" onClick={exportAnswer}>
+            <Download className="h-4 w-4" /> Export answer
           </Button>
-          <Button variant="outline" className="gap-2">
-            <CheckSquare className="h-4 w-4" /> Mark Reviewed
+          <Button variant={isReviewed ? "secondary" : "outline"} className="gap-2" onClick={toggleReviewed} aria-pressed={isReviewed}>
+            <CheckSquare className="h-4 w-4" /> {isReviewed ? "Reviewed" : "Mark reviewed"}
           </Button>
-          <Button className="gap-2">
-            <PlusIcon className="h-4 w-4" /> Create Content Task
+          <Button className="gap-2" onClick={() => navigate("/recommendations")}>
+            <PlusIcon className="h-4 w-4" /> Create content task
           </Button>
         </div>
       </div>

@@ -9,15 +9,23 @@ import {
 } from "@/components/ui/select";
 
 import { filterOptions } from "@/data/answer-analysis";
-export function FilterBar() {
+import type { AnswerFilterState } from "@/components/AnswerAnalysis/answer-filters";
+
+interface FilterBarProps {
+  value: AnswerFilterState;
+  onChange: (next: AnswerFilterState) => void;
+}
+
+export function FilterBar({ value, onChange }: FilterBarProps) {
+  const set = (key: keyof AnswerFilterState) => (v: string) => onChange({ ...value, [key]: v });
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4 border-b bg-card/50">
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search prompts..." className="pl-9 h-9" />
+        <Input value={value.search} onChange={(e) => set("search")(e.target.value)} placeholder="Search prompts and answers" aria-label="Search prompts and answers" className="pl-9 h-9" />
       </div>
       <div className="flex flex-wrap gap-2">
-        <Select defaultValue="all-models">
+        <Select value={value.model} onValueChange={set("model")}>
           <SelectTrigger className="w-[140px] h-9">
             <Monitor className="mr-2 h-4 w-4 text-muted-foreground" />
             <SelectValue placeholder="Model" />
@@ -29,7 +37,7 @@ export function FilterBar() {
           </SelectContent>
         </Select>
 
-        <Select defaultValue="all-categories">
+        <Select value={value.category} onValueChange={set("category")}>
           <SelectTrigger className="w-[140px] h-9">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
@@ -40,7 +48,7 @@ export function FilterBar() {
           </SelectContent>
         </Select>
 
-        <Select defaultValue="all-outcomes">
+        <Select value={value.outcome} onValueChange={set("outcome")}>
           <SelectTrigger className="w-[160px] h-9">
             <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
             <SelectValue placeholder="Outcome" />

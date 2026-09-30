@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { postSignInPath } from "@/auth/redirect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Logo } from "@/components/layout/Logo";
 import { useAuth } from "@/auth/AuthProvider";
 import { ApiError } from "@/api/client";
 import { toast } from "sonner";
@@ -26,6 +28,7 @@ const formSchema = z.object({
 
 export function SignInForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn, liveApi } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -43,11 +46,9 @@ export function SignInForm() {
     try {
       const mode = await signIn(values.email, values.password);
       if (mode === "demo") {
-        toast.message("API offline — opening demo workspace");
-        navigate("/workspace-setup");
-        return;
+        toast.message("API offline. Opening the demo dashboard.");
       }
-      navigate("/dashboard");
+      navigate(postSignInPath(location.state), { replace: true });
     } catch (err) {
       const message =
         err instanceof ApiError ? err.message : "Unable to sign in";
@@ -60,11 +61,8 @@ export function SignInForm() {
   return (
     <div className="w-full max-w-md space-y-8 p-4">
       <div className="space-y-2">
-        <div className="flex items-center gap-2 mb-8">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <div className="w-4 h-4 bg-primary-foreground rounded-sm rotate-45" />
-          </div>
-          <span className="text-xl font-bold tracking-tight">GapVisor</span>
+        <div className="mb-8">
+          <Logo />
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground">
@@ -72,9 +70,10 @@ export function SignInForm() {
         </p>
         {!liveApi && (
           <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
-            Backend unreachable — form still opens the static demo. Start
-            docker compose for live auth (
-            <code className="font-mono">demo@northstar.dev</code>).
+            Backend unreachable. The form still opens the static demo, or
+            start docker compose for live auth with{" "}
+            <code className="font-mono">demo@northstar.dev</code> /{" "}
+            <code className="font-mono">GapVisor-Demo-2026!</code>
           </p>
         )}
       </div>
@@ -144,9 +143,9 @@ export function SignInForm() {
         <div className="absolute inset-0 flex items-center">
           <Separator className="w-full" />
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
+        <div className="relative flex justify-center text-xs">
           <span className="bg-background px-2 text-muted-foreground">
-            or continue with
+            Or continue with
           </span>
         </div>
       </div>
@@ -186,27 +185,23 @@ export function SignInForm() {
         >
           Create one
         </Link>
-        {" · "}
-        <Link to="/grader" className="font-medium text-primary hover:underline">
-          Free grader
-        </Link>
       </p>
 
       <div className="pt-8">
         <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
           <div className="flex items-center gap-1 border border-border px-2 py-0.5 rounded">
-            <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
             SOC 2 roadmap
           </div>
           <div className="flex items-center gap-1 border border-border px-2 py-0.5 rounded">
-            <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
-            US-hosted · privacy safeguards
+            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+            Hosted in the US with privacy safeguards
           </div>
         </div>
         <p className="mt-4 text-center text-[10px] text-muted-foreground/60 leading-relaxed">
           By signing in, you agree to our Terms of Service and Privacy Policy.
           GapVisor is a trademark of GapVisor Inc.
-          v1 runs in US regions only — we do not claim EU data residency yet.
+          v1 runs in US regions only. We do not claim EU data residency yet.
         </p>
       </div>
     </div>

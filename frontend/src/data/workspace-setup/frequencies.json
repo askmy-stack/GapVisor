@@ -2,15 +2,15 @@
   {
     "id": "daily",
     "title": "Daily",
-    "plan": "Enterprise",
+    "plan": "Scale",
     "volume": "~15,000 prompts/mo",
-    "description": "Real-time market shifts and rapid response monitoring.",
+    "description": "Real time market shifts and rapid response monitoring.",
     "recommended": false
   },
   {
     "id": "weekly",
     "title": "Weekly",
-    "plan": "Pro",
+    "plan": "Growth",
     "volume": "~3,500 prompts/mo",
     "description": "Perfect for standard competitive tracking and reporting.",
     "recommended": true

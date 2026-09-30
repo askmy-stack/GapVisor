@@ -18,13 +18,14 @@ import { MonitoringSchedule } from "@/components/ModelMonitoring/MonitoringSched
 export default function ModelMonitoring() {
   const { user, workspaceId } = useAuth();
   const [running, setRunning] = useState(false);
+  const [compare, setCompare] = useState(true);
 
   const handleRunScan = async () => {
     setRunning(true);
     try {
       const live = await probeApi();
       if (!live) {
-        toast.message("Backend offline — monitoring remains in demo mode.");
+        toast.message("Backend offline. Monitoring remains in demo mode.");
         return;
       }
       if (!user || !workspaceId || !getAccessToken()) {
@@ -63,12 +64,12 @@ export default function ModelMonitoring() {
 
         {/* 2. Controls row */}
         <section>
-          <MonitoringControls />
+          <MonitoringControls compare={compare} onCompareChange={setCompare} />
         </section>
 
         {/* 3. Big comparison chart card */}
         <section>
-          <PerformanceChart />
+          <PerformanceChart compare={compare} />
         </section>
 
         {/* 4. Metrics comparison table */}

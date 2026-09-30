@@ -1,0 +1,36 @@
+{
+  "name": "GapVisor (cloud dev container)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  // ANTHROPIC_API_KEY / OPENAI_API_KEY are never stored in this file or the repo.
+  // Add them once as Codespaces secrets (user or repo level) at
+  // https://github.com/settings/codespaces (or Settings -> Secrets and variables ->
+  // Codespaces on this repo) and every Codespace gets them as env vars automatically.
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "forwardPorts": [8000, 5173],
+  "portsAttributes": {
+    "8000": { "label": "backend (FastAPI)" },
+    "5173": { "label": "frontend (Vite)" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode"
+}

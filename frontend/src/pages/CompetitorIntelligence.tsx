@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -43,6 +45,24 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { downloadBlob, slugify } from "@/lib/download";
 
 import {
   kpis as kpiData,
@@ -107,6 +127,79 @@ export default function CompetitorIntelligence() {
   };
 
   const selectedMatchup = competitors.find(c => c.id === matchupComp) || competitors[0];
+  const navigate = useNavigate();
+  const matchupRef = useRef<HTMLDivElement>(null);
+  const [category, setCategory] = useState("all");
+  const [addedCompetitors, setAddedCompetitors] = useState<string[]>([]);
+  const [addOpen, setAddOpen] = useState(false);
+  const [newCompetitor, setNewCompetitor] = useState("");
+  const [addError, setAddError] = useState<string | null>(null);
+
+  const isShown = (id: string) => selectedCompetitors.includes(id);
+  const categoryRows =
+    category === "all" ? sovByCategoryData : sovByCategoryData.filter((row) => row.category === category);
+  const competitorIdForRow = (name: string) =>
+    competitors.find((c) => name.toLowerCase().startsWith(c.name.toLowerCase()))?.id;
+  const visibleComparison = comparisonTable.filter((row) => {
+    if (row.isBrand) return true;
+    const id = competitorIdForRow(row.name);
+    return !id || isShown(id);
+  });
+
+  function openMatchup(id: string) {
+    setMatchupComp(id);
+    matchupRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function addCompetitor(e: FormEvent) {
+    e.preventDefault();
+    const name = newCompetitor.trim();
+    if (!name) {
+      setAddError("Enter a competitor name.");
+      return;
+    }
+    const taken = [...competitors.map((c) => c.name), ...addedCompetitors].some(
+      (n) => n.toLowerCase() === name.toLowerCase(),
+    );
+    if (taken) {
+      setAddError(`${name} is already tracked.`);
+      return;
+    }
+    setAddedCompetitors((prev) => [...prev, name]);
+    setAddOpen(false);
+    setNewCompetitor("");
+    toast.success(`Demo mode: ${name} added for this session.`, {
+      description: "Its data appears after the next scan once the API is connected.",
+    });
+  }
+
+  function downloadBattlecard() {
+    const row = comparisonTable.find((r) => competitorIdForRow(r.name) === selectedMatchup.id);
+    const brand = comparisonTable.find((r) => r.isBrand);
+    const strength = strengths.find((st) => st.id === selectedMatchup.id);
+    const lines = [
+      `# Battlecard: Northstar vs ${selectedMatchup.name}`,
+      "",
+      "| Metric | Northstar | " + selectedMatchup.name + " |",
+      "| --- | --- | --- |",
+      `| Share of voice | ${brand?.sov ?? "n/a"} | ${row?.sov ?? "n/a"} |`,
+      `| Avg. position | ${brand?.pos ?? "n/a"} | ${row?.pos ?? "n/a"} |`,
+      `| Positive sentiment | ${brand?.sentiment ?? "n/a"} | ${row?.sentiment ?? "n/a"} |`,
+      `| Citations | ${brand?.citations ?? "n/a"} | ${row?.citations ?? "n/a"} |`,
+      `| Categories led | ${brand?.lead ?? "n/a"} | ${row?.lead ?? "n/a"} |`,
+      "",
+      `## Where ${selectedMatchup.name} wins`,
+      strength ? `- ${strength.text} (${strength.stat})` : "- No standout strength recorded in the sample data.",
+      "",
+      "## Why competitors win AI recommendations",
+      ...rootCauses.map((c) => `- ${c.text}`),
+      "",
+    ];
+    downloadBlob(`battlecard-${slugify(selectedMatchup.name)}.md`, lines.join("\n"), "text/markdown;charset=utf-8");
+    toast.success(`Battlecard for ${selectedMatchup.name} downloaded`, {
+      description: "Built as Markdown from the sample data on this page.",
+    });
+  }
 
   return (
     <DashboardShell>
@@ -137,23 +230,42 @@ export default function CompetitorIntelligence() {
                 {comp.name}
               </button>
             ))}
-            <Button variant="outline" size="sm" className="rounded-full border-dashed h-8 px-3">
+            {addedCompetitors.map((name) => (
+              <span
+                key={name}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium border border-dashed border-border text-muted-foreground"
+                title="Added in this session. Data appears after the next scan."
+              >
+                {name}
+                <span className="text-[10px] uppercase tracking-wider">Pending</span>
+              </span>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full border-dashed h-8 px-3"
+              onClick={() => {
+                setNewCompetitor("");
+                setAddError(null);
+                setAddOpen(true);
+              }}
+            >
               <Plus className="h-3.5 w-3.5 mr-1" /> Add competitor
             </Button>
           </div>
           
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground hidden lg:inline">Filter by Category:</span>
-            <Select defaultValue="all">
-              <SelectTrigger className="w-[180px] h-9">
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="w-[180px] h-9" aria-label="Filter by category">
                 <Filter className="h-3.5 w-3.5 mr-2 text-muted-foreground" />
-                <SelectValue placeholder="All Categories" />
+                <SelectValue placeholder="All categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="api-gateway">API Gateway</SelectItem>
-                <SelectItem value="service-mesh">Service Mesh</SelectItem>
-                <SelectItem value="security">Security</SelectItem>
+                <SelectItem value="all">All categories</SelectItem>
+                {sovByCategoryData.map((row) => (
+                  <SelectItem key={String(row.category)} value={String(row.category)}>{row.category}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -194,7 +306,7 @@ export default function CompetitorIntelligence() {
             <CardContent className="flex-1 min-h-[350px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={sovByCategoryData}
+                  data={categoryRows}
                   layout="vertical"
                   margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
                   barGap={4}
@@ -216,8 +328,8 @@ export default function CompetitorIntelligence() {
                     formatter={(value) => <span className="text-xs font-medium text-muted-foreground">{value === 'brand' ? 'Northstar' : value.charAt(0).toUpperCase() + value.slice(1)}</span>}
                   />
                   <Bar dataKey="brand" name="brand" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="kong" name="kong" fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="postman" name="postman" fill="hsl(var(--chart-2))" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="kong" name="kong" hide={!isShown("kong")} fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="postman" name="postman" hide={!isShown("postman")} fill="hsl(var(--chart-2))" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -261,9 +373,9 @@ export default function CompetitorIntelligence() {
                     formatter={(value) => <span className="text-xs font-medium text-muted-foreground">{value === 'brand' ? 'Northstar' : value.charAt(0).toUpperCase() + value.slice(1)}</span>}
                   />
                   <Line type="monotone" dataKey="brand" stroke="hsl(var(--primary))" strokeWidth={3} dot={{ r: 4, fill: 'hsl(var(--primary))' }} activeDot={{ r: 6 }} />
-                  <Line type="monotone" dataKey="kong" stroke="hsl(var(--chart-1))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="postman" stroke="hsl(var(--chart-2))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="apigee" stroke="hsl(var(--chart-3))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
+                  <Line type="monotone" dataKey="kong" hide={!isShown("kong")} stroke="hsl(var(--chart-1))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
+                  <Line type="monotone" dataKey="postman" hide={!isShown("postman")} stroke="hsl(var(--chart-2))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
+                  <Line type="monotone" dataKey="apigee" hide={!isShown("apigee")} stroke="hsl(var(--chart-3))" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} />
                 </ReLineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -291,7 +403,7 @@ export default function CompetitorIntelligence() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {comparisonTable.map((row, i) => (
+                  {visibleComparison.map((row, i) => (
                     <TableRow 
                       key={i} 
                       className={cn(
@@ -326,9 +438,26 @@ export default function CompetitorIntelligence() {
                         <Badge variant={parseInt(row.lead) > 5 ? "default" : "secondary"}>{row.lead}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" aria-label={`Actions for ${row.name}`}>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {!row.isBrand && competitorIdForRow(row.name) && (
+                              <DropdownMenuItem onSelect={() => openMatchup(competitorIdForRow(row.name)!)}>
+                                Compare head to head
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem onSelect={() => navigate("/recommendations")}>
+                              View content gaps
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => navigate("/answers")}>
+                              View AI answers
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -389,7 +518,11 @@ export default function CompetitorIntelligence() {
                       </div>
                       <div className="space-y-1">
                         <p className="text-sm font-medium group-hover:text-primary transition-colors">{cause.text}</p>
-                        <button className="flex items-center text-[10px] font-semibold text-muted-foreground hover:text-primary uppercase tracking-wider gap-1">
+                        <button
+                          type="button"
+                          onClick={() => navigate("/recommendations")}
+                          className="flex items-center text-[10px] font-semibold text-muted-foreground hover:text-primary uppercase tracking-wider gap-1"
+                        >
                           View related content gap <ChevronRight className="h-3 w-3" />
                         </button>
                       </div>
@@ -414,7 +547,7 @@ export default function CompetitorIntelligence() {
         </div>
 
         {/* Head-to-Head Matchups */}
-        <Card>
+        <Card ref={matchupRef} className="scroll-mt-24">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-base font-semibold">Head-to-Head Matchups</CardTitle>
@@ -504,14 +637,42 @@ export default function CompetitorIntelligence() {
             </div>
             
             <div className="mt-8 flex justify-center">
-              <Button className="gap-2 px-8">
-                Generate Full Battlecard <ArrowRight className="h-4 w-4" />
+              <Button className="gap-2 px-8" onClick={downloadBattlecard}>
+                Download battlecard <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
         </Card>
 
       </main>
+
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="sm:max-w-[420px]">
+          <form onSubmit={addCompetitor}>
+            <DialogHeader>
+              <DialogTitle>Add competitor</DialogTitle>
+              <DialogDescription>Track another brand in AI answers alongside your current competitors.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-2 py-4">
+              <Label htmlFor="competitor-name">Competitor name</Label>
+              <Input
+                id="competitor-name"
+                value={newCompetitor}
+                onChange={(e) => setNewCompetitor(e.target.value)}
+                placeholder="e.g. Gravitee"
+                autoFocus
+              />
+              {addError && <p className="text-sm text-destructive" role="alert">{addError}</p>}
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Add competitor</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </DashboardShell>
   );
 }

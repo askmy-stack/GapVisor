@@ -1,6 +1,6 @@
 import type { Option } from "@/data/shared";
 
-export type ModelHealth = "Healthy" | "Degraded";
+export type ModelHealth = "Healthy" | "Degraded" | "Not connected";
 export type Trend = "up" | "down" | "stable";
 
 /**

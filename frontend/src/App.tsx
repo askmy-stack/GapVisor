@@ -7,7 +7,6 @@ import { AuthProvider } from "@/auth/AuthProvider";
 import { RequireAuth } from "@/auth/RequireAuth";
 import SignIn from "./pages/SignIn";
 import ForgotPassword from "./pages/ForgotPassword";
-import VisibilityGrader from "./pages/VisibilityGrader";
 import WorkspaceSetup from "./pages/WorkspaceSetup";
 import VisibilityDashboard from "./pages/VisibilityDashboard";
 import PromptLibrary from "./pages/PromptLibrary";
@@ -32,7 +31,6 @@ const App = () => (
             <Route path="/" element={<Navigate to="/signin" replace />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/grader" element={<VisibilityGrader />} />
             <Route path="/workspace-setup" element={<WorkspaceSetup />} />
             <Route
               path="/dashboard"

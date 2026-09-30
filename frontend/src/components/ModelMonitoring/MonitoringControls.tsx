@@ -3,7 +3,12 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { filterOptions } from "@/data/model-monitoring";
 
-export function MonitoringControls() {
+interface MonitoringControlsProps {
+  compare: boolean;
+  onCompareChange: (compare: boolean) => void;
+}
+
+export function MonitoringControls({ compare, onCompareChange }: MonitoringControlsProps) {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-card p-4 rounded-lg border border-border">
       <div className="flex flex-wrap items-center gap-3">
@@ -51,7 +56,7 @@ export function MonitoringControls() {
       </div>
 
       <div className="flex items-center space-x-2 bg-secondary/50 p-2 px-3 rounded-md border border-transparent hover:border-border transition-colors">
-        <Switch id="compare-mode" />
+        <Switch id="compare-mode" checked={compare} onCheckedChange={onCompareChange} />
         <Label htmlFor="compare-mode" className="text-sm font-medium cursor-pointer">Compare models</Label>
       </div>
     </div>

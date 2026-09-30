@@ -10,7 +10,6 @@ See how ChatGPT, Claude, Gemini, Perplexity, and connected AI APIs mention and r
 | **Overview PDF** | [GapVisor-Overview.pdf](./GapVisor-Overview.pdf) |
 | **UI snapshots** | [`docs/snapshots/`](./docs/snapshots/) |
 | **API (local)** | `http://localhost:8000/docs` |
-| **Free grader** | `/grader` (public, no login) |
 
 ---
 
@@ -59,7 +58,6 @@ Colleague-ready walkthrough (4 pages, all screens above): **[GapVisor-Overview.p
 | Dashboard, monitoring, answers APIs | Done |
 | Competitors overview, recommendations, experiments | Done |
 | Confidence layer (`/confidence/*`) | Library + API |
-| Free public grader (`/grader` + `/api/v1/public/grader`) | Mock |
 | Billing usage stub | Done (no Stripe yet) |
 | Phase specs `003`–`010` | Scaffolded |
 | Live LLM adapters / S3 raw capture / Stripe / OAuth | Not yet |
@@ -113,7 +111,6 @@ make fe-dev   # Vite on :5173
 | Service | URL |
 |---|---|
 | SPA | http://localhost:5173 |
-| Free grader | http://localhost:5173/grader |
 | OpenAPI | http://localhost:8000/docs |
 
 Copy env templates if needed:
@@ -127,11 +124,25 @@ Useful Make targets: `make up` · `make down` · `make migrate` · `make seed` �
 
 ---
 
+## Cloud dev environment and AI issue-to-PR
+
+- **Zero-setup Codespace**: open this repo in a GitHub Codespace and the
+  `claude` and `codex` CLIs, Node 20, Python 3.12, and this project's own
+  dependencies are ready before you open a terminal — see
+  [`.devcontainer/`](./.devcontainer/).
+- **Label an issue, get a draft PR**: add the `claude-task` label to an
+  issue and `.github/workflows/ai-pr.yml` runs Claude Code against it in
+  CI and opens a draft pull request for review. Setup, and why the trigger
+  is gated behind a label rather than any issue being opened, is in
+  [`docs/cloud-agents/ai-issue-to-pr.md`](./docs/cloud-agents/ai-issue-to-pr.md).
+
+---
+
 ## Repository layout
 
 ```
 GapVisor/
-├── frontend/                 # React SPA (10 product screens + /grader)
+├── frontend/                 # React SPA (10 product screens)
 ├── backend/                  # FastAPI, Alembic, Celery, confidence + grader
 ├── docs/snapshots/           # UI PNGs used in README + overview PDF
 ├── GapVisor-Overview.pdf     # Internal colleague overview

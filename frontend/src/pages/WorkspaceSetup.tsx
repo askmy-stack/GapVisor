@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { createWorkspace, getAccessToken, probeApi, type WorkspaceCreatePayload } from '@/api/client';
 import { useAuth } from '@/auth/AuthProvider';
+import { AssistantWidget, type AssistantWidgetHandle } from '@/components/Assistant/AssistantWidget';
 import { SetupHeader } from '@/components/WorkspaceSetup/SetupHeader';
 import { StepIndicator } from '@/components/WorkspaceSetup/StepIndicator';
 import { WorkspaceBasics } from '@/components/WorkspaceSetup/WorkspaceBasics';
@@ -38,6 +39,7 @@ const WorkspaceSetup: React.FC = () => {
   const [regions, setRegions] = useState<string[]>(defaults.regions);
   const [frequency, setFrequency] = useState("weekly");
   const [launching, setLaunching] = useState(false);
+  const assistantRef = useRef<AssistantWidgetHandle>(null);
 
   const handleLaunch = async () => {
     setLaunching(true);
@@ -131,11 +133,19 @@ const WorkspaceSetup: React.FC = () => {
           
           <div className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              Need help setting up? <button className="text-primary hover:underline font-medium">Contact our onboarding team</button>
+              Need help setting up?{" "}
+              <button
+                type="button"
+                onClick={() => assistantRef.current?.open()}
+                className="text-primary hover:underline font-medium"
+              >
+                Ask the assistant
+              </button>
             </p>
           </div>
         </div>
       </main>
+      <AssistantWidget ref={assistantRef} />
     </div>
   );
 };
